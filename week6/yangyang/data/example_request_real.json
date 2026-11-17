@@ -1,0 +1,36 @@
+{
+  "pantry": [
+    {
+      "name": "carrots",
+      "quantity": 500,
+      "unit": "g",
+      "expires_on": "2026-11-17"
+    },
+    {
+      "name": "vegetable oil",
+      "quantity": 40,
+      "unit": "ml",
+      "expires_on": null
+    },
+    {
+      "name": "brown sugar",
+      "quantity": 40,
+      "unit": "ml",
+      "expires_on": null
+    },
+    {
+      "name": "salt",
+      "quantity": 2,
+      "unit": "ml",
+      "expires_on": null
+    }
+  ],
+  "servings": 4,
+  "preferences": {
+    "dietary_restrictions": [
+      "vegan"
+    ],
+    "likes": []
+  },
+  "as_of_date": "2026-11-16"
+}

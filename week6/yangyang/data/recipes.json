@@ -1,0 +1,358 @@
+[
+  {
+    "id": "R01",
+    "title": "Tomato and egg stir-fry",
+    "servings": 2,
+    "ingredients": [
+      {
+        "name": "tomato",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "egg",
+        "quantity": 2,
+        "unit": "count"
+      },
+      {
+        "name": "oil",
+        "quantity": 10,
+        "unit": "ml"
+      },
+      {
+        "name": "salt",
+        "quantity": 2,
+        "unit": "g"
+      }
+    ],
+    "steps": [
+      "Beat the eggs.",
+      "Heat oil and cook the eggs until set.",
+      "Add chopped tomatoes, cook until softened, and season."
+    ],
+    "source": "Hand-authored coursework fixture; not RecipeNLG or nutrition guidance."
+  },
+  {
+    "id": "R02",
+    "title": "Spinach and tofu stir-fry",
+    "servings": 2,
+    "ingredients": [
+      {
+        "name": "spinach",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "tofu",
+        "quantity": 300,
+        "unit": "g"
+      },
+      {
+        "name": "oil",
+        "quantity": 10,
+        "unit": "ml"
+      },
+      {
+        "name": "salt",
+        "quantity": 2,
+        "unit": "g"
+      }
+    ],
+    "steps": [
+      "Drain and cut the tofu.",
+      "Heat oil and cook tofu until hot throughout.",
+      "Add washed spinach, cook until wilted, and season."
+    ],
+    "source": "Hand-authored coursework fixture; not RecipeNLG or nutrition guidance."
+  },
+  {
+    "id": "R03",
+    "title": "Spinach omelette",
+    "servings": 2,
+    "ingredients": [
+      {
+        "name": "spinach",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "egg",
+        "quantity": 2,
+        "unit": "count"
+      },
+      {
+        "name": "oil",
+        "quantity": 10,
+        "unit": "ml"
+      },
+      {
+        "name": "salt",
+        "quantity": 2,
+        "unit": "g"
+      }
+    ],
+    "steps": [
+      "Wash and wilt the spinach in oil.",
+      "Add beaten eggs and cook until fully set.",
+      "Season and serve."
+    ],
+    "source": "Hand-authored coursework fixture; not RecipeNLG or nutrition guidance."
+  },
+  {
+    "id": "R04",
+    "title": "Tomato and tofu stew",
+    "servings": 2,
+    "ingredients": [
+      {
+        "name": "tomato",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "tofu",
+        "quantity": 300,
+        "unit": "g"
+      },
+      {
+        "name": "oil",
+        "quantity": 10,
+        "unit": "ml"
+      },
+      {
+        "name": "salt",
+        "quantity": 2,
+        "unit": "g"
+      }
+    ],
+    "steps": [
+      "Heat oil and soften chopped tomatoes.",
+      "Add cubed tofu and simmer until hot throughout.",
+      "Season and serve."
+    ],
+    "source": "Hand-authored coursework fixture; not RecipeNLG or nutrition guidance."
+  },
+  {
+    "id": "R05",
+    "title": "Egg fried rice",
+    "servings": 2,
+    "ingredients": [
+      {
+        "name": "rice",
+        "quantity": 300,
+        "unit": "g"
+      },
+      {
+        "name": "egg",
+        "quantity": 2,
+        "unit": "count"
+      },
+      {
+        "name": "oil",
+        "quantity": 10,
+        "unit": "ml"
+      },
+      {
+        "name": "salt",
+        "quantity": 2,
+        "unit": "g"
+      }
+    ],
+    "steps": [
+      "Use safely stored cooked rice.",
+      "Heat oil and scramble eggs until set.",
+      "Add rice and stir-fry until steaming hot throughout; season."
+    ],
+    "source": "Hand-authored coursework fixture; not RecipeNLG or nutrition guidance."
+  },
+  {
+    "id": "R06",
+    "title": "Broccoli and tofu stir-fry",
+    "servings": 2,
+    "ingredients": [
+      {
+        "name": "broccoli",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "tofu",
+        "quantity": 300,
+        "unit": "g"
+      },
+      {
+        "name": "oil",
+        "quantity": 10,
+        "unit": "ml"
+      },
+      {
+        "name": "salt",
+        "quantity": 2,
+        "unit": "g"
+      }
+    ],
+    "steps": [
+      "Wash and cut the broccoli.",
+      "Heat oil and cook broccoli until tender.",
+      "Add tofu, heat throughout, and season."
+    ],
+    "source": "Hand-authored coursework fixture; not RecipeNLG or nutrition guidance."
+  },
+  {
+    "id": "R07",
+    "title": "Chicken and rice",
+    "servings": 2,
+    "ingredients": [
+      {
+        "name": "chicken",
+        "quantity": 300,
+        "unit": "g"
+      },
+      {
+        "name": "rice",
+        "quantity": 300,
+        "unit": "g"
+      },
+      {
+        "name": "oil",
+        "quantity": 10,
+        "unit": "ml"
+      },
+      {
+        "name": "salt",
+        "quantity": 2,
+        "unit": "g"
+      }
+    ],
+    "steps": [
+      "Cut chicken using separate equipment.",
+      "Cook chicken thoroughly in oil.",
+      "Add safely stored cooked rice, heat throughout, and season."
+    ],
+    "source": "Hand-authored coursework fixture; not RecipeNLG or nutrition guidance."
+  },
+  {
+    "id": "R08",
+    "title": "Potato and egg skillet",
+    "servings": 2,
+    "ingredients": [
+      {
+        "name": "potato",
+        "quantity": 300,
+        "unit": "g"
+      },
+      {
+        "name": "egg",
+        "quantity": 2,
+        "unit": "count"
+      },
+      {
+        "name": "oil",
+        "quantity": 10,
+        "unit": "ml"
+      },
+      {
+        "name": "salt",
+        "quantity": 2,
+        "unit": "g"
+      }
+    ],
+    "steps": [
+      "Slice potatoes thinly and cook in oil until tender.",
+      "Add beaten eggs and cook until set.",
+      "Season and serve."
+    ],
+    "source": "Hand-authored coursework fixture; not RecipeNLG or nutrition guidance."
+  },
+  {
+    "id": "R09",
+    "title": "Peanut and tofu skillet",
+    "servings": 2,
+    "ingredients": [
+      {
+        "name": "peanut",
+        "quantity": 30,
+        "unit": "g"
+      },
+      {
+        "name": "tofu",
+        "quantity": 300,
+        "unit": "g"
+      },
+      {
+        "name": "oil",
+        "quantity": 10,
+        "unit": "ml"
+      },
+      {
+        "name": "salt",
+        "quantity": 2,
+        "unit": "g"
+      }
+    ],
+    "steps": [
+      "Heat oil and cook cubed tofu until hot throughout.",
+      "Add peanuts, warm briefly, and season."
+    ],
+    "source": "Hand-authored coursework fixture; not RecipeNLG or nutrition guidance."
+  },
+  {
+    "id": "R10",
+    "title": "Spinach pasta",
+    "servings": 2,
+    "ingredients": [
+      {
+        "name": "spinach",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "pasta",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "oil",
+        "quantity": 10,
+        "unit": "ml"
+      },
+      {
+        "name": "salt",
+        "quantity": 2,
+        "unit": "g"
+      }
+    ],
+    "steps": [
+      "Cook pasta in water according to package instructions.",
+      "Heat oil and wilt the washed spinach.",
+      "Combine and season."
+    ],
+    "source": "Hand-authored coursework fixture; not RecipeNLG or nutrition guidance."
+  },
+  {
+    "id": "r_spinach_tofu_01",
+    "title": "Spinach and tofu with soy sauce",
+    "servings": 2,
+    "ingredients": [
+      {
+        "name": "spinach",
+        "quantity": 150,
+        "unit": "g"
+      },
+      {
+        "name": "tofu",
+        "quantity": 250,
+        "unit": "g"
+      },
+      {
+        "name": "soy sauce",
+        "quantity": 15,
+        "unit": "ml"
+      }
+    ],
+    "steps": [
+      "Cut the tofu and wash the spinach.",
+      "Heat the tofu in a non-stick pan until hot throughout, add spinach until wilted, and stir in soy sauce."
+    ],
+    "source": "Hand-authored interface fixture; not RecipeNLG."
+  }
+]

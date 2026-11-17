@@ -1,0 +1,17 @@
+# Credentials and local environments
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+# Generated files
+__pycache__/
+*.py[cod]
+.DS_Store
+results/
+# Large external data and local retrieval indexes
+data/*.csv
+data/*.zip
+data/*.sqlite*
+data/*.building
+data/*review.jsonl*

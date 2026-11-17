@@ -1,0 +1,31 @@
+{
+  "pantry": [
+    {
+      "name": "spinach",
+      "quantity": 200,
+      "unit": "g",
+      "expires_on": "2026-11-17"
+    },
+    {
+      "name": "tofu",
+      "quantity": 300,
+      "unit": "g",
+      "expires_on": "2026-11-21"
+    },
+    {
+      "name": "soy sauce",
+      "quantity": 30,
+      "unit": "ml",
+      "expires_on": null
+    }
+  ],
+  "servings": 2,
+  "preferences": {
+    "dietary_restrictions": [
+      "vegetarian",
+      "egg-free"
+    ],
+    "likes": []
+  },
+  "as_of_date": "2026-11-16"
+}

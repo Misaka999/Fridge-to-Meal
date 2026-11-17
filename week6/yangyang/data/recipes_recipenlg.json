@@ -1,0 +1,264 @@
+[
+  {
+    "id": "recipenlg_68810",
+    "title": "Glazed Carrots",
+    "source": "RecipeNLG/Gathered",
+    "source_url": "www.cookbooks.com/Recipe-Details.aspx?id=260993",
+    "raw_ingredients": [
+      "1 lb. carrots, cut in 2-inch strips",
+      "2 Tbsp. Wesson oil",
+      "1/4 c. water",
+      "2 Tbsp. brown sugar",
+      "1/4 tsp. salt"
+    ],
+    "ingredient_names": [
+      "carrots",
+      "Wesson oil",
+      "water",
+      "brown sugar",
+      "salt"
+    ],
+    "steps": [
+      "Cook carrots in Wesson oil over medium heat until lightly browned.",
+      "Combine remaining ingredients and pour over carrots. Cover and cook over low heat until tender, about 15 minutes. Yields 4 servings."
+    ],
+    "servings": 4,
+    "quantity_verified": true,
+    "dietary_verified": true,
+    "servings_source": "Combine remaining ingredients and pour over carrots. Cover and cook over low heat until tender, about 15 minutes. Yields 4 servings.",
+    "review_status": "approved",
+    "dietary_compatibility": {
+      "vegetarian": true,
+      "vegan": true,
+      "egg-free": true,
+      "dairy-free": true,
+      "peanut-free": null,
+      "soy-free": null
+    },
+    "review_notes": [
+      "Explicit yield and every listed ingredient were checked against the local CSV.",
+      "US customary volume units; no density or cups-to-grams conversion.",
+      "Only ingredient-list dietary screening; no cross-contact or packaged-label certification.",
+      "Compatibility is true when ingredient-level compatible, false when a listed conflict exists, and null when packaged labels need checking.",
+      "This is a side-dish recipe, not a nutritionally complete meal."
+    ],
+    "raw_record_sha256": "181b9cedb453f092e3143c5d99dfd93f20d5e5bedb514e36fe444e5eff395bea",
+    "ingredients": [
+      {
+        "name": "carrot",
+        "quantity": 453.59237,
+        "unit": "g",
+        "raw_indices": [
+          0
+        ],
+        "quantity_basis": "1 lb.; exact mass/volume conversion only."
+      },
+      {
+        "name": "oil",
+        "quantity": 29.5735295625,
+        "unit": "ml",
+        "raw_indices": [
+          1
+        ],
+        "quantity_basis": "2 Tbsp.; exact mass/volume conversion only."
+      },
+      {
+        "name": "water",
+        "quantity": 59.147059125,
+        "unit": "ml",
+        "raw_indices": [
+          2
+        ],
+        "quantity_basis": "1/4 c.; exact mass/volume conversion only."
+      },
+      {
+        "name": "brown sugar",
+        "quantity": 29.5735295625,
+        "unit": "ml",
+        "raw_indices": [
+          3
+        ],
+        "quantity_basis": "2 Tbsp.; exact mass/volume conversion only."
+      },
+      {
+        "name": "salt",
+        "quantity": 1.2322303984375,
+        "unit": "ml",
+        "raw_indices": [
+          4
+        ],
+        "quantity_basis": "1/4 tsp.; exact mass/volume conversion only."
+      }
+    ],
+    "dataset_provenance": {
+      "filename": "RecipeNLG_dataset.csv",
+      "bytes": 2294981083,
+      "source_filter": "Gathered"
+    }
+  },
+  {
+    "id": "recipenlg_33232",
+    "title": "Peach Glazed Carrots",
+    "source": "RecipeNLG/Gathered",
+    "source_url": "www.cookbooks.com/Recipe-Details.aspx?id=272429",
+    "raw_ingredients": [
+      "3 lb. pared, sliced cooked carrots",
+      "1 c. peach preserves",
+      "2 Tbsp. melted butter"
+    ],
+    "ingredient_names": [
+      "pared",
+      "preserves",
+      "butter"
+    ],
+    "steps": [
+      "Arrange carrots in casserole dish.",
+      "Combine preserves and butter; spoon over carrots.",
+      "Heat in oven at 350\u00b0 for 15 minutes, until hot.",
+      "Serves 10."
+    ],
+    "servings": 10,
+    "quantity_verified": true,
+    "dietary_verified": true,
+    "servings_source": "Serves 10.",
+    "review_status": "approved",
+    "dietary_compatibility": {
+      "vegetarian": null,
+      "vegan": false,
+      "egg-free": null,
+      "dairy-free": false,
+      "peanut-free": null,
+      "soy-free": null
+    },
+    "review_notes": [
+      "Explicit yield and every listed ingredient were checked against the local CSV.",
+      "US customary volume units; no density or cups-to-grams conversion.",
+      "Only ingredient-list dietary screening; no cross-contact or packaged-label certification.",
+      "Compatibility is true when ingredient-level compatible, false when a listed conflict exists, and null when packaged labels need checking.",
+      "This is a side-dish recipe, not a nutritionally complete meal."
+    ],
+    "raw_record_sha256": "34085f086a8546d3ff957ef787d00143fd0dae96a91204268ad2321f03243e07",
+    "ingredients": [
+      {
+        "name": "carrot",
+        "quantity": 1360.77711,
+        "unit": "g",
+        "raw_indices": [
+          0
+        ],
+        "quantity_basis": "3 lb.; exact mass/volume conversion only."
+      },
+      {
+        "name": "peach preserves",
+        "quantity": 236.5882365,
+        "unit": "ml",
+        "raw_indices": [
+          1
+        ],
+        "quantity_basis": "1 c.; exact mass/volume conversion only."
+      },
+      {
+        "name": "butter",
+        "quantity": 29.5735295625,
+        "unit": "ml",
+        "raw_indices": [
+          2
+        ],
+        "quantity_basis": "2 Tbsp.; exact mass/volume conversion only."
+      }
+    ],
+    "dataset_provenance": {
+      "filename": "RecipeNLG_dataset.csv",
+      "bytes": 2294981083,
+      "source_filter": "Gathered"
+    }
+  },
+  {
+    "id": "recipenlg_55429",
+    "title": "Whipped Sweet Potatoes",
+    "source": "RecipeNLG/Gathered",
+    "source_url": "www.cookbooks.com/Recipe-Details.aspx?id=897610",
+    "raw_ingredients": [
+      "6 medium sweet potatoes, baked until soft",
+      "1/2 c. unsalted butter",
+      "1 1/2 tsp. salt",
+      "3/4 tsp. black pepper"
+    ],
+    "ingredient_names": [
+      "sweet potatoes",
+      "unsalted butter",
+      "salt",
+      "black pepper"
+    ],
+    "steps": [
+      "Peel the potatoes while they're hot.",
+      "Mix with the butter, salt and pepper.",
+      "Use a hand mixer to beat until smooth.",
+      "Serves 6."
+    ],
+    "servings": 6,
+    "quantity_verified": true,
+    "dietary_verified": true,
+    "servings_source": "Serves 6.",
+    "review_status": "approved",
+    "dietary_compatibility": {
+      "vegetarian": true,
+      "vegan": false,
+      "egg-free": true,
+      "dairy-free": false,
+      "peanut-free": null,
+      "soy-free": null
+    },
+    "review_notes": [
+      "Explicit yield and every listed ingredient were checked against the local CSV.",
+      "US customary volume units; no density or cups-to-grams conversion.",
+      "Only ingredient-list dietary screening; no cross-contact or packaged-label certification.",
+      "Compatibility is true when ingredient-level compatible, false when a listed conflict exists, and null when packaged labels need checking.",
+      "This is a side-dish recipe, not a nutritionally complete meal."
+    ],
+    "raw_record_sha256": "eb113536a9cbbf2cb657c52b6bb1581e83180018e77545f94750eaf20b46c2df",
+    "ingredients": [
+      {
+        "name": "medium sweet potato",
+        "quantity": 6,
+        "unit": "count",
+        "raw_indices": [
+          0
+        ],
+        "quantity_basis": "6 medium sweet potatoes; exact mass/volume conversion only."
+      },
+      {
+        "name": "butter",
+        "quantity": 118.29411825,
+        "unit": "ml",
+        "raw_indices": [
+          1
+        ],
+        "quantity_basis": "1/2 c.; exact mass/volume conversion only."
+      },
+      {
+        "name": "salt",
+        "quantity": 7.393382390625,
+        "unit": "ml",
+        "raw_indices": [
+          2
+        ],
+        "quantity_basis": "1 1/2 tsp.; exact mass/volume conversion only."
+      },
+      {
+        "name": "pepper",
+        "quantity": 3.6966911953125,
+        "unit": "ml",
+        "raw_indices": [
+          3
+        ],
+        "quantity_basis": "3/4 tsp.; exact mass/volume conversion only."
+      }
+    ],
+    "dataset_provenance": {
+      "filename": "RecipeNLG_dataset.csv",
+      "bytes": 2294981083,
+      "source_filter": "Gathered"
+    }
+  }
+]
