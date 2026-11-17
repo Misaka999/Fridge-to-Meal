@@ -1,6 +1,6 @@
 # Yangyang: Week 6 tools, baseline, and evaluation
 
-This directory contains Yangyang Hu's contribution. It does not implement or replace Shuhua's Agent. `agent_adapter.py` is intentionally a placeholder.
+This directory contains Yangyang Hu's tools, baseline and evaluation code. `agent_adapter.py` connects the evaluator to Shuhua's ReAct Agent.
 
 ## Run without the full dataset or API credentials
 
@@ -45,13 +45,13 @@ See [INTEGRATION.md](INTEGRATION.md) for the exact compatibility boundary and re
 
 The agreed shared interface is copied in `interface_alignment.md`. Extensions and caveats are in [CSV使用说明.md](CSV使用说明.md).
 
-Shuhua should connect her real implementation to `agent_adapter.run(request, context)` and return `{answer, metrics, trace}`. The evaluation context contains the same recipe pool for both runners. Candidate contexts are prepared before runner timing; metadata records that latency scope.
+The adapter calls ReAct and returns `{answer, metrics, trace}`. The evaluation context contains the same recipe pool for both runners. Candidate contexts are prepared before runner timing; metadata records that latency scope. Run the live commands below from the project root.
 
 Configure `DEEPSEEK_API_KEY` locally and set `DEEPSEEK_MODEL` to an ID actually available in your account. Do not commit credentials. After the Agent is connected:
 
 ```sh
-python3 evaluate.py --tasks tasks_recipenlg_smoke.jsonl --recipe-file data/recipes_recipenlg.json --agent agent_adapter:run --agent-trials 1 --output results/smoke_01
-python3 evaluate.py --tasks tasks_recipenlg_yangyang.jsonl --recipe-file data/recipes_recipenlg.json --agent agent_adapter:run --agent-trials 3 --output results/yangyang_01
+python3 -m week6.yangyang.evaluate --tasks week6/yangyang/tasks_recipenlg_smoke.jsonl --recipe-file week6/yangyang/data/recipes_recipenlg.json --agent week6.yangyang.agent_adapter:run --agent-trials 1 --output results/smoke_01
+python3 -m week6.yangyang.evaluate --tasks week6/yangyang/tasks_recipenlg_yangyang.jsonl --recipe-file week6/yangyang/data/recipes_recipenlg.json --agent week6.yangyang.agent_adapter:run --agent-trials 3 --output results/yangyang_01
 ```
 
 The runner rejects the placeholder Agent. Merge and review both members' cases to reach the required 50 before the final team evaluation. Real token counts, accuracy, pass@3, pass^3 and a failure analysis still require actual model runs. None are fabricated here.

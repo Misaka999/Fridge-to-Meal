@@ -1,6 +1,6 @@
 # Compatibility with the repository README
 
-The root README describes Shuhua's `react_agent.run_agent` API. The actual `react_agent.py`, `requirements.txt` and root `example_request.json` were not present in the repository when this contribution was prepared. End-to-end integration therefore remains unverified.
+The root `react_agent.run_agent` now uses Yangyang's search tool. The evaluator calls it through `week6.yangyang.agent_adapter:run`. See the [root README](../../README.md) for commands to run both from the project root.
 
 ## Compatible boundary
 
@@ -31,15 +31,15 @@ The root spinach/tofu example belongs to the mock/legacy catalogue, so it is not
 
 - `INPUT_INCOMPLETE`: return `needs_clarification`, not `tool_error`.
 - `RECIPE_DETAILS_UNVERIFIED`: raw recipe information requires checking; return clarification, never invent yield or claim feasibility.
-- `NO_RETRIEVAL_MATCH`: no lexical retrieval hits; do not assert no recipe can exist.
+- `NO_RETRIEVAL_MATCH`: return `needs_clarification` and explain that retrieval found no records.
 - `REQUEST_STATE_MISMATCH`: the bound registry prevents model-invented pantry changes.
 - The root Agent should validate unknown serving count before calling the tool, as its README already describes. Dietary labels and unit conversions can require further clarification after a tool call.
 
-If the current Agent maps every `status=error` to `tool_error`, it needs these error-code distinctions before full-CSV testing. Its code is absent, so this contribution cannot claim that change has already been made.
+The ReAct runner distinguishes these cases by error code. A genuine search failure can be retried once.
 
 ## Evaluation envelope
 
-The root README documents `{result, metrics, tool_trace}`. `evaluate.py` expects `{answer, metrics, trace}` from an adapter. When Shuhua implements `agent_adapter.run`, it should map:
+The root README documents `{result, metrics, tool_trace}`. The adapter maps it to what `evaluate.py` expects:
 
 | Root runner | Evaluation runner |
 |---|---|
@@ -47,7 +47,7 @@ The root README documents `{result, metrics, tool_trace}`. `evaluate.py` expects
 | metrics | metrics |
 | tool_trace | trace |
 
-Metrics should provide actual `model_calls`, `input_tokens`, `output_tokens`, `total_tokens`; missing counts remain unknown, never invented. Use `context['recipes']` in the bound search so the baseline and Agent see the same candidate collection. Do not replace the Agent with the baseline. No Agent loop or adapter implementation is included here, as requested.
+Metrics record actual `model_calls`, `input_tokens`, `output_tokens` and `total_tokens`. Missing token counts remain unknown. The adapter binds `context['recipes']` so both runners see the same candidate collection.
 
 ## Running from the contribution directory
 

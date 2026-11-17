@@ -1,6 +1,6 @@
 # Fridge-to-Meal ReAct
 
-Week 6 的命令行版本使用 LangGraph 串联 DeepSeek Flash 和本地模拟食谱工具。DeepSeek 决定何时查询，LangGraph 执行工具并把结果交回模型。参见[接口约定](interface_alignment.md)。
+Week 6 的命令行版本使用 LangGraph 串联 DeepSeek Flash 和 Yangyang 的食谱搜索与库存匹配工具。默认使用经过核对的 RecipeNLG 子集。参见[接口约定](docs/interface_alignment.md)和[数据及评测说明](week6/yangyang/README.md)。
 
 ## 运行
 
@@ -9,11 +9,10 @@ Week 6 的命令行版本使用 LangGraph 串联 DeepSeek Flash 和本地模拟�
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
-$env:DEEPSEEK_API_KEY = Read-Host "DeepSeek API key" -MaskInput
-.\.venv\Scripts\python.exe react_agent.py example_request.json --trace
+.\.venv\Scripts\python.exe react_agent.py week6/yangyang/data/example_request_real.json --trace
 ```
 
-如使用 Windows PowerShell 5.1，可以先在已配置 `DEEPSEEK_API_KEY` 的终端运行，或在 PowerShell 7 使用上面的密钥输入命令。默认模型为 `deepseek-flash`，可通过 `DEEPSEEK_MODEL` 调整。食谱工具是本地模拟实现，模型调用使用真实 DeepSeek API，需要 API key。
+运行前，在项目根目录的 `.env` 中填写 `DEEPSEEK_API_KEY`。默认模型为 `deepseek-flash`，可通过 `DEEPSEEK_MODEL` 调整。终端已设置的环境变量优先。要跑原来的菠菜豆腐样例，用 `react_agent.py example_request.json --mock`。
 
 命令行把包含 `status`、`recipe_ids`、`message` 的 JSON 写到标准输出。加上 `--trace` 后，会把模型调用次数、延迟、输入/输出 token 和工具调用记录写到标准错误。省略 `--trace` 时只输出结果。传入 `-` 可从标准输入读取请求 JSON。
 
@@ -21,12 +20,23 @@ $env:DEEPSEEK_API_KEY = Read-Host "DeepSeek API key" -MaskInput
 
 | 验证路径 | 操作 | 预期 `status` |
 | --- | --- | --- |
-| 推荐 | 运行 `example_request.json` | `recommended`，返回 `r_spinach_tofu_01` |
+| 推荐 | 运行 `week6/yangyang/data/example_request_real.json` | `recommended`，返回 `recipenlg_68810` |
 | 澄清 | 将样例的 `servings` 改为 `null` | `needs_clarification`，无食谱查询 |
 | 无匹配 | 将样例的 `pantry` 改为 `[]` | `no_feasible_recipe` |
 | 工具失败 | 用原始样例并加上 `--mock-error` | `tool_error` |
 
-模拟工具只收录菠菜炒豆腐，用来联调份量、库存和状态分支。当前版本会就未知的库存数量或单位追问。模型请求失败或输出违反接口时，CLI 会打印错误并以非零状态退出。
+ReAct 会复用工具的请求校验。未知数量、单位等可在搜索前直接追问。查询后如需核实包装标签、单位换算或原始食谱细节，输出 `needs_clarification`。检索无记录时也会说明范围并请求补充信息。真实查询失败输出 `tool_error`。模型请求失败或输出违反接口时，CLI 会打印错误并以非零状态退出。
+
+## 跑 Week 6 小规模联调
+
+从项目根目录运行。评测脚本将同一份食谱集合提供给 ReAct 和单次 LLM 基线。
+
+```powershell
+$env:DEEPSEEK_MODEL = "deepseek-flash"
+.\.venv\Scripts\python.exe -m week6.yangyang.evaluate --agent week6.yangyang.agent_adapter:run --tasks week6/yangyang/tasks_recipenlg_smoke.jsonl --recipe-file week6/yangyang/data/recipes_recipenlg.json --agent-trials 1 --output results/smoke_01
+```
+
+正式评测用两人合并并审核过的 50 条题，使用 `--agent-trials 3`，并给 `--output` 一个尚未创建的目录。
 
 ## 给评测脚本调用
 

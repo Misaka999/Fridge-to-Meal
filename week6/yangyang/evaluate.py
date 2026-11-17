@@ -16,12 +16,14 @@ except ImportError:
     from grading import grade
 try:
     from .tools import load_recipes
+    from .model_client import load_project_env
 except ImportError:
     from tools import load_recipes
+    from model_client import load_project_env
 
 
 def load_tasks(path):
-    tasks = [json.loads(line) for line in Path(path).read_text().splitlines() if line.strip()]
+    tasks = [json.loads(line) for line in Path(path).read_text(encoding='utf-8-sig').splitlines() if line.strip()]
     if not tasks or len({t['id'] for t in tasks}) != len(tasks):
         raise ValueError('Task IDs must be unique and the file cannot be empty.')
     for task in tasks:
@@ -123,7 +125,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--tasks', default=str(Path(__file__).resolve().parent / 'tasks_yangyang.jsonl'))
     parser.add_argument('--agent', help='Example: shuhua_adapter:run')
-    parser.add_argument('--baseline', default='baseline:run')
+    parser.add_argument('--baseline', default=f'{__package__}.baseline:run' if __package__ else 'baseline:run')
     parser.add_argument('--agent-trials', type=int, default=3)
     parser.add_argument('--output', default='results/live_run_01')
     parser.add_argument('--check-only', action='store_true')
@@ -139,6 +141,7 @@ def main():
         return
     if not args.agent or args.agent_trials < 1:
         parser.error('Supply a real --agent module:function and a positive trial count.')
+    load_project_env()
     if not os.environ.get('DEEPSEEK_API_KEY') or not os.environ.get('DEEPSEEK_MODEL'):
         parser.error('Set DEEPSEEK_API_KEY and DEEPSEEK_MODEL first.')
     agent, baseline = load_runner(args.agent), load_runner(args.baseline)
@@ -161,7 +164,7 @@ def main():
                 'recipe_file': str(Path(catalogue).resolve()) if catalogue else None}
     (out/'metadata.json').write_text(json.dumps(metadata, indent=2)+'\n')
     rows = []
-    with (out/'runs.jsonl').open('w') as stream:
+    with (out/'runs.jsonl').open('w', encoding='utf-8') as stream:
         for version, fn, trials in [('baseline', baseline, 1), ('agent', agent, args.agent_trials)]:
             for trial in range(1, trials + 1):
                 for task in tasks:
@@ -179,7 +182,7 @@ def main():
         for name in ['agent','baseline']},
         'agent_repeatability': reliability([r for r in rows if r['version']=='agent'],tasks,args.agent_trials)}
     (out/'summary.json').write_text(json.dumps(results, indent=2)+'\n')
-    (out/'results.md').write_text(report_text(results))
+    (out/'results.md').write_text(report_text(results), encoding='utf-8')
     failures = [r for r in rows if r['version']=='agent' and not r['passed']]
     (out/'failed_runs.json').write_text(json.dumps(failures, indent=2)+'\n')
     print(f'Results saved to {out}. Select a genuine failure from failed_runs.json for analysis.')

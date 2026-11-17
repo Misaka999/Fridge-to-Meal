@@ -66,8 +66,11 @@ class RealRecipeTests(unittest.TestCase):
                 self.assertEqual({i for x in r['ingredients'] for i in x['raw_indices']},set(range(len(r['raw_ingredients']))))
         finally:conn.close()
 
-    def test_agent_adapter_stays_a_placeholder(self):
-        import agent_adapter
-        with self.assertRaises(NotImplementedError):agent_adapter.run({}, {})
+    def test_agent_adapter_clarifies_missing_servings_without_calling_model(self):
+        from week6.yangyang.agent_adapter import run
+        result = run({'servings': None}, {'recipes': []})
+        self.assertEqual(result['answer']['status'], 'needs_clarification')
+        self.assertEqual(result['metrics']['model_calls'], 0)
+        self.assertEqual(result['trace'], [])
 
 if __name__=='__main__':unittest.main()

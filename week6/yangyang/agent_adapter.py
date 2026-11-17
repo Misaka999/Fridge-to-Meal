@@ -1,8 +1,12 @@
-"""Replace this body with an adapter to Shuhua's real ReAct runner."""
+"""Expose Shuhua's ReAct runner to the shared evaluation harness."""
+
+from functools import partial
+
+from react_agent import run_agent
+from week6.yangyang.tools import search_recipes
 
 
 def run(request, context):
-    # Do not replace this with the baseline and label it an agent.
-    # Pass request and context['recipes'] to Shuhua's runner, and translate its
-    # result to {answer: ..., metrics: ..., trace: ...}; see contracts.py.
-    raise NotImplementedError('Shuhua must connect the real ReAct implementation here.')
+    search = partial(search_recipes, recipes=context["recipes"])
+    result = run_agent(request, search=search)
+    return {"answer": result["result"], "metrics": result["metrics"], "trace": result["tool_trace"]}

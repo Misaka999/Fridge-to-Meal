@@ -36,7 +36,7 @@ def load_recipes(request=None, recipe_file=None):
             raise ValueError('CSV retrieval requires a request. Old fixture evaluations require an explicit FRIDGE_RECIPE_FILE.')
         raw = [] if validate_request(request) else retrieve(request)
         reviewed_path = ROOT/'data/recipes_recipenlg.json'
-        reviewed = json.loads(reviewed_path.read_text()) if reviewed_path.exists() else []
+        reviewed = json.loads(reviewed_path.read_text(encoding='utf-8')) if reviewed_path.exists() else []
         try:
             from .recipenlg_store import matching_reviewed_records
         except ImportError:
@@ -46,7 +46,7 @@ def load_recipes(request=None, recipe_file=None):
         ids = {r['id'] for r in reviewed}
         return reviewed + [r for r in raw if r['id'] not in ids]
     path=Path(configured).expanduser()
-    recipes=json.loads(path.read_text())
+    recipes=json.loads(path.read_text(encoding='utf-8-sig'))
     if not isinstance(recipes,list) or not recipes:
         raise ValueError('Recipe collection must be a nonempty list.')
     return recipes
