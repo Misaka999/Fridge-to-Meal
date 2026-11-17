@@ -15,12 +15,12 @@ from langchain_openai import ChatOpenAI
 from langgraph.graph import END, START, MessagesState, StateGraph
 from pydantic import BaseModel, Field
 
-from mock_recipes import failing_search, search_recipes as mock_search_recipes
-from week6.yangyang.model_client import load_project_env
-from week6.yangyang.tools import load_recipes, search_recipes, validate_request
+from agent.tools.mock_recipes import failing_search, search_recipes as mock_search_recipes
+from agent.model_client import load_project_env
+from agent.tools.recipe_search import load_recipes, search_recipes, validate_request
 
 
-REVIEWED_CATALOGUE = Path(__file__).resolve().parent / "week6/yangyang/data/recipes_recipenlg.json"
+REVIEWED_CATALOGUE = Path(__file__).resolve().parent / "data/recipes_recipenlg.json"
 CLARIFICATION_CODES = {"INPUT_INCOMPLETE", "RECIPE_DETAILS_UNVERIFIED", "NO_RETRIEVAL_MATCH"}
 SEARCH_TOOL = {
     "type": "function",

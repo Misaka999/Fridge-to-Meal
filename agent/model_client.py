@@ -17,7 +17,7 @@ class ModelCallError(RuntimeError):
 def load_project_env():
     from dotenv import load_dotenv
 
-    load_dotenv(Path(__file__).resolve().parents[2] / '.env', override=False)
+    load_dotenv(Path(__file__).resolve().parent.parent / '.env', override=False)
 
 
 def complete_json(messages):

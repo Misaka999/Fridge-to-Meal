@@ -8,15 +8,15 @@
 
 三道菜是 Glazed Carrots、Peach Glazed Carrots、Whipped Sweet Potatoes，均为配菜，不代表完整餐食。它们用于数量核对及联调，不能代表整个 RecipeNLG 的覆盖率。
 
-在本文件夹运行：
+从项目根目录运行：
 
 ```sh
-python3 tools_cli.py
-python3 tools_cli.py --retrieve
+python -m scripts.tools_cli
+python -m scripts.tools_cli --retrieve
 python3 -m unittest discover -s tests -v
 ```
 
-无完整 CSV 时先运行 `python3 tools_cli.py --recipe-file data/recipes_recipenlg.json`。第一个命令使用 `data/example_request_real.json` 检查库存、人数及限制；第二个显示检索资料。
+无完整 CSV 时先运行 `python -m scripts.tools_cli --recipe-file data/recipes_recipenlg.json`。第一个命令使用 `examples/example_request_real.json` 检查库存、人数及限制；第二个显示检索资料。
 
 ## 保留的检查
 
@@ -41,7 +41,7 @@ python3 -m unittest discover -s tests -v
 ## 给 Shuhua 的接入方式
 
 ```python
-from tools import load_recipes, make_tool_registry, validate_request
+from agent.tools.recipe_search import load_recipes, make_tool_registry, validate_request
 
 issue = validate_request(request)
 # If issue exists, return needs_clarification before searching.
@@ -52,25 +52,25 @@ functions, schemas = make_tool_registry(request, context)
 Agent 可以基于 raw_ingredients / steps 组织进一步提取和澄清；目前工具不会因为模型自行声称“已核实”就把原始候选升级为严格匹配。
 如果要扩大严格可推荐集合，补充有来源依据的份数、用量及饮食标记，再通过 import_recipenlg.py / compile_recipenlg.py 整理。未写明的份数不能凭空补齐。
 
-Agent 仍是接口占位，未实现、未替换队友代码。
+评测通过 `eval.agent_adapter:run` 调用 ReAct。
 
 ## Week 6 测试
 
 新文件 tasks_recipenlg_yangyang.jsonl 有 25 条功能题（12 条 edge，4 条 unanswerable），只针对三道核对过的真实菜谱。旧 tasks_yangyang.jsonl 保留为手写 fixture 的回归测试，不要混用。
 
 ```sh
-python3 evaluate.py --tasks tasks_recipenlg_yangyang.jsonl --check-only
+python -m eval.evaluate --tasks eval/week6/tasks_recipenlg_yangyang.jsonl --check-only
 ```
 
-队友 Agent 接好后再运行下列收费模型评测；需自行配置 DEEPSEEK_API_KEY 和账号可用的 DEEPSEEK_MODEL：
+下面的评测会调用 DeepSeek API；需自行配置 DEEPSEEK_API_KEY 和账号可用的 DEEPSEEK_MODEL：
 
 ```sh
-python3 evaluate.py --tasks tasks_recipenlg_smoke.jsonl --recipe-file data/recipes_recipenlg.json --agent agent_adapter:run --agent-trials 1 --output results/real_smoke_01
-python3 evaluate.py --tasks tasks_recipenlg_yangyang.jsonl --recipe-file data/recipes_recipenlg.json --agent agent_adapter:run --agent-trials 3 --output results/real_yangyang_01
+python -m eval.evaluate --tasks eval/week6/tasks_recipenlg_smoke.jsonl --recipe-file data/recipes_recipenlg.json --agent eval.agent_adapter:run --agent-trials 1 --output results/real_smoke_01
+python -m eval.evaluate --tasks eval/week6/tasks_recipenlg_yangyang.jsonl --recipe-file data/recipes_recipenlg.json --agent eval.agent_adapter:run --agent-trials 3 --output results/real_yangyang_01
 ```
 
-未接入的 agent_adapter 会被评测脚本拒绝；不会伪造 Agent 结果。两人合并并核对为 50 题后才满足全组作业。25 条 safety 草稿另存，不算这 50 条功能题。
+两人合并并核对为 50 题后才满足全组作业。25 条 safety 草稿另存，不算这 50 条功能题。
 
 评测两个版本使用相同候选；默认 CSV 模式会为每题准备相同检索 context。检索准备时间不计入 runner 延迟，metadata.json 会注明这一点；固定集合评测使用 --recipe-file。
 
-目前只运行了离线测试，没有调用付费 API，也没有模型准确率、token 表格或失败分析结论。自动评分检查状态、ID 和排序；数量说明、烹饪步骤及解释仍须人工核对。
+自动评分检查状态、ID 和排序；数量说明、烹饪步骤及解释仍须人工核对。

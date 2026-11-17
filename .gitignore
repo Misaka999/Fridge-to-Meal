@@ -14,9 +14,9 @@ __pycache__/
 results/
 
 # Large external data and local retrieval indexes
-week6/yangyang/data/*.csv
-week6/yangyang/data/*.zip
-week6/yangyang/data/*.sqlite*
-week6/yangyang/data/*.building
-week6/yangyang/data/*review.jsonl*
+/data/*.csv
+/data/*.zip
+/data/*.sqlite*
+/data/*.building
+/data/*review.jsonl*
 

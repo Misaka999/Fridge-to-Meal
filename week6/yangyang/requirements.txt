@@ -1,3 +1,0 @@
-# Python 3.11+; this contribution uses only the Python standard library.
-# Python must include SQLite with FTS5 support for full-CSV retrieval.
-# The teammate Agent may have its own requirements.

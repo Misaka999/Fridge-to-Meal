@@ -5,13 +5,11 @@ import json
 import os
 from pathlib import Path
 import sqlite3
-import sys
 import unittest
 from unittest.mock import patch
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from dietary import detected_conflicts
-from ingredient_names import normalize_name, retrieval_name
-from tools import load_recipes, search_recipes, validate_request
+from agent.tools.dietary import detected_conflicts
+from agent.tools.ingredient_names import normalize_name, retrieval_name
+from agent.tools.recipe_search import load_recipes, search_recipes, validate_request
 
 ROOT=Path(__file__).resolve().parents[1]
 CATALOGUE=ROOT/'data/recipes_recipenlg.json'
@@ -20,7 +18,7 @@ CATALOGUE=ROOT/'data/recipes_recipenlg.json'
 class RealRecipeTests(unittest.TestCase):
     def test_explicit_gold_cases_keep_quantity_serving_and_diet_checks(self):
         recipes=load_recipes(recipe_file=CATALOGUE)
-        tasks=[json.loads(s) for s in (ROOT/'tasks_recipenlg_yangyang.jsonl').read_text().splitlines()]
+        tasks=[json.loads(s) for s in (ROOT/'eval/week6/tasks_recipenlg_yangyang.jsonl').read_text().splitlines()]
         for task in tasks:
             with self.subTest(task=task['id']):
                 request=task['request'];expected=task['expected'];before=deepcopy(request)
@@ -67,7 +65,7 @@ class RealRecipeTests(unittest.TestCase):
         finally:conn.close()
 
     def test_agent_adapter_clarifies_missing_servings_without_calling_model(self):
-        from week6.yangyang.agent_adapter import run
+        from eval.agent_adapter import run
         result = run({'servings': None}, {'recipes': []})
         self.assertEqual(result['answer']['status'], 'needs_clarification')
         self.assertEqual(result['metrics']['model_calls'], 0)

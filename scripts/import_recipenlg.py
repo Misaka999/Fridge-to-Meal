@@ -64,7 +64,7 @@ def import_csv(source, output, limit=100, scan_limit=100000):
 if __name__=='__main__':
     parser=argparse.ArgumentParser()
     parser.add_argument('--csv',required=True,help='Your downloaded full_dataset.csv')
-    parser.add_argument('--output',default='data/recipenlg_review.jsonl')
+    parser.add_argument('--output',default=Path(__file__).resolve().parents[1] / 'data/recipenlg_review.jsonl')
     parser.add_argument('--limit',type=int,default=100)
     parser.add_argument('--scan-limit',type=int,default=100000)
     args=parser.parse_args()

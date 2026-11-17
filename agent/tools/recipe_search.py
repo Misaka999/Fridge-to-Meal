@@ -6,11 +6,9 @@ import json
 import math
 import os
 
-ROOT = Path(__file__).resolve().parent
-try:
-    from .ingredient_names import normalize_name
-except ImportError:
-    from ingredient_names import normalize_name
+from .ingredient_names import normalize_name
+
+ROOT = Path(__file__).resolve().parents[2]
 UNITS = {'g':('g',1), 'gram':('g',1), 'grams':('g',1), 'kg':('g',1000),
          'ml':('ml',1), 'l':('ml',1000), 'count':('count',1),
          'piece':('count',1), 'pieces':('count',1),
@@ -28,19 +26,12 @@ RESTRICTIONS = {
 def load_recipes(request=None, recipe_file=None):
     configured=recipe_file or os.environ.get('FRIDGE_RECIPE_FILE')
     if not configured:
-        try:
-            from .recipenlg_store import retrieve
-        except ImportError:
-            from recipenlg_store import retrieve
+        from .recipenlg_store import matching_reviewed_records, retrieve
         if request is None:
             raise ValueError('CSV retrieval requires a request. Old fixture evaluations require an explicit FRIDGE_RECIPE_FILE.')
         raw = [] if validate_request(request) else retrieve(request)
         reviewed_path = ROOT/'data/recipes_recipenlg.json'
         reviewed = json.loads(reviewed_path.read_text(encoding='utf-8')) if reviewed_path.exists() else []
-        try:
-            from .recipenlg_store import matching_reviewed_records
-        except ImportError:
-            from recipenlg_store import matching_reviewed_records
         reviewed = matching_reviewed_records(reviewed)
         # Keep all reviewed records for strict matching; do not pre-filter the baseline.
         ids = {r['id'] for r in reviewed}

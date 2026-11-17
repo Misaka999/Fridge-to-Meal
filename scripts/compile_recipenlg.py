@@ -3,10 +3,9 @@ import argparse
 import json
 import math
 from pathlib import Path
-try:
-    from .tools import RESTRICTIONS,normalize_name
-except ImportError:
-    from tools import RESTRICTIONS,normalize_name
+from agent.tools.ingredient_names import normalize_name
+from agent.tools.recipe_search import RESTRICTIONS
+
 
 
 def compile_records(review_file,output):
@@ -60,7 +59,7 @@ def compile_records(review_file,output):
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser()
-    parser.add_argument('--review',default='data/recipenlg_review.jsonl')
-    parser.add_argument('--output',default='data/recipes_recipenlg.json')
+    parser.add_argument('--review',default=Path(__file__).resolve().parents[1] / 'data/recipenlg_review.jsonl')
+    parser.add_argument('--output',default=Path(__file__).resolve().parents[1] / 'data/recipes_recipenlg.json')
     args=parser.parse_args()
     print(json.dumps(compile_records(args.review,args.output),indent=2))

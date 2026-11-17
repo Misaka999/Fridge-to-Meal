@@ -2,17 +2,15 @@
 from functools import partial
 import json
 from pathlib import Path
-import sys
 import unittest
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from tools import load_recipes, search_recipes, validate_request
+from agent.tools.recipe_search import load_recipes, search_recipes, validate_request
 
 ROOT=Path(__file__).resolve().parents[1]
 
 
 class ReadmeContractTests(unittest.TestCase):
     def test_documented_keyword_hook_returns_scaled_candidates(self):
-        request=json.loads((ROOT/'data/example_request_real.json').read_text())
+        request=json.loads((ROOT/'examples/example_request_real.json').read_text())
         search=partial(search_recipes,recipes=load_recipes(recipe_file=ROOT/'data/recipes_recipenlg.json'))
         result=search(**request)
         self.assertEqual(result['status'],'found')

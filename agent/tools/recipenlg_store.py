@@ -11,7 +11,7 @@ import os
 from pathlib import Path
 import sqlite3
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CSV = ROOT / 'data/RecipeNLG_dataset.csv'
 DEFAULT_INDEX = ROOT / 'data/recipenlg.sqlite3'
 INDEX_VERSION = '1'
@@ -106,11 +106,8 @@ def build_index(csv_path=None, destination=None):
 def retrieve(request, limit=8):
     path = index_path()
     if not path.exists():
-        raise FileNotFoundError('Build the CSV index first: python3 recipenlg_store.py --build')
-    try:
-        from .ingredient_names import normalize_name, retrieval_name
-    except ImportError:
-        from ingredient_names import normalize_name, retrieval_name
+        raise FileNotFoundError('Build the CSV index first: python -m agent.tools.recipenlg_store --build')
+    from .ingredient_names import normalize_name, retrieval_name
     names = sorted({retrieval_name(item['name']) for item in request.get('pantry', [])
                     if item.get('quantity', 0) > 0 and
                     (not item.get('expires_on') or item['expires_on'] >= request['as_of_date'])})
@@ -126,10 +123,7 @@ def retrieve(request, limit=8):
                             (expression,)).fetchall()
     ranked = []
     pantry = set(names)
-    try:
-        from .dietary import detected_conflicts
-    except ImportError:
-        from dietary import detected_conflicts
+    from .dietary import detected_conflicts
     for (payload,) in hits:
         recipe = json.loads(payload)
         ingredients = {retrieval_name(n) for n in recipe['ingredient_names']}

@@ -10,16 +10,9 @@ from pathlib import Path
 import statistics
 import time
 
-try:
-    from .grading import grade
-except ImportError:
-    from grading import grade
-try:
-    from .tools import load_recipes
-    from .model_client import load_project_env
-except ImportError:
-    from tools import load_recipes
-    from model_client import load_project_env
+from agent.model_client import load_project_env
+from agent.tools.recipe_search import load_recipes
+from .grading import grade
 
 
 def load_tasks(path):
@@ -40,10 +33,6 @@ def load_runner(spec):
     fn = getattr(importlib.import_module(module), name)
     if not callable(fn):
         raise TypeError('Runner must be callable.')
-    if module == 'agent_adapter':
-        import inspect
-        if "raise NotImplementedError(" in inspect.getsource(fn):
-            raise ValueError('Connect Shuhua\'s real agent before live evaluation.')
     return fn
 
 
@@ -123,9 +112,9 @@ def report_text(results):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--tasks', default=str(Path(__file__).resolve().parent / 'tasks_yangyang.jsonl'))
-    parser.add_argument('--agent', help='Example: shuhua_adapter:run')
-    parser.add_argument('--baseline', default=f'{__package__}.baseline:run' if __package__ else 'baseline:run')
+    parser.add_argument('--tasks', default=str(Path(__file__).resolve().parent / 'week6/tasks_recipenlg_yangyang.jsonl'))
+    parser.add_argument('--agent', help='Example: eval.agent_adapter:run')
+    parser.add_argument('--baseline', default='eval.baseline:run')
     parser.add_argument('--agent-trials', type=int, default=3)
     parser.add_argument('--output', default='results/live_run_01')
     parser.add_argument('--check-only', action='store_true')

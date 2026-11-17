@@ -2,18 +2,9 @@
 import argparse
 import json
 from pathlib import Path
-try:
-    from .contracts import ANSWER_INSTRUCTIONS
-except ImportError:
-    from contracts import ANSWER_INSTRUCTIONS
-try:
-    from .model_client import complete_json
-except ImportError:
-    from model_client import complete_json
-try:
-    from .tools import load_recipes
-except ImportError:
-    from tools import load_recipes
+from agent.contracts import ANSWER_INSTRUCTIONS
+from agent.model_client import complete_json
+from agent.tools.recipe_search import load_recipes
 
 
 def run(request, context):
@@ -26,9 +17,9 @@ def run(request, context):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--request', default=str(Path(__file__).resolve().parent / 'data/example_request.json'))
+    parser.add_argument('--request', default=str(Path(__file__).resolve().parents[1] / 'examples/example_request_real.json'))
     parser.add_argument('--recipe-file', help='Optional reviewed JSON catalogue.')
     args = parser.parse_args()
-    request = json.loads(Path(args.request).read_text())
+    request = json.loads(Path(args.request).read_text(encoding='utf-8-sig'))
     result = run(request, {'recipes': load_recipes(request,recipe_file=args.recipe_file)})
     print(json.dumps(result, indent=2))

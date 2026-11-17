@@ -45,6 +45,6 @@
 
 ## 依据
 
-- [Week 3 项目要求，第 48 页](week_3.pdf) · 两人组队、具体演示场景、至少两种方案、自动评分与基线。
-- [Fridge-to-Meal Agent Proposal](proposal.docx) · 项目范围、技术选型、ReAct 与 plan-and-replan、对照组设计。
-- [Week 6 讲义，第 12、55–57 页](../Lecture/Week%206%20Evaluation%20%26%20Observability.pdf) · 展示、最终交付、Week 6 评测与 Week 7 安全测试准备。第 55 页右侧提到 20 条，作业正文明确要求 50 条，本计划采用 50 条。
+- [Week 3 项目要求，第 48 页](../../week_3.pdf) · 两人组队、具体演示场景、至少两种方案、自动评分与基线。
+- [Fridge-to-Meal Agent Proposal](../../proposal.docx) · 项目范围、技术选型、ReAct 与 plan-and-replan、对照组设计。
+- [Week 6 讲义，第 12、55–57 页](../../../Lecture/Week%206%20Evaluation%20%26%20Observability.pdf) · 展示、最终交付、Week 6 评测与 Week 7 安全测试准备。第 55 页右侧提到 20 条，作业正文明确要求 50 条，本计划采用 50 条。

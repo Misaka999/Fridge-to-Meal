@@ -8,16 +8,15 @@ import sys
 import tempfile
 import unittest
 from unittest.mock import patch
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-import baseline
-import evaluate
-import model_client
-from tools import load_recipes
+from eval import baseline
+from eval import evaluate
+from agent import model_client
+from agent.tools.recipe_search import load_recipes
 
 
 class TestIntegration(unittest.TestCase):
     def setUp(self):
-        fixture=Path(__file__).resolve().parents[1]/"data/recipes.json"
+        fixture=Path(__file__).resolve().parents[1]/"tests/fixtures/recipes.json"
         patcher=patch.dict(os.environ,{"FRIDGE_RECIPE_FILE":str(fixture)})
         patcher.start()
         self.addCleanup(patcher.stop)
@@ -47,7 +46,7 @@ class TestIntegration(unittest.TestCase):
     def test_complete_report_generation_with_synthetic_runners(self):
         root=Path(__file__).resolve().parents[1]
         # Explicit clarification case; no real LLM, no live measurements.
-        task=json.loads((root/'tasks_yangyang.jsonl').read_text().splitlines()[17])
+        task=json.loads((root/'tests/fixtures/tasks_yangyang.jsonl').read_text().splitlines()[17])
         received=[]
         def synthetic_runner(request,context):
             received.append(deepcopy(request))

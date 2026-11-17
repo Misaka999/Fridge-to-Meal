@@ -3,14 +3,12 @@ import csv
 import json
 import os
 from pathlib import Path
-import sys
 import tempfile
 import unittest
 from unittest.mock import patch
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from import_recipenlg import import_csv
-from compile_recipenlg import compile_records
-from tools import RESTRICTIONS,load_recipes,search_recipes
+from scripts.import_recipenlg import import_csv
+from scripts.compile_recipenlg import compile_records
+from agent.tools.recipe_search import RESTRICTIONS,load_recipes,search_recipes
 
 
 class TestRecipeNLGIntegration(unittest.TestCase):

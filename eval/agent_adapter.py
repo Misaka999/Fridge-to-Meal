@@ -3,7 +3,7 @@
 from functools import partial
 
 from react_agent import run_agent
-from week6.yangyang.tools import search_recipes
+from agent.tools.recipe_search import search_recipes
 
 
 def run(request, context):

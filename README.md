@@ -1,6 +1,6 @@
 # Fridge-to-Meal ReAct
 
-Week 6 的命令行版本使用 LangGraph 串联 DeepSeek Flash 和 Yangyang 的食谱搜索与库存匹配工具。默认使用经过核对的 RecipeNLG 子集。参见[接口约定](docs/interface_alignment.md)和[数据及评测说明](week6/yangyang/README.md)。
+Week 6 的命令行版本使用 LangGraph 串联 DeepSeek Flash 和 Yangyang 的食谱搜索与库存匹配工具。默认使用经过核对的 RecipeNLG 子集。参见[接口约定](docs/interface_alignment.md)和[数据及评测说明](docs/README.md)。
 
 ## 运行
 
@@ -9,10 +9,10 @@ Week 6 的命令行版本使用 LangGraph 串联 DeepSeek Flash 和 Yangyang 的
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
-.\.venv\Scripts\python.exe react_agent.py week6/yangyang/data/example_request_real.json --trace
+.\.venv\Scripts\python.exe react_agent.py examples/example_request_real.json --trace
 ```
 
-运行前，在项目根目录的 `.env` 中填写 `DEEPSEEK_API_KEY`。默认模型为 `deepseek-flash`，可通过 `DEEPSEEK_MODEL` 调整。终端已设置的环境变量优先。要跑原来的菠菜豆腐样例，用 `react_agent.py example_request.json --mock`。
+运行前，在项目根目录的 `.env` 中填写 `DEEPSEEK_API_KEY`。默认模型为 `deepseek-flash`，可通过 `DEEPSEEK_MODEL` 调整。终端已设置的环境变量优先。要跑原来的菠菜豆腐样例，用 `react_agent.py examples/example_request_mock.json --mock`。
 
 命令行把包含 `status`、`recipe_ids`、`message` 的 JSON 写到标准输出。加上 `--trace` 后，会把模型调用次数、延迟、输入/输出 token 和工具调用记录写到标准错误。省略 `--trace` 时只输出结果。传入 `-` 可从标准输入读取请求 JSON。
 
@@ -20,7 +20,7 @@ python -m venv .venv
 
 | 验证路径 | 操作 | 预期 `status` |
 | --- | --- | --- |
-| 推荐 | 运行 `week6/yangyang/data/example_request_real.json` | `recommended`，返回 `recipenlg_68810` |
+| 推荐 | 运行 `examples/example_request_real.json` | `recommended`，返回 `recipenlg_68810` |
 | 澄清 | 将样例的 `servings` 改为 `null` | `needs_clarification`，无食谱查询 |
 | 无匹配 | 将样例的 `pantry` 改为 `[]` | `no_feasible_recipe` |
 | 工具失败 | 用原始样例并加上 `--mock-error` | `tool_error` |
@@ -33,7 +33,7 @@ ReAct 会复用工具的请求校验。未知数量、单位等可在搜索前�
 
 ```powershell
 $env:DEEPSEEK_MODEL = "deepseek-flash"
-.\.venv\Scripts\python.exe -m week6.yangyang.evaluate --agent week6.yangyang.agent_adapter:run --tasks week6/yangyang/tasks_recipenlg_smoke.jsonl --recipe-file week6/yangyang/data/recipes_recipenlg.json --agent-trials 1 --output results/smoke_01
+.\.venv\Scripts\python.exe -m eval.evaluate --agent eval.agent_adapter:run --tasks eval/week6/tasks_recipenlg_smoke.jsonl --recipe-file data/recipes_recipenlg.json --agent-trials 1 --output results/smoke_01
 ```
 
 正式评测用两人合并并审核过的 50 条题，使用 `--agent-trials 3`，并给 `--output` 一个尚未创建的目录。

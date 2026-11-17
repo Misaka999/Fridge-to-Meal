@@ -2,16 +2,14 @@ import json
 import os
 from copy import deepcopy
 from pathlib import Path
-import sys
 import unittest
 from unittest.mock import patch
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-import tools
-from tools import check_recipe,load_recipes,prioritize_recipes,search_recipes,validate_request,make_tool_registry
-from grading import grade
-from evaluate import load_tasks,reliability,run_one
+from agent.tools import recipe_search as tools
+from agent.tools.recipe_search import check_recipe,load_recipes,prioritize_recipes,search_recipes,validate_request,make_tool_registry
+from eval.grading import grade
+from eval.evaluate import load_tasks,reliability,run_one
 ROOT=Path(__file__).resolve().parents[1]
-TASKS=load_tasks(ROOT/'tasks_yangyang.jsonl')
+TASKS=load_tasks(ROOT/'tests/fixtures/tasks_yangyang.jsonl')
 
 
 def search(request,recipes=None):
@@ -20,7 +18,7 @@ def search(request,recipes=None):
 
 class TestLocal(unittest.TestCase):
     def setUp(self):
-        fixture=Path(__file__).resolve().parents[1]/"data/recipes.json"
+        fixture=Path(__file__).resolve().parents[1]/"tests/fixtures/recipes.json"
         patcher=patch.dict(os.environ,{"FRIDGE_RECIPE_FILE":str(fixture)})
         patcher.start()
         self.addCleanup(patcher.stop)
@@ -45,7 +43,7 @@ class TestLocal(unittest.TestCase):
                     self.assertIn(prioritize_recipes(req,list(actual))[0],expected['top_recipe_ids'])
 
     def test_exact_interface_example(self):
-        req=json.loads((ROOT/'data/example_request.json').read_text())
+        req=json.loads((ROOT/'tests/fixtures/example_request.json').read_text())
         result=search(req)
         self.assertEqual(result['status'],'found')
         self.assertIsNone(result['error_code'])

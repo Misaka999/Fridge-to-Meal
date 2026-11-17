@@ -3,7 +3,7 @@ from copy import deepcopy
 import json
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1] / 'eval/week6'
 A, B, C = 'recipenlg_68810', 'recipenlg_33232', 'recipenlg_55429'
 
 

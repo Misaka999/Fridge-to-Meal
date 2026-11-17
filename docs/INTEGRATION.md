@@ -1,13 +1,13 @@
 # Compatibility with the repository README
 
-The root `react_agent.run_agent` now uses Yangyang's search tool. The evaluator calls it through `week6.yangyang.agent_adapter:run`. See the [root README](../../README.md) for commands to run both from the project root.
+The root `react_agent.run_agent` now uses Yangyang's search tool. The evaluator calls it through `eval.agent_adapter:run`. See the [root README](../README.md) for commands to run both from the project root.
 
 ## Compatible boundary
 
 The real search function accepts exactly the documented keyword arguments:
 
 ```python
-from week6.yangyang.tools import search_recipes
+from agent.tools.recipe_search import search_recipes
 
 # Inside the teammate's Agent integration:
 run = run_agent(request, model=model, search=search_recipes)
@@ -18,14 +18,14 @@ run = run_agent(request, model=model, search=search_recipes)
 ```python
 from functools import partial
 from pathlib import Path
-from week6.yangyang.tools import load_recipes, search_recipes
+from agent.tools.recipe_search import load_recipes, search_recipes
 
-recipes = load_recipes(recipe_file=Path('week6/yangyang/data/recipes_recipenlg.json'))
+recipes = load_recipes(recipe_file=Path('data/recipes_recipenlg.json'))
 real_search = partial(search_recipes, recipes=recipes)
 run = run_agent(request, model=model, search=real_search)
 ```
 
-The root spinach/tofu example belongs to the mock/legacy catalogue, so it is not expected to return the same ID from the new real-source catalogue. Use `week6/yangyang/data/example_request_real.json` for the checked real-source example.
+The spinach/tofu example in `examples/example_request_mock.json` belongs to the mock/legacy catalogue, so it is not expected to return the same ID from the new real-source catalogue. Use `examples/example_request_real.json` for the checked real-source example.
 
 ## Differences that must be handled in the Agent
 
@@ -49,6 +49,6 @@ The root README documents `{result, metrics, tool_trace}`. The adapter maps it t
 
 Metrics record actual `model_calls`, `input_tokens`, `output_tokens` and `total_tokens`. Missing token counts remain unknown. The adapter binds `context['recipes']` so both runners see the same candidate collection.
 
-## Running from the contribution directory
+## Running from the project root
 
-The root README's LangGraph installation and `react_agent.py` command belong to the teammate implementation. This contribution's offline commands are in `week6/yangyang/README.md`; run them from that directory. Its standard-library tools do not install LangGraph or replace the root requirements.
+See the [offline checks](README.md#run-without-the-full-dataset-or-api-credentials) and [root README](../README.md).
