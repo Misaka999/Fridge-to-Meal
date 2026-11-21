@@ -1,0 +1,14 @@
+{
+  "kind": "automatic parsing diagnostics, not model evaluation or human verification",
+  "parser_version": "explicit-facts-v1",
+  "yield_candidate_rows_scanned": 95551,
+  "recipes_source_parsed": 18,
+  "requested_limit": 100,
+  "scan_limit": 200000,
+  "selection": "First matching yield-candidate rows in the local index; not a random or representative sample.",
+  "scope": "No guessed yields, density conversions or packaged ingredient substitutions; not cooking-safety certification.",
+  "final_catalogue_count": 20,
+  "source_parsed_count": 18,
+  "existing_reviewed_count": 3,
+  "distinct_new_recipe_count": 17
+}

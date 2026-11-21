@@ -1,0 +1,2073 @@
+[
+  {
+    "id": "recipenlg_7524",
+    "title": "Homemade Pasta",
+    "source": "RecipeNLG/Gathered",
+    "source_url": "www.cookbooks.com/Recipe-Details.aspx?id=8749",
+    "raw_ingredients": [
+      "2 1/4 c. flour",
+      "3 eggs"
+    ],
+    "ingredient_names": [
+      "flour",
+      "eggs"
+    ],
+    "steps": [
+      "Make a well with flour.",
+      "Beat eggs and add to center.",
+      "Slowly add flour to the eggs.",
+      "When all together, knead 8-10 mins.",
+      "Put through pasta machine.",
+      "Serves 4."
+    ],
+    "servings": 4,
+    "quantity_verified": true,
+    "dietary_verified": false,
+    "ingredients": [
+      {
+        "name": "flour",
+        "quantity": 532.3235321249999,
+        "unit": "ml",
+        "raw_indices": [
+          0
+        ],
+        "quantity_basis": "2 1/4 c. flour",
+        "category": "plant",
+        "source_name": "flour"
+      },
+      {
+        "name": "egg",
+        "quantity": 3.0,
+        "unit": "count",
+        "raw_indices": [
+          1
+        ],
+        "quantity_basis": "3 eggs",
+        "category": "egg",
+        "source_name": "eggs"
+      }
+    ],
+    "dietary_compatibility": {
+      "vegetarian": true,
+      "vegan": false,
+      "egg-free": false,
+      "peanut-free": true,
+      "dairy-free": true,
+      "soy-free": true
+    },
+    "review_status": "automatically_source_parsed",
+    "parser_version": "explicit-facts-v1",
+    "servings_source": "Serves 4.",
+    "servings_evidence": "Serves 4",
+    "source_record_sha256": "11ab0e7aa6e6a67c49b338ab9361fc7c7816e2445cb43768496e234787bfc8df",
+    "parse_notes": [
+      "Automatically parsed explicit facts, not human-reviewed.",
+      "Ingredient-level screening only; no allergen or cooking-safety certification.",
+      "US customary volumes; no ingredient-density conversions."
+    ]
+  },
+  {
+    "id": "recipenlg_55429",
+    "title": "Whipped Sweet Potatoes",
+    "source": "RecipeNLG/Gathered",
+    "source_url": "www.cookbooks.com/Recipe-Details.aspx?id=897610",
+    "raw_ingredients": [
+      "6 medium sweet potatoes, baked until soft",
+      "1/2 c. unsalted butter",
+      "1 1/2 tsp. salt",
+      "3/4 tsp. black pepper"
+    ],
+    "ingredient_names": [
+      "sweet potatoes",
+      "unsalted butter",
+      "salt",
+      "black pepper"
+    ],
+    "steps": [
+      "Peel the potatoes while they're hot.",
+      "Mix with the butter, salt and pepper.",
+      "Use a hand mixer to beat until smooth.",
+      "Serves 6."
+    ],
+    "servings": 6,
+    "quantity_verified": true,
+    "dietary_verified": true,
+    "servings_source": "Serves 6.",
+    "review_status": "approved",
+    "dietary_compatibility": {
+      "vegetarian": true,
+      "vegan": false,
+      "egg-free": true,
+      "dairy-free": false,
+      "peanut-free": null,
+      "soy-free": null
+    },
+    "review_notes": [
+      "Explicit yield and every listed ingredient were checked against the local CSV.",
+      "US customary volume units; no density or cups-to-grams conversion.",
+      "Only ingredient-list dietary screening; no cross-contact or packaged-label certification.",
+      "Compatibility is true when ingredient-level compatible, false when a listed conflict exists, and null when packaged labels need checking.",
+      "This is a side-dish recipe, not a nutritionally complete meal."
+    ],
+    "raw_record_sha256": "eb113536a9cbbf2cb657c52b6bb1581e83180018e77545f94750eaf20b46c2df",
+    "ingredients": [
+      {
+        "name": "medium sweet potato",
+        "quantity": 6,
+        "unit": "count",
+        "raw_indices": [
+          0
+        ],
+        "quantity_basis": "6 medium sweet potatoes; exact mass/volume conversion only."
+      },
+      {
+        "name": "butter",
+        "quantity": 118.29411825,
+        "unit": "ml",
+        "raw_indices": [
+          1
+        ],
+        "quantity_basis": "1/2 c.; exact mass/volume conversion only."
+      },
+      {
+        "name": "salt",
+        "quantity": 7.393382390625,
+        "unit": "ml",
+        "raw_indices": [
+          2
+        ],
+        "quantity_basis": "1 1/2 tsp.; exact mass/volume conversion only."
+      },
+      {
+        "name": "pepper",
+        "quantity": 3.6966911953125,
+        "unit": "ml",
+        "raw_indices": [
+          3
+        ],
+        "quantity_basis": "3/4 tsp.; exact mass/volume conversion only."
+      }
+    ],
+    "dataset_provenance": {
+      "filename": "RecipeNLG_dataset.csv",
+      "bytes": 2294981083,
+      "source_filter": "Gathered"
+    }
+  },
+  {
+    "id": "recipenlg_55791",
+    "title": "Apple Potato Meat Loaf",
+    "source": "RecipeNLG/Gathered",
+    "source_url": "www.cookbooks.com/Recipe-Details.aspx?id=188613",
+    "raw_ingredients": [
+      "1 lb. ground beef",
+      "1 medium apple, grated",
+      "1/4 c. chopped green pepper",
+      "1/2 tsp. black pepper",
+      "1 medium potato, grated",
+      "1/4 c. chopped onion",
+      "1/2 tsp. salt",
+      "1 egg"
+    ],
+    "ingredient_names": [
+      "ground beef",
+      "apple",
+      "green pepper",
+      "black pepper",
+      "potato",
+      "onion",
+      "salt",
+      "egg"
+    ],
+    "steps": [
+      "Mix all ingredients; turn into foil-lined loaf pan.",
+      "Bake at 350° for 1 hour, turn into serving dish.",
+      "Serves 6."
+    ],
+    "servings": 6,
+    "quantity_verified": true,
+    "dietary_verified": false,
+    "ingredients": [
+      {
+        "name": "ground beef",
+        "quantity": 453.59237,
+        "unit": "g",
+        "raw_indices": [
+          0
+        ],
+        "quantity_basis": "1 lb. ground beef",
+        "category": "meat",
+        "source_name": "ground beef"
+      },
+      {
+        "name": "medium apple",
+        "quantity": 1.0,
+        "unit": "count",
+        "raw_indices": [
+          1
+        ],
+        "quantity_basis": "1 medium apple, grated",
+        "category": "plant",
+        "source_name": "medium apple"
+      },
+      {
+        "name": "chopped green pepper",
+        "quantity": 59.147059125,
+        "unit": "ml",
+        "raw_indices": [
+          2
+        ],
+        "quantity_basis": "1/4 c. chopped green pepper",
+        "category": "plant",
+        "source_name": "chopped green pepper"
+      },
+      {
+        "name": "pepper",
+        "quantity": 2.464460796875,
+        "unit": "ml",
+        "raw_indices": [
+          3
+        ],
+        "quantity_basis": "1/2 tsp. black pepper",
+        "category": "plant",
+        "source_name": "black pepper"
+      },
+      {
+        "name": "medium potato",
+        "quantity": 1.0,
+        "unit": "count",
+        "raw_indices": [
+          4
+        ],
+        "quantity_basis": "1 medium potato, grated",
+        "category": "plant",
+        "source_name": "medium potato"
+      },
+      {
+        "name": "chopped onion",
+        "quantity": 59.147059125,
+        "unit": "ml",
+        "raw_indices": [
+          5
+        ],
+        "quantity_basis": "1/4 c. chopped onion",
+        "category": "plant",
+        "source_name": "chopped onion"
+      },
+      {
+        "name": "salt",
+        "quantity": 2.464460796875,
+        "unit": "ml",
+        "raw_indices": [
+          6
+        ],
+        "quantity_basis": "1/2 tsp. salt",
+        "category": "plant",
+        "source_name": "salt"
+      },
+      {
+        "name": "egg",
+        "quantity": 1.0,
+        "unit": "count",
+        "raw_indices": [
+          7
+        ],
+        "quantity_basis": "1 egg",
+        "category": "egg",
+        "source_name": "egg"
+      }
+    ],
+    "dietary_compatibility": {
+      "vegetarian": false,
+      "vegan": false,
+      "egg-free": false,
+      "peanut-free": true,
+      "dairy-free": true,
+      "soy-free": true
+    },
+    "review_status": "automatically_source_parsed",
+    "parser_version": "explicit-facts-v1",
+    "servings_source": "Serves 6.",
+    "servings_evidence": "Serves 6",
+    "source_record_sha256": "6cf6b950772bb1b96d3b76ced2829e94bec66b4d301832b45fbe1f730fa6c002",
+    "parse_notes": [
+      "Automatically parsed explicit facts, not human-reviewed.",
+      "Ingredient-level screening only; no allergen or cooking-safety certification.",
+      "US customary volumes; no ingredient-density conversions."
+    ]
+  },
+  {
+    "id": "recipenlg_61469",
+    "title": "Creamed Spinach",
+    "source": "RecipeNLG/Gathered",
+    "source_url": "www.cookbooks.com/Recipe-Details.aspx?id=345556",
+    "raw_ingredients": [
+      "2 lb. fresh spinach",
+      "1 c. water",
+      "1 Tbsp. butter",
+      "1 Tbsp. flour",
+      "1/2 c. milk",
+      "1/2 c. cream",
+      "1/2 tsp. salt",
+      "1 small onion, grated"
+    ],
+    "ingredient_names": [
+      "fresh spinach",
+      "water",
+      "butter",
+      "flour",
+      "milk",
+      "cream",
+      "salt",
+      "onion"
+    ],
+    "steps": [
+      "Wash spinach well to remove sand.",
+      "Separate leaves and cut off roots.",
+      "Bring water to boil in pot and add spinach.",
+      "Boil, uncovered, for about 2 minutes.",
+      "Drain and chop fine.",
+      "Melt butter and blend in the flour.",
+      "Add milk slowly and then the cream; stir constantly until smooth.",
+      "Bring to boil for about 1 minute.",
+      "Add chopped spinach.",
+      "Mix and heat through.",
+      "Add salt and grated onion; mix well.",
+      "Heat for another minute.",
+      "Serves 6."
+    ],
+    "servings": 6,
+    "quantity_verified": true,
+    "dietary_verified": false,
+    "ingredients": [
+      {
+        "name": "spinach",
+        "quantity": 907.18474,
+        "unit": "g",
+        "raw_indices": [
+          0
+        ],
+        "quantity_basis": "2 lb. fresh spinach",
+        "category": "plant",
+        "source_name": "fresh spinach"
+      },
+      {
+        "name": "water",
+        "quantity": 236.5882365,
+        "unit": "ml",
+        "raw_indices": [
+          1
+        ],
+        "quantity_basis": "1 c. water",
+        "category": "plant",
+        "source_name": "water"
+      },
+      {
+        "name": "butter",
+        "quantity": 14.78676478125,
+        "unit": "ml",
+        "raw_indices": [
+          2
+        ],
+        "quantity_basis": "1 Tbsp. butter",
+        "category": "dairy",
+        "source_name": "butter"
+      },
+      {
+        "name": "flour",
+        "quantity": 14.78676478125,
+        "unit": "ml",
+        "raw_indices": [
+          3
+        ],
+        "quantity_basis": "1 Tbsp. flour",
+        "category": "plant",
+        "source_name": "flour"
+      },
+      {
+        "name": "milk",
+        "quantity": 118.29411825,
+        "unit": "ml",
+        "raw_indices": [
+          4
+        ],
+        "quantity_basis": "1/2 c. milk",
+        "category": "dairy",
+        "source_name": "milk"
+      },
+      {
+        "name": "cream",
+        "quantity": 118.29411825,
+        "unit": "ml",
+        "raw_indices": [
+          5
+        ],
+        "quantity_basis": "1/2 c. cream",
+        "category": "dairy",
+        "source_name": "cream"
+      },
+      {
+        "name": "salt",
+        "quantity": 2.464460796875,
+        "unit": "ml",
+        "raw_indices": [
+          6
+        ],
+        "quantity_basis": "1/2 tsp. salt",
+        "category": "plant",
+        "source_name": "salt"
+      },
+      {
+        "name": "small onion",
+        "quantity": 1.0,
+        "unit": "count",
+        "raw_indices": [
+          7
+        ],
+        "quantity_basis": "1 small onion, grated",
+        "category": "plant",
+        "source_name": "small onion"
+      }
+    ],
+    "dietary_compatibility": {
+      "vegetarian": true,
+      "vegan": false,
+      "egg-free": true,
+      "peanut-free": null,
+      "dairy-free": false,
+      "soy-free": null
+    },
+    "review_status": "automatically_source_parsed",
+    "parser_version": "explicit-facts-v1",
+    "servings_source": "Serves 6.",
+    "servings_evidence": "Serves 6",
+    "source_record_sha256": "69cba8e2eedbcf588985fbcaccb6e00c7a0c0da6523eaee7d53204c13240e478",
+    "parse_notes": [
+      "Automatically parsed explicit facts, not human-reviewed.",
+      "Ingredient-level screening only; no allergen or cooking-safety certification.",
+      "US customary volumes; no ingredient-density conversions."
+    ]
+  },
+  {
+    "id": "recipenlg_104510",
+    "title": "Honey Glazed Carrots",
+    "source": "RecipeNLG/Gathered",
+    "source_url": "www.cookbooks.com/Recipe-Details.aspx?id=999374",
+    "raw_ingredients": [
+      "1/2 lb. carrots",
+      "1/2 c. water",
+      "1/4 c. soy sauce",
+      "2 Tbsp. oil",
+      "3 Tbsp. honey"
+    ],
+    "ingredient_names": [
+      "carrots",
+      "water",
+      "soy sauce",
+      "oil",
+      "honey"
+    ],
+    "steps": [
+      "Peel and slice carrots 1/4-inch thick or less.",
+      "Combine all ingredients in a stove top pan.",
+      "Cook on medium heat until tender. Boil off the remaining liquid and serve.",
+      "Makes 4 servings."
+    ],
+    "servings": 4,
+    "quantity_verified": true,
+    "dietary_verified": false,
+    "ingredients": [
+      {
+        "name": "carrot",
+        "quantity": 226.796185,
+        "unit": "g",
+        "raw_indices": [
+          0
+        ],
+        "quantity_basis": "1/2 lb. carrots",
+        "category": "plant",
+        "source_name": "carrots"
+      },
+      {
+        "name": "water",
+        "quantity": 118.29411825,
+        "unit": "ml",
+        "raw_indices": [
+          1
+        ],
+        "quantity_basis": "1/2 c. water",
+        "category": "plant",
+        "source_name": "water"
+      },
+      {
+        "name": "soy sauce",
+        "quantity": 59.147059125,
+        "unit": "ml",
+        "raw_indices": [
+          2
+        ],
+        "quantity_basis": "1/4 c. soy sauce",
+        "category": "soy",
+        "source_name": "soy sauce"
+      },
+      {
+        "name": "oil",
+        "quantity": 29.5735295625,
+        "unit": "ml",
+        "raw_indices": [
+          3
+        ],
+        "quantity_basis": "2 Tbsp. oil",
+        "category": "oil",
+        "source_name": "oil"
+      },
+      {
+        "name": "honey",
+        "quantity": 44.36029434375,
+        "unit": "ml",
+        "raw_indices": [
+          4
+        ],
+        "quantity_basis": "3 Tbsp. honey",
+        "category": "honey",
+        "source_name": "honey"
+      }
+    ],
+    "dietary_compatibility": {
+      "vegetarian": true,
+      "vegan": false,
+      "egg-free": true,
+      "peanut-free": null,
+      "dairy-free": true,
+      "soy-free": false
+    },
+    "review_status": "automatically_source_parsed",
+    "parser_version": "explicit-facts-v1",
+    "servings_source": "Makes 4 servings.",
+    "servings_evidence": "Makes 4 servings",
+    "source_record_sha256": "307f3b0cc349f13a571115e0aa76e608e30fd8d9f4fb7f593a05abddb8d2aa2e",
+    "parse_notes": [
+      "Automatically parsed explicit facts, not human-reviewed.",
+      "Ingredient-level screening only; no allergen or cooking-safety certification.",
+      "US customary volumes; no ingredient-density conversions."
+    ]
+  },
+  {
+    "id": "recipenlg_152842",
+    "title": "Carrots Vichy",
+    "source": "RecipeNLG/Gathered",
+    "source_url": "www.cookbooks.com/Recipe-Details.aspx?id=992609",
+    "raw_ingredients": [
+      "1 lb. carrots",
+      "2 Tbsp. butter",
+      "1 tsp. sugar",
+      "1/8 tsp. salt",
+      "1/4 c. water"
+    ],
+    "ingredient_names": [
+      "carrots",
+      "butter",
+      "sugar",
+      "salt",
+      "water"
+    ],
+    "steps": [
+      "Pare carrots; slice paper-thin, horizontally.",
+      "Place in medium saucepan with 1/4 cup water, butter and salt.",
+      "Cook over low heat, tightly covered, 20 minutes or until carrots are tender and all liquid evaporated.",
+      "Serves 3."
+    ],
+    "servings": 3,
+    "quantity_verified": true,
+    "dietary_verified": false,
+    "ingredients": [
+      {
+        "name": "carrot",
+        "quantity": 453.59237,
+        "unit": "g",
+        "raw_indices": [
+          0
+        ],
+        "quantity_basis": "1 lb. carrots",
+        "category": "plant",
+        "source_name": "carrots"
+      },
+      {
+        "name": "butter",
+        "quantity": 29.5735295625,
+        "unit": "ml",
+        "raw_indices": [
+          1
+        ],
+        "quantity_basis": "2 Tbsp. butter",
+        "category": "dairy",
+        "source_name": "butter"
+      },
+      {
+        "name": "sugar",
+        "quantity": 4.92892159375,
+        "unit": "ml",
+        "raw_indices": [
+          2
+        ],
+        "quantity_basis": "1 tsp. sugar",
+        "category": "plant",
+        "source_name": "sugar"
+      },
+      {
+        "name": "salt",
+        "quantity": 0.61611519921875,
+        "unit": "ml",
+        "raw_indices": [
+          3
+        ],
+        "quantity_basis": "1/8 tsp. salt",
+        "category": "plant",
+        "source_name": "salt"
+      },
+      {
+        "name": "water",
+        "quantity": 59.147059125,
+        "unit": "ml",
+        "raw_indices": [
+          4
+        ],
+        "quantity_basis": "1/4 c. water",
+        "category": "plant",
+        "source_name": "water"
+      }
+    ],
+    "dietary_compatibility": {
+      "vegetarian": true,
+      "vegan": false,
+      "egg-free": true,
+      "peanut-free": null,
+      "dairy-free": false,
+      "soy-free": null
+    },
+    "review_status": "automatically_source_parsed",
+    "parser_version": "explicit-facts-v1",
+    "servings_source": "Serves 3.",
+    "servings_evidence": "Serves 3",
+    "source_record_sha256": "844dbbcf3196904598991e978aa3fca52e154a097d3af4295395e2040a5a3df9",
+    "parse_notes": [
+      "Automatically parsed explicit facts, not human-reviewed.",
+      "Ingredient-level screening only; no allergen or cooking-safety certification.",
+      "US customary volumes; no ingredient-density conversions."
+    ]
+  },
+  {
+    "id": "recipenlg_299330",
+    "title": "Baked Apple Slices",
+    "source": "RecipeNLG/Gathered",
+    "source_url": "www.cookbooks.com/Recipe-Details.aspx?id=988268",
+    "raw_ingredients": [
+      "2 apples",
+      "2 tsp. honey",
+      "1/4 c. orange juice",
+      "1/4 tsp. cinnamon"
+    ],
+    "ingredient_names": [
+      "apples",
+      "honey",
+      "orange juice",
+      "cinnamon"
+    ],
+    "steps": [
+      "Peel, core and slice apples.",
+      "Place slices into micro-safe dish.",
+      "Mix honey and orange juice and pour over apple slices. Sprinkle with cinnamon.",
+      "Toss to coat well.",
+      "Cover with plastic wrap.",
+      "Microwave on High for 2 minutes.",
+      "Stir.",
+      "Recover and micro 2 more minutes.",
+      "Serve hot.",
+      "Yields 4 servings.",
+      "Has 55 calories, fat free."
+    ],
+    "servings": 4,
+    "quantity_verified": true,
+    "dietary_verified": false,
+    "ingredients": [
+      {
+        "name": "apple",
+        "quantity": 2.0,
+        "unit": "count",
+        "raw_indices": [
+          0
+        ],
+        "quantity_basis": "2 apples",
+        "category": "plant",
+        "source_name": "apples"
+      },
+      {
+        "name": "honey",
+        "quantity": 9.8578431875,
+        "unit": "ml",
+        "raw_indices": [
+          1
+        ],
+        "quantity_basis": "2 tsp. honey",
+        "category": "honey",
+        "source_name": "honey"
+      },
+      {
+        "name": "orange juice",
+        "quantity": 59.147059125,
+        "unit": "ml",
+        "raw_indices": [
+          2
+        ],
+        "quantity_basis": "1/4 c. orange juice",
+        "category": "plant",
+        "source_name": "orange juice"
+      },
+      {
+        "name": "cinnamon",
+        "quantity": 1.2322303984375,
+        "unit": "ml",
+        "raw_indices": [
+          3
+        ],
+        "quantity_basis": "1/4 tsp. cinnamon",
+        "category": "plant",
+        "source_name": "cinnamon"
+      }
+    ],
+    "dietary_compatibility": {
+      "vegetarian": true,
+      "vegan": false,
+      "egg-free": true,
+      "peanut-free": true,
+      "dairy-free": true,
+      "soy-free": true
+    },
+    "review_status": "automatically_source_parsed",
+    "parser_version": "explicit-facts-v1",
+    "servings_source": "Yields 4 servings.",
+    "servings_evidence": "Yields 4 servings",
+    "source_record_sha256": "8f93e5c12ac20e5647addc5d7f8559211a4d746d54701dd23edc2b92e2139d2a",
+    "parse_notes": [
+      "Automatically parsed explicit facts, not human-reviewed.",
+      "Ingredient-level screening only; no allergen or cooking-safety certification.",
+      "US customary volumes; no ingredient-density conversions."
+    ]
+  },
+  {
+    "id": "recipenlg_309172",
+    "title": "Lentils With Rice",
+    "source": "RecipeNLG/Gathered",
+    "source_url": "www.cookbooks.com/Recipe-Details.aspx?id=727800",
+    "raw_ingredients": [
+      "1 c. lentils",
+      "4 c. water",
+      "2 large onions, diced",
+      "1/2 c. oil",
+      "1 c. rice",
+      "1 1/2 tsp. salt"
+    ],
+    "ingredient_names": [
+      "lentils",
+      "water",
+      "onions",
+      "oil",
+      "rice",
+      "salt"
+    ],
+    "steps": [
+      "Rinse lentils and add to water.",
+      "Bring to boil and cook over medium heat for 15 minutes.",
+      "Saute onions in oil until golden brown; add rice and salt.",
+      "Cover and simmer 20 to 25 minutes or until rice and lentils are fluffy.",
+      "Be careful rice and lentils don't stick.",
+      "Place on serving platter and completely cover the lentils and rice with the fried onions.",
+      "May be served hot or cold. Serves 6."
+    ],
+    "servings": 6,
+    "quantity_verified": true,
+    "dietary_verified": false,
+    "ingredients": [
+      {
+        "name": "lentils",
+        "quantity": 236.5882365,
+        "unit": "ml",
+        "raw_indices": [
+          0
+        ],
+        "quantity_basis": "1 c. lentils",
+        "category": "plant",
+        "source_name": "lentils"
+      },
+      {
+        "name": "water",
+        "quantity": 946.352946,
+        "unit": "ml",
+        "raw_indices": [
+          1
+        ],
+        "quantity_basis": "4 c. water",
+        "category": "plant",
+        "source_name": "water"
+      },
+      {
+        "name": "large onion",
+        "quantity": 2.0,
+        "unit": "count",
+        "raw_indices": [
+          2
+        ],
+        "quantity_basis": "2 large onions, diced",
+        "category": "plant",
+        "source_name": "large onions"
+      },
+      {
+        "name": "oil",
+        "quantity": 118.29411825,
+        "unit": "ml",
+        "raw_indices": [
+          3
+        ],
+        "quantity_basis": "1/2 c. oil",
+        "category": "oil",
+        "source_name": "oil"
+      },
+      {
+        "name": "rice",
+        "quantity": 236.5882365,
+        "unit": "ml",
+        "raw_indices": [
+          4
+        ],
+        "quantity_basis": "1 c. rice",
+        "category": "plant",
+        "source_name": "rice"
+      },
+      {
+        "name": "salt",
+        "quantity": 7.393382390625,
+        "unit": "ml",
+        "raw_indices": [
+          5
+        ],
+        "quantity_basis": "1 1/2 tsp. salt",
+        "category": "plant",
+        "source_name": "salt"
+      }
+    ],
+    "dietary_compatibility": {
+      "vegetarian": true,
+      "vegan": true,
+      "egg-free": true,
+      "peanut-free": null,
+      "dairy-free": true,
+      "soy-free": null
+    },
+    "review_status": "automatically_source_parsed",
+    "parser_version": "explicit-facts-v1",
+    "servings_source": "May be served hot or cold. Serves 6.",
+    "servings_evidence": "Serves 6",
+    "source_record_sha256": "ddfde5a978af5d32ac6c1bceb0e914695ee36adf9f2aee1123893fbed40f0ce8",
+    "parse_notes": [
+      "Automatically parsed explicit facts, not human-reviewed.",
+      "Ingredient-level screening only; no allergen or cooking-safety certification.",
+      "US customary volumes; no ingredient-density conversions."
+    ]
+  },
+  {
+    "id": "recipenlg_408036",
+    "title": "Glazed Carrots",
+    "source": "RecipeNLG/Gathered",
+    "source_url": "www.cookbooks.com/Recipe-Details.aspx?id=391643",
+    "raw_ingredients": [
+      "2 lb. carrots",
+      "1/3 c. sugar",
+      "6 Tbsp. butter",
+      "1/2 tsp. ground cinnamon"
+    ],
+    "ingredient_names": [
+      "carrots",
+      "sugar",
+      "butter",
+      "ground cinnamon"
+    ],
+    "steps": [
+      "Peel carrots and cut in julienne strips.",
+      "Steam until just tender.",
+      "Mix sugar, butter and cinnamon in large skillet.",
+      "Cook and stir until well blended.",
+      "Add carrots.",
+      "Cook over low heat, stirring often, until carrots are shiny and well glazed (about 5 minutes).",
+      "Makes 8 servings."
+    ],
+    "servings": 8,
+    "quantity_verified": true,
+    "dietary_verified": false,
+    "ingredients": [
+      {
+        "name": "carrot",
+        "quantity": 907.18474,
+        "unit": "g",
+        "raw_indices": [
+          0
+        ],
+        "quantity_basis": "2 lb. carrots",
+        "category": "plant",
+        "source_name": "carrots"
+      },
+      {
+        "name": "sugar",
+        "quantity": 78.86274549999999,
+        "unit": "ml",
+        "raw_indices": [
+          1
+        ],
+        "quantity_basis": "1/3 c. sugar",
+        "category": "plant",
+        "source_name": "sugar"
+      },
+      {
+        "name": "butter",
+        "quantity": 88.7205886875,
+        "unit": "ml",
+        "raw_indices": [
+          2
+        ],
+        "quantity_basis": "6 Tbsp. butter",
+        "category": "dairy",
+        "source_name": "butter"
+      },
+      {
+        "name": "ground cinnamon",
+        "quantity": 2.464460796875,
+        "unit": "ml",
+        "raw_indices": [
+          3
+        ],
+        "quantity_basis": "1/2 tsp. ground cinnamon",
+        "category": "plant",
+        "source_name": "ground cinnamon"
+      }
+    ],
+    "dietary_compatibility": {
+      "vegetarian": true,
+      "vegan": false,
+      "egg-free": true,
+      "peanut-free": null,
+      "dairy-free": false,
+      "soy-free": null
+    },
+    "review_status": "automatically_source_parsed",
+    "parser_version": "explicit-facts-v1",
+    "servings_source": "Makes 8 servings.",
+    "servings_evidence": "Makes 8 servings",
+    "source_record_sha256": "d9d6294b9a5c51a4e504b92151e4d5a0bbd19195af07a8bef5c45c43198d166a",
+    "parse_notes": [
+      "Automatically parsed explicit facts, not human-reviewed.",
+      "Ingredient-level screening only; no allergen or cooking-safety certification.",
+      "US customary volumes; no ingredient-density conversions."
+    ]
+  },
+  {
+    "id": "recipenlg_417115",
+    "title": "Ricky'S Hamburger Special",
+    "source": "RecipeNLG/Gathered",
+    "source_url": "www.cookbooks.com/Recipe-Details.aspx?id=22511",
+    "raw_ingredients": [
+      "1 lb. lean ground beef",
+      "4 medium potatoes, sliced",
+      "4 medium onions, sliced"
+    ],
+    "ingredient_names": [
+      "lean ground beef",
+      "potatoes",
+      "onions"
+    ],
+    "steps": [
+      "Make",
+      "four beef patties.",
+      "Place on individual pieces of aluminum",
+      "foil.",
+      "On",
+      "top of meat, place slices of potatoes and onions.",
+      "Wrap each patty securely and bake 25 minutes or until done at 300°.",
+      "Yields 4 servings."
+    ],
+    "servings": 4,
+    "quantity_verified": true,
+    "dietary_verified": false,
+    "ingredients": [
+      {
+        "name": "lean ground beef",
+        "quantity": 453.59237,
+        "unit": "g",
+        "raw_indices": [
+          0
+        ],
+        "quantity_basis": "1 lb. lean ground beef",
+        "category": "meat",
+        "source_name": "lean ground beef"
+      },
+      {
+        "name": "medium potato",
+        "quantity": 4.0,
+        "unit": "count",
+        "raw_indices": [
+          1
+        ],
+        "quantity_basis": "4 medium potatoes, sliced",
+        "category": "plant",
+        "source_name": "medium potatoes"
+      },
+      {
+        "name": "medium onion",
+        "quantity": 4.0,
+        "unit": "count",
+        "raw_indices": [
+          2
+        ],
+        "quantity_basis": "4 medium onions, sliced",
+        "category": "plant",
+        "source_name": "medium onions"
+      }
+    ],
+    "dietary_compatibility": {
+      "vegetarian": false,
+      "vegan": false,
+      "egg-free": true,
+      "peanut-free": true,
+      "dairy-free": true,
+      "soy-free": true
+    },
+    "review_status": "automatically_source_parsed",
+    "parser_version": "explicit-facts-v1",
+    "servings_source": "Yields 4 servings.",
+    "servings_evidence": "Yields 4 servings",
+    "source_record_sha256": "954479368a6786da15a79f7251f890ab6a0d731cbcdedc9a40caa28bcd5a3eb4",
+    "parse_notes": [
+      "Automatically parsed explicit facts, not human-reviewed.",
+      "Ingredient-level screening only; no allergen or cooking-safety certification.",
+      "US customary volumes; no ingredient-density conversions."
+    ]
+  },
+  {
+    "id": "recipenlg_480029",
+    "title": "Southern Fried Apple Rings",
+    "source": "RecipeNLG/Gathered",
+    "source_url": "www.cookbooks.com/Recipe-Details.aspx?id=880468",
+    "raw_ingredients": [
+      "1/2 c. sugar",
+      "1 tsp. nutmeg",
+      "1/2 tsp. cinnamon",
+      "1/8 tsp. salt",
+      "4 large apples",
+      "5 Tbsp. butter"
+    ],
+    "ingredient_names": [
+      "sugar",
+      "nutmeg",
+      "cinnamon",
+      "salt",
+      "apples",
+      "butter"
+    ],
+    "steps": [
+      "Mix sugar, nutmeg, cinnamon and salt.",
+      "Slice apples in 1/2-inch slices.",
+      "Heat butter in heavy frying pan.",
+      "Add apple rings and 1/2 of sugar mixture; cook about 3 minutes.",
+      "Turn. Sprinkle with remainder of sugar mixture.",
+      "Continue cooking until apples are almost transparent.",
+      "Serve hot.",
+      "Makes 6 servings."
+    ],
+    "servings": 6,
+    "quantity_verified": true,
+    "dietary_verified": false,
+    "ingredients": [
+      {
+        "name": "sugar",
+        "quantity": 118.29411825,
+        "unit": "ml",
+        "raw_indices": [
+          0
+        ],
+        "quantity_basis": "1/2 c. sugar",
+        "category": "plant",
+        "source_name": "sugar"
+      },
+      {
+        "name": "nutmeg",
+        "quantity": 4.92892159375,
+        "unit": "ml",
+        "raw_indices": [
+          1
+        ],
+        "quantity_basis": "1 tsp. nutmeg",
+        "category": "plant",
+        "source_name": "nutmeg"
+      },
+      {
+        "name": "cinnamon",
+        "quantity": 2.464460796875,
+        "unit": "ml",
+        "raw_indices": [
+          2
+        ],
+        "quantity_basis": "1/2 tsp. cinnamon",
+        "category": "plant",
+        "source_name": "cinnamon"
+      },
+      {
+        "name": "salt",
+        "quantity": 0.61611519921875,
+        "unit": "ml",
+        "raw_indices": [
+          3
+        ],
+        "quantity_basis": "1/8 tsp. salt",
+        "category": "plant",
+        "source_name": "salt"
+      },
+      {
+        "name": "large apple",
+        "quantity": 4.0,
+        "unit": "count",
+        "raw_indices": [
+          4
+        ],
+        "quantity_basis": "4 large apples",
+        "category": "plant",
+        "source_name": "large apples"
+      },
+      {
+        "name": "butter",
+        "quantity": 73.93382390625,
+        "unit": "ml",
+        "raw_indices": [
+          5
+        ],
+        "quantity_basis": "5 Tbsp. butter",
+        "category": "dairy",
+        "source_name": "butter"
+      }
+    ],
+    "dietary_compatibility": {
+      "vegetarian": true,
+      "vegan": false,
+      "egg-free": true,
+      "peanut-free": null,
+      "dairy-free": false,
+      "soy-free": null
+    },
+    "review_status": "automatically_source_parsed",
+    "parser_version": "explicit-facts-v1",
+    "servings_source": "Makes 6 servings.",
+    "servings_evidence": "Makes 6 servings",
+    "source_record_sha256": "c315b9b9c115f4d12bee7771d3015a0fc460d13cb50714bca14ffdad76f92a55",
+    "parse_notes": [
+      "Automatically parsed explicit facts, not human-reviewed.",
+      "Ingredient-level screening only; no allergen or cooking-safety certification.",
+      "US customary volumes; no ingredient-density conversions."
+    ]
+  },
+  {
+    "id": "recipenlg_570496",
+    "title": "Apple Crisp",
+    "source": "RecipeNLG/Gathered",
+    "source_url": "www.cookbooks.com/Recipe-Details.aspx?id=1055788",
+    "raw_ingredients": [
+      "4 medium apples, sliced",
+      "1/4 c. orange juice",
+      "1/4 c. butter",
+      "1/2 c. flour",
+      "1/2 c. sugar",
+      "1 tsp. cinnamon"
+    ],
+    "ingredient_names": [
+      "apples",
+      "orange juice",
+      "butter",
+      "flour",
+      "sugar",
+      "cinnamon"
+    ],
+    "steps": [
+      "Arrange apples in baking dish.",
+      "Pour orange juice over apples. Combine remaining ingredients until crumbly.",
+      "Sprinkle over apples.",
+      "Bake 20 to 25 minutes in 350° oven.",
+      "Serves 4."
+    ],
+    "servings": 4,
+    "quantity_verified": true,
+    "dietary_verified": false,
+    "ingredients": [
+      {
+        "name": "medium apple",
+        "quantity": 4.0,
+        "unit": "count",
+        "raw_indices": [
+          0
+        ],
+        "quantity_basis": "4 medium apples, sliced",
+        "category": "plant",
+        "source_name": "medium apples"
+      },
+      {
+        "name": "orange juice",
+        "quantity": 59.147059125,
+        "unit": "ml",
+        "raw_indices": [
+          1
+        ],
+        "quantity_basis": "1/4 c. orange juice",
+        "category": "plant",
+        "source_name": "orange juice"
+      },
+      {
+        "name": "butter",
+        "quantity": 59.147059125,
+        "unit": "ml",
+        "raw_indices": [
+          2
+        ],
+        "quantity_basis": "1/4 c. butter",
+        "category": "dairy",
+        "source_name": "butter"
+      },
+      {
+        "name": "flour",
+        "quantity": 118.29411825,
+        "unit": "ml",
+        "raw_indices": [
+          3
+        ],
+        "quantity_basis": "1/2 c. flour",
+        "category": "plant",
+        "source_name": "flour"
+      },
+      {
+        "name": "sugar",
+        "quantity": 118.29411825,
+        "unit": "ml",
+        "raw_indices": [
+          4
+        ],
+        "quantity_basis": "1/2 c. sugar",
+        "category": "plant",
+        "source_name": "sugar"
+      },
+      {
+        "name": "cinnamon",
+        "quantity": 4.92892159375,
+        "unit": "ml",
+        "raw_indices": [
+          5
+        ],
+        "quantity_basis": "1 tsp. cinnamon",
+        "category": "plant",
+        "source_name": "cinnamon"
+      }
+    ],
+    "dietary_compatibility": {
+      "vegetarian": true,
+      "vegan": false,
+      "egg-free": true,
+      "peanut-free": null,
+      "dairy-free": false,
+      "soy-free": null
+    },
+    "review_status": "automatically_source_parsed",
+    "parser_version": "explicit-facts-v1",
+    "servings_source": "Serves 4.",
+    "servings_evidence": "Serves 4",
+    "source_record_sha256": "13a5076f63bfc5a727e176c3bdb24826e688e7ecabec52d16b69c19ab12edece",
+    "parse_notes": [
+      "Automatically parsed explicit facts, not human-reviewed.",
+      "Ingredient-level screening only; no allergen or cooking-safety certification.",
+      "US customary volumes; no ingredient-density conversions."
+    ]
+  },
+  {
+    "id": "recipenlg_683038",
+    "title": "Fried Mushrooms",
+    "source": "RecipeNLG/Gathered",
+    "source_url": "www.cookbooks.com/Recipe-Details.aspx?id=885299",
+    "raw_ingredients": [
+      "1/2 lb. mushrooms",
+      "1/4 c. butter"
+    ],
+    "ingredient_names": [
+      "mushrooms",
+      "butter"
+    ],
+    "steps": [
+      "Clean and slice mushrooms.",
+      "Heat butter in skillet.",
+      "Add mushrooms to skillet.",
+      "Cook slowly, occasionally turning until brown.",
+      "Makes 2 servings."
+    ],
+    "servings": 2,
+    "quantity_verified": true,
+    "dietary_verified": false,
+    "ingredients": [
+      {
+        "name": "mushroom",
+        "quantity": 226.796185,
+        "unit": "g",
+        "raw_indices": [
+          0
+        ],
+        "quantity_basis": "1/2 lb. mushrooms",
+        "category": "plant",
+        "source_name": "mushrooms"
+      },
+      {
+        "name": "butter",
+        "quantity": 59.147059125,
+        "unit": "ml",
+        "raw_indices": [
+          1
+        ],
+        "quantity_basis": "1/4 c. butter",
+        "category": "dairy",
+        "source_name": "butter"
+      }
+    ],
+    "dietary_compatibility": {
+      "vegetarian": true,
+      "vegan": false,
+      "egg-free": true,
+      "peanut-free": null,
+      "dairy-free": false,
+      "soy-free": null
+    },
+    "review_status": "automatically_source_parsed",
+    "parser_version": "explicit-facts-v1",
+    "servings_source": "Makes 2 servings.",
+    "servings_evidence": "Makes 2 servings",
+    "source_record_sha256": "531c27019ecc6d7ca63b7d307a68cde903c2b3ac6f4d156ff428e7ed0d4e72a5",
+    "parse_notes": [
+      "Automatically parsed explicit facts, not human-reviewed.",
+      "Ingredient-level screening only; no allergen or cooking-safety certification.",
+      "US customary volumes; no ingredient-density conversions."
+    ]
+  },
+  {
+    "id": "recipenlg_683407",
+    "title": "Oven Spicy Carrots",
+    "source": "RecipeNLG/Gathered",
+    "source_url": "www.cookbooks.com/Recipe-Details.aspx?id=939034",
+    "raw_ingredients": [
+      "2 c. sliced carrots",
+      "1/4 tsp. nutmeg",
+      "1/2 tsp. salt",
+      "1 Tbsp. sugar",
+      "1/4 c. water",
+      "3 Tbsp. butter"
+    ],
+    "ingredient_names": [
+      "carrots",
+      "nutmeg",
+      "salt",
+      "sugar",
+      "water",
+      "butter"
+    ],
+    "steps": [
+      "Combine ingredients in baking dish and cover.",
+      "Bake 1 hour at 350°.",
+      "Serves 4."
+    ],
+    "servings": 4,
+    "quantity_verified": true,
+    "dietary_verified": false,
+    "ingredients": [
+      {
+        "name": "sliced carrots",
+        "quantity": 473.176473,
+        "unit": "ml",
+        "raw_indices": [
+          0
+        ],
+        "quantity_basis": "2 c. sliced carrots",
+        "category": "plant",
+        "source_name": "sliced carrots"
+      },
+      {
+        "name": "nutmeg",
+        "quantity": 1.2322303984375,
+        "unit": "ml",
+        "raw_indices": [
+          1
+        ],
+        "quantity_basis": "1/4 tsp. nutmeg",
+        "category": "plant",
+        "source_name": "nutmeg"
+      },
+      {
+        "name": "salt",
+        "quantity": 2.464460796875,
+        "unit": "ml",
+        "raw_indices": [
+          2
+        ],
+        "quantity_basis": "1/2 tsp. salt",
+        "category": "plant",
+        "source_name": "salt"
+      },
+      {
+        "name": "sugar",
+        "quantity": 14.78676478125,
+        "unit": "ml",
+        "raw_indices": [
+          3
+        ],
+        "quantity_basis": "1 Tbsp. sugar",
+        "category": "plant",
+        "source_name": "sugar"
+      },
+      {
+        "name": "water",
+        "quantity": 59.147059125,
+        "unit": "ml",
+        "raw_indices": [
+          4
+        ],
+        "quantity_basis": "1/4 c. water",
+        "category": "plant",
+        "source_name": "water"
+      },
+      {
+        "name": "butter",
+        "quantity": 44.36029434375,
+        "unit": "ml",
+        "raw_indices": [
+          5
+        ],
+        "quantity_basis": "3 Tbsp. butter",
+        "category": "dairy",
+        "source_name": "butter"
+      }
+    ],
+    "dietary_compatibility": {
+      "vegetarian": true,
+      "vegan": false,
+      "egg-free": true,
+      "peanut-free": null,
+      "dairy-free": false,
+      "soy-free": null
+    },
+    "review_status": "automatically_source_parsed",
+    "parser_version": "explicit-facts-v1",
+    "servings_source": "Serves 4.",
+    "servings_evidence": "Serves 4",
+    "source_record_sha256": "1066b5da14fd649102e0efd94090b8119e0828e64b489c3830690613be84ad96",
+    "parse_notes": [
+      "Automatically parsed explicit facts, not human-reviewed.",
+      "Ingredient-level screening only; no allergen or cooking-safety certification.",
+      "US customary volumes; no ingredient-density conversions."
+    ]
+  },
+  {
+    "id": "recipenlg_693862",
+    "title": "Sweet And Sour Chicken",
+    "source": "RecipeNLG/Gathered",
+    "source_url": "www.cookbooks.com/Recipe-Details.aspx?id=848549",
+    "raw_ingredients": [
+      "1/2 c. sugar",
+      "1/4 c. white vinegar",
+      "2 Tbsp. soy sauce",
+      "2 lb. chicken"
+    ],
+    "ingredient_names": [
+      "sugar",
+      "white vinegar",
+      "soy sauce",
+      "chicken"
+    ],
+    "steps": [
+      "Combine all ingredients, except chicken, in a 12 x 8 x 2-inch baking dish.",
+      "Remove skin from chicken.",
+      "Place chicken in baking dish with marinade, turning to coat.",
+      "Cover and refrigerate 2 hours, turning chicken occasionally.",
+      "Bake uncovered at 350° for 45 minutes, basting occasionally.",
+      "Yields 4 servings."
+    ],
+    "servings": 4,
+    "quantity_verified": true,
+    "dietary_verified": false,
+    "ingredients": [
+      {
+        "name": "sugar",
+        "quantity": 118.29411825,
+        "unit": "ml",
+        "raw_indices": [
+          0
+        ],
+        "quantity_basis": "1/2 c. sugar",
+        "category": "plant",
+        "source_name": "sugar"
+      },
+      {
+        "name": "white vinegar",
+        "quantity": 59.147059125,
+        "unit": "ml",
+        "raw_indices": [
+          1
+        ],
+        "quantity_basis": "1/4 c. white vinegar",
+        "category": "plant",
+        "source_name": "white vinegar"
+      },
+      {
+        "name": "soy sauce",
+        "quantity": 29.5735295625,
+        "unit": "ml",
+        "raw_indices": [
+          2
+        ],
+        "quantity_basis": "2 Tbsp. soy sauce",
+        "category": "soy",
+        "source_name": "soy sauce"
+      },
+      {
+        "name": "chicken",
+        "quantity": 907.18474,
+        "unit": "g",
+        "raw_indices": [
+          3
+        ],
+        "quantity_basis": "2 lb. chicken",
+        "category": "meat",
+        "source_name": "chicken"
+      }
+    ],
+    "dietary_compatibility": {
+      "vegetarian": false,
+      "vegan": false,
+      "egg-free": true,
+      "peanut-free": true,
+      "dairy-free": true,
+      "soy-free": false
+    },
+    "review_status": "automatically_source_parsed",
+    "parser_version": "explicit-facts-v1",
+    "servings_source": "Yields 4 servings.",
+    "servings_evidence": "Yields 4 servings",
+    "source_record_sha256": "3ae7d4f6aadbfa2d9b6352a7fe59579550422630918f9ea4e8bf7520f479511c",
+    "parse_notes": [
+      "Automatically parsed explicit facts, not human-reviewed.",
+      "Ingredient-level screening only; no allergen or cooking-safety certification.",
+      "US customary volumes; no ingredient-density conversions."
+    ]
+  },
+  {
+    "id": "recipenlg_742382",
+    "title": "Honey Glazed Carrots",
+    "source": "RecipeNLG/Gathered",
+    "source_url": "www.cookbooks.com/Recipe-Details.aspx?id=922320",
+    "raw_ingredients": [
+      "4 oz. butter",
+      "1 lb. carrots",
+      "1/4 c. honey",
+      "1/2 tsp. salt"
+    ],
+    "ingredient_names": [
+      "butter",
+      "carrots",
+      "honey",
+      "salt"
+    ],
+    "steps": [
+      "Melt butter in baking dish.",
+      "Add carrots; sprinkle with salt. Add",
+      "honey\tand",
+      "toss until all are well coated.",
+      "Cover and bake at 350° until carrots are hot.",
+      "Do not brown.",
+      "Makes 6 servings."
+    ],
+    "servings": 6,
+    "quantity_verified": true,
+    "dietary_verified": false,
+    "ingredients": [
+      {
+        "name": "butter",
+        "quantity": 113.3980925,
+        "unit": "g",
+        "raw_indices": [
+          0
+        ],
+        "quantity_basis": "4 oz. butter",
+        "category": "dairy",
+        "source_name": "butter"
+      },
+      {
+        "name": "carrot",
+        "quantity": 453.59237,
+        "unit": "g",
+        "raw_indices": [
+          1
+        ],
+        "quantity_basis": "1 lb. carrots",
+        "category": "plant",
+        "source_name": "carrots"
+      },
+      {
+        "name": "honey",
+        "quantity": 59.147059125,
+        "unit": "ml",
+        "raw_indices": [
+          2
+        ],
+        "quantity_basis": "1/4 c. honey",
+        "category": "honey",
+        "source_name": "honey"
+      },
+      {
+        "name": "salt",
+        "quantity": 2.464460796875,
+        "unit": "ml",
+        "raw_indices": [
+          3
+        ],
+        "quantity_basis": "1/2 tsp. salt",
+        "category": "plant",
+        "source_name": "salt"
+      }
+    ],
+    "dietary_compatibility": {
+      "vegetarian": true,
+      "vegan": false,
+      "egg-free": true,
+      "peanut-free": null,
+      "dairy-free": false,
+      "soy-free": null
+    },
+    "review_status": "automatically_source_parsed",
+    "parser_version": "explicit-facts-v1",
+    "servings_source": "Makes 6 servings.",
+    "servings_evidence": "Makes 6 servings",
+    "source_record_sha256": "97deb5d54e01478f52e2c5e832fd411e58ed5ad95abbfd6917485b3c669cca1d",
+    "parse_notes": [
+      "Automatically parsed explicit facts, not human-reviewed.",
+      "Ingredient-level screening only; no allergen or cooking-safety certification.",
+      "US customary volumes; no ingredient-density conversions."
+    ]
+  },
+  {
+    "id": "recipenlg_764446",
+    "title": "Buttered Carrots",
+    "source": "RecipeNLG/Gathered",
+    "source_url": "www.cookbooks.com/Recipe-Details.aspx?id=1076530",
+    "raw_ingredients": [
+      "1 1/2 lb. carrots",
+      "1 tsp. sugar",
+      "1/2 tsp. salt",
+      "1/8 tsp. pepper",
+      "3 Tbsp. butter",
+      "3/4 c. water",
+      "1 Tbsp. chopped parsley"
+    ],
+    "ingredient_names": [
+      "carrots",
+      "sugar",
+      "salt",
+      "pepper",
+      "butter",
+      "water",
+      "parsley"
+    ],
+    "steps": [
+      "Pare carrots and cut into julienne strips.",
+      "Place in a large heavy saucepan with sugar, salt, pepper, butter and water. Cover. Bring to a boil.",
+      "Simmer 10 to 15 minutes or until carrots are tender and moisture is evaporated.",
+      "Remove cover to evaporate moisture, if necessary. Turn carrots into serving bowl and sprinkle with parsley.",
+      "Makes 6 servings."
+    ],
+    "servings": 6,
+    "quantity_verified": true,
+    "dietary_verified": false,
+    "ingredients": [
+      {
+        "name": "carrot",
+        "quantity": 680.388555,
+        "unit": "g",
+        "raw_indices": [
+          0
+        ],
+        "quantity_basis": "1 1/2 lb. carrots",
+        "category": "plant",
+        "source_name": "carrots"
+      },
+      {
+        "name": "sugar",
+        "quantity": 4.92892159375,
+        "unit": "ml",
+        "raw_indices": [
+          1
+        ],
+        "quantity_basis": "1 tsp. sugar",
+        "category": "plant",
+        "source_name": "sugar"
+      },
+      {
+        "name": "salt",
+        "quantity": 2.464460796875,
+        "unit": "ml",
+        "raw_indices": [
+          2
+        ],
+        "quantity_basis": "1/2 tsp. salt",
+        "category": "plant",
+        "source_name": "salt"
+      },
+      {
+        "name": "pepper",
+        "quantity": 0.61611519921875,
+        "unit": "ml",
+        "raw_indices": [
+          3
+        ],
+        "quantity_basis": "1/8 tsp. pepper",
+        "category": "plant",
+        "source_name": "pepper"
+      },
+      {
+        "name": "butter",
+        "quantity": 44.36029434375,
+        "unit": "ml",
+        "raw_indices": [
+          4
+        ],
+        "quantity_basis": "3 Tbsp. butter",
+        "category": "dairy",
+        "source_name": "butter"
+      },
+      {
+        "name": "water",
+        "quantity": 177.441177375,
+        "unit": "ml",
+        "raw_indices": [
+          5
+        ],
+        "quantity_basis": "3/4 c. water",
+        "category": "plant",
+        "source_name": "water"
+      },
+      {
+        "name": "chopped parsley",
+        "quantity": 14.78676478125,
+        "unit": "ml",
+        "raw_indices": [
+          6
+        ],
+        "quantity_basis": "1 Tbsp. chopped parsley",
+        "category": "plant",
+        "source_name": "chopped parsley"
+      }
+    ],
+    "dietary_compatibility": {
+      "vegetarian": true,
+      "vegan": false,
+      "egg-free": true,
+      "peanut-free": null,
+      "dairy-free": false,
+      "soy-free": null
+    },
+    "review_status": "automatically_source_parsed",
+    "parser_version": "explicit-facts-v1",
+    "servings_source": "Makes 6 servings.",
+    "servings_evidence": "Makes 6 servings",
+    "source_record_sha256": "70ec803ebbb4cad74531e278fee2fdba55c497b401e7455cdb71f3c2843e5244",
+    "parse_notes": [
+      "Automatically parsed explicit facts, not human-reviewed.",
+      "Ingredient-level screening only; no allergen or cooking-safety certification.",
+      "US customary volumes; no ingredient-density conversions."
+    ]
+  },
+  {
+    "id": "recipenlg_827919",
+    "title": "Glazed Carrots",
+    "source": "RecipeNLG/Gathered",
+    "source_url": "www.cookbooks.com/Recipe-Details.aspx?id=1065283",
+    "raw_ingredients": [
+      "1/3 c. sugar",
+      "1 Tbsp. flour",
+      "3/4 c. orange juice",
+      "2 Tbsp. butter",
+      "2 1/2 lb. carrots, peeled"
+    ],
+    "ingredient_names": [
+      "sugar",
+      "flour",
+      "orange juice",
+      "butter",
+      "carrots"
+    ],
+    "steps": [
+      "Cut carrots diagonally in 1/4-inch slices, cook and drain. Mix sugar and flour in medium sized saucepan.",
+      "Stir in orange juice.",
+      "Bring to boil over medium heat.",
+      "Reduce heat to low, stir in butter.",
+      "Simmer 2 minutes until thickened.",
+      "Add carrots, stir to coat and glaze.",
+      "Makes 10 servings."
+    ],
+    "servings": 10,
+    "quantity_verified": true,
+    "dietary_verified": false,
+    "ingredients": [
+      {
+        "name": "sugar",
+        "quantity": 78.86274549999999,
+        "unit": "ml",
+        "raw_indices": [
+          0
+        ],
+        "quantity_basis": "1/3 c. sugar",
+        "category": "plant",
+        "source_name": "sugar"
+      },
+      {
+        "name": "flour",
+        "quantity": 14.78676478125,
+        "unit": "ml",
+        "raw_indices": [
+          1
+        ],
+        "quantity_basis": "1 Tbsp. flour",
+        "category": "plant",
+        "source_name": "flour"
+      },
+      {
+        "name": "orange juice",
+        "quantity": 177.441177375,
+        "unit": "ml",
+        "raw_indices": [
+          2
+        ],
+        "quantity_basis": "3/4 c. orange juice",
+        "category": "plant",
+        "source_name": "orange juice"
+      },
+      {
+        "name": "butter",
+        "quantity": 29.5735295625,
+        "unit": "ml",
+        "raw_indices": [
+          3
+        ],
+        "quantity_basis": "2 Tbsp. butter",
+        "category": "dairy",
+        "source_name": "butter"
+      },
+      {
+        "name": "carrot",
+        "quantity": 1133.980925,
+        "unit": "g",
+        "raw_indices": [
+          4
+        ],
+        "quantity_basis": "2 1/2 lb. carrots, peeled",
+        "category": "plant",
+        "source_name": "carrots"
+      }
+    ],
+    "dietary_compatibility": {
+      "vegetarian": true,
+      "vegan": false,
+      "egg-free": true,
+      "peanut-free": null,
+      "dairy-free": false,
+      "soy-free": null
+    },
+    "review_status": "automatically_source_parsed",
+    "parser_version": "explicit-facts-v1",
+    "servings_source": "Makes 10 servings.",
+    "servings_evidence": "Makes 10 servings",
+    "source_record_sha256": "adcd5141c290391c6e189abce037e4f24ada9b0d5f7bee5ff4a0173176d5aa3f",
+    "parse_notes": [
+      "Automatically parsed explicit facts, not human-reviewed.",
+      "Ingredient-level screening only; no allergen or cooking-safety certification.",
+      "US customary volumes; no ingredient-density conversions."
+    ]
+  },
+  {
+    "id": "recipenlg_68810",
+    "title": "Glazed Carrots",
+    "source": "RecipeNLG/Gathered",
+    "source_url": "www.cookbooks.com/Recipe-Details.aspx?id=260993",
+    "raw_ingredients": [
+      "1 lb. carrots, cut in 2-inch strips",
+      "2 Tbsp. Wesson oil",
+      "1/4 c. water",
+      "2 Tbsp. brown sugar",
+      "1/4 tsp. salt"
+    ],
+    "ingredient_names": [
+      "carrots",
+      "Wesson oil",
+      "water",
+      "brown sugar",
+      "salt"
+    ],
+    "steps": [
+      "Cook carrots in Wesson oil over medium heat until lightly browned.",
+      "Combine remaining ingredients and pour over carrots. Cover and cook over low heat until tender, about 15 minutes. Yields 4 servings."
+    ],
+    "servings": 4,
+    "quantity_verified": true,
+    "dietary_verified": true,
+    "servings_source": "Combine remaining ingredients and pour over carrots. Cover and cook over low heat until tender, about 15 minutes. Yields 4 servings.",
+    "review_status": "approved",
+    "dietary_compatibility": {
+      "vegetarian": true,
+      "vegan": true,
+      "egg-free": true,
+      "dairy-free": true,
+      "peanut-free": null,
+      "soy-free": null
+    },
+    "review_notes": [
+      "Explicit yield and every listed ingredient were checked against the local CSV.",
+      "US customary volume units; no density or cups-to-grams conversion.",
+      "Only ingredient-list dietary screening; no cross-contact or packaged-label certification.",
+      "Compatibility is true when ingredient-level compatible, false when a listed conflict exists, and null when packaged labels need checking.",
+      "This is a side-dish recipe, not a nutritionally complete meal."
+    ],
+    "raw_record_sha256": "181b9cedb453f092e3143c5d99dfd93f20d5e5bedb514e36fe444e5eff395bea",
+    "ingredients": [
+      {
+        "name": "carrot",
+        "quantity": 453.59237,
+        "unit": "g",
+        "raw_indices": [
+          0
+        ],
+        "quantity_basis": "1 lb.; exact mass/volume conversion only."
+      },
+      {
+        "name": "oil",
+        "quantity": 29.5735295625,
+        "unit": "ml",
+        "raw_indices": [
+          1
+        ],
+        "quantity_basis": "2 Tbsp.; exact mass/volume conversion only."
+      },
+      {
+        "name": "water",
+        "quantity": 59.147059125,
+        "unit": "ml",
+        "raw_indices": [
+          2
+        ],
+        "quantity_basis": "1/4 c.; exact mass/volume conversion only."
+      },
+      {
+        "name": "brown sugar",
+        "quantity": 29.5735295625,
+        "unit": "ml",
+        "raw_indices": [
+          3
+        ],
+        "quantity_basis": "2 Tbsp.; exact mass/volume conversion only."
+      },
+      {
+        "name": "salt",
+        "quantity": 1.2322303984375,
+        "unit": "ml",
+        "raw_indices": [
+          4
+        ],
+        "quantity_basis": "1/4 tsp.; exact mass/volume conversion only."
+      }
+    ],
+    "dataset_provenance": {
+      "filename": "RecipeNLG_dataset.csv",
+      "bytes": 2294981083,
+      "source_filter": "Gathered"
+    }
+  },
+  {
+    "id": "recipenlg_33232",
+    "title": "Peach Glazed Carrots",
+    "source": "RecipeNLG/Gathered",
+    "source_url": "www.cookbooks.com/Recipe-Details.aspx?id=272429",
+    "raw_ingredients": [
+      "3 lb. pared, sliced cooked carrots",
+      "1 c. peach preserves",
+      "2 Tbsp. melted butter"
+    ],
+    "ingredient_names": [
+      "pared",
+      "preserves",
+      "butter"
+    ],
+    "steps": [
+      "Arrange carrots in casserole dish.",
+      "Combine preserves and butter; spoon over carrots.",
+      "Heat in oven at 350° for 15 minutes, until hot.",
+      "Serves 10."
+    ],
+    "servings": 10,
+    "quantity_verified": true,
+    "dietary_verified": true,
+    "servings_source": "Serves 10.",
+    "review_status": "approved",
+    "dietary_compatibility": {
+      "vegetarian": null,
+      "vegan": false,
+      "egg-free": null,
+      "dairy-free": false,
+      "peanut-free": null,
+      "soy-free": null
+    },
+    "review_notes": [
+      "Explicit yield and every listed ingredient were checked against the local CSV.",
+      "US customary volume units; no density or cups-to-grams conversion.",
+      "Only ingredient-list dietary screening; no cross-contact or packaged-label certification.",
+      "Compatibility is true when ingredient-level compatible, false when a listed conflict exists, and null when packaged labels need checking.",
+      "This is a side-dish recipe, not a nutritionally complete meal."
+    ],
+    "raw_record_sha256": "34085f086a8546d3ff957ef787d00143fd0dae96a91204268ad2321f03243e07",
+    "ingredients": [
+      {
+        "name": "carrot",
+        "quantity": 1360.77711,
+        "unit": "g",
+        "raw_indices": [
+          0
+        ],
+        "quantity_basis": "3 lb.; exact mass/volume conversion only."
+      },
+      {
+        "name": "peach preserves",
+        "quantity": 236.5882365,
+        "unit": "ml",
+        "raw_indices": [
+          1
+        ],
+        "quantity_basis": "1 c.; exact mass/volume conversion only."
+      },
+      {
+        "name": "butter",
+        "quantity": 29.5735295625,
+        "unit": "ml",
+        "raw_indices": [
+          2
+        ],
+        "quantity_basis": "2 Tbsp.; exact mass/volume conversion only."
+      }
+    ],
+    "dataset_provenance": {
+      "filename": "RecipeNLG_dataset.csv",
+      "bytes": 2294981083,
+      "source_filter": "Gathered"
+    }
+  }
+]

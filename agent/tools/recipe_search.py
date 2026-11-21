@@ -30,12 +30,25 @@ def load_recipes(request=None, recipe_file=None):
         if request is None:
             raise ValueError('CSV retrieval requires a request. Old fixture evaluations require an explicit FRIDGE_RECIPE_FILE.')
         raw = [] if validate_request(request) else retrieve(request)
-        reviewed_path = ROOT/'data/recipes_recipenlg.json'
+        expanded_path=ROOT/'data/recipes_expanded.json'
+        reviewed_path=expanded_path if expanded_path.exists() else ROOT/'data/recipes_recipenlg.json'
         reviewed = json.loads(reviewed_path.read_text(encoding='utf-8')) if reviewed_path.exists() else []
         reviewed = matching_reviewed_records(reviewed)
         # Keep all reviewed records for strict matching; do not pre-filter the baseline.
         ids = {r['id'] for r in reviewed}
-        return reviewed + [r for r in raw if r['id'] not in ids]
+        from .recipe_parser import parse_recipe
+        candidates=[]
+        for record in raw:
+            if record['id'] in ids:
+                continue
+            parsed=parse_recipe(record)
+            if parsed['status']=='parsed':
+                candidates.append(parsed['recipe'])
+            else:
+                record=deepcopy(record)
+                record['parse_issue']=parsed['reason']
+                candidates.append(record)
+        return reviewed + candidates
     path=Path(configured).expanduser()
     recipes=json.loads(path.read_text(encoding='utf-8-sig'))
     if not isinstance(recipes,list) or not recipes:
@@ -119,9 +132,12 @@ def check_recipe(request, recipe_id, recipes=None):
                 conflicts.append(restriction)
             elif flags.get(restriction) is not True:
                 unknown_diet.append(restriction)
+    from .dietary import preparation_conflicts
+    conflicts.extend(x['restriction'] for x in preparation_conflicts(recipe.get('steps',[]),request['preferences']['dietary_restrictions']))
     for item in recipe['ingredients']:
         name,unit = item['name'],item['unit']
-        needed = round(item['quantity']*request['servings']/recipe['servings'],6)
+        exact_needed=item['quantity']*request['servings']/recipe['servings']
+        needed = round(exact_needed,6)
         amounts.append({'name':name,'quantity':needed,'unit':unit})
         if name == 'water':
             continue
@@ -133,7 +149,7 @@ def check_recipe(request, recipe_id, recipes=None):
                 conversion.append(name)
             else:
                 missing.append(name)
-        elif available+1e-9<needed:
+        elif available+1e-9<exact_needed:
             insufficient.append(name)
     return {'recipe_id':recipe_id,'feasible':not (missing or insufficient or conflicts or conversion or unknown_diet),
             'missing_ingredients':missing,'insufficient_quantities':insufficient,
@@ -141,7 +157,7 @@ def check_recipe(request, recipe_id, recipes=None):
             'scaled_ingredients':amounts}
 
 
-def prioritize_recipes(request, recipe_ids, recipes=None):
+def prioritize_recipes(request, recipe_ids, recipes=None, quality_priority=None):
     recipes = load_recipes(request) if recipes is None else recipes
     expiry = {}
     for item in request['pantry']:
@@ -149,6 +165,8 @@ def prioritize_recipes(request, recipe_ids, recipes=None):
         if value and value>=request['as_of_date'] and item['quantity']>0:
             name=normalize_name(item['name'])
             expiry[name]=min(expiry.get(name,value),value)
+    for name,value in (quality_priority or {}).items():
+        if name not in expiry:expiry[name]=value
     likes={normalize_name(x) for x in request['preferences']['likes']}
     ranked=[]
     for rid in recipe_ids:
@@ -171,34 +189,51 @@ def search_recipes(pantry, servings, preferences, as_of_date, *, recipes=None):
         return {'status':'error','candidates':[], 'error_code':'INPUT_INCOMPLETE',
                 'message':issue['message'],'missing_field':issue['missing_field']}
     try:
+        from .foodkeeper import assess_unknown_storage
+        storage=assess_unknown_storage(request)
+        if storage['issue']:return storage['issue']
         recipes=load_recipes(request) if recipes is None else recipes
         unverified=[r for r in recipes if r.get('quantity_verified') is False]
         recipes=[r for r in recipes if r.get('quantity_verified') is not False]
         found=[]
         possible_unknown=[]
+        conversion_details={}
         dietary_unknown=[]
         for recipe in recipes:
             check=check_recipe(request,recipe['id'],recipes)
             if check['feasible']:
-                found.append({'recipe_id':recipe['id'],'title':recipe['title'],
+                candidate={'recipe_id':recipe['id'],'title':recipe['title'],
                     'servings':servings,'ingredients':check['scaled_ingredients'],
-                    'steps':deepcopy(recipe['steps'])})
+                    'steps':deepcopy(recipe['steps'])}
+                if recipe.get('parser_version'):
+                    candidate.update(original_servings=recipe['servings'],
+                        source_url=recipe.get('source_url'),
+                        verification='Automatically source-parsed; not human-reviewed.',
+                        steps_note='Original directions are preserved. The ingredient amounts above are scaled; original yield and piece counts in the directions must not be presented as the requested yield.')
+                found.append(candidate)
             elif (check.get('unknown_dietary_checks') and not check['missing_ingredients']
                   and not check['insufficient_quantities'] and not check['dietary_conflicts']):
                 dietary_unknown.extend(check['unknown_dietary_checks'])
             elif (check['unknown_conversions'] and not check['missing_ingredients']
                   and not check['insufficient_quantities'] and not check['dietary_conflicts']):
                 possible_unknown.extend(check['unknown_conversions'])
+                for name in check['unknown_conversions']:
+                    required=sorted({i['unit'] for i in recipe['ingredients'] if i['name']==name})
+                    recorded=sorted({i['unit'] for i in request['pantry'] if normalize_name(i['name'])==name})
+                    conversion_details[name]={'recipe_units':required,'inventory_units':recorded}
         if not found and dietary_unknown:
             return {'status':'error','candidates':[], 'error_code':'INPUT_INCOMPLETE',
                     'message':'Check packaged ingredient labels for: '+', '.join(sorted(set(dietary_unknown))),
                     'missing_field':'pantry.dietary_labels'}
         if not found and possible_unknown:
             return {'status':'error','candidates':[], 'error_code':'INPUT_INCOMPLETE',
-                    'message':'Clarify the weight or a reliable unit conversion for: '+', '.join(sorted(set(possible_unknown))),
+                    'message':'Units cannot be compared: '+ '; '.join(name+' (recipe requires '+', '.join(detail['recipe_units'])+'; inventory records '+', '.join(detail['inventory_units'])+')' for name,detail in sorted(conversion_details.items()))+'. Provide a measured quantity in a required recipe unit or a reliable food-specific conversion (density or per-item weight).',
+                    'conversion_details':conversion_details,
                     'missing_field':'pantry.unit'}
         if found:
-            order=prioritize_recipes(request,[r['recipe_id'] for r in found],recipes)
+            order=prioritize_recipes(request,[r['recipe_id'] for r in found],recipes,quality_priority=storage['priority_dates'])
+            if storage['notes']:
+                for candidate in found:candidate['storage_guidance']=deepcopy(storage['notes'])
             found=sorted(found,key=lambda r:order.index(r['recipe_id']))
             return {'status':'found','candidates':found,'error_code':None}
         if unverified:

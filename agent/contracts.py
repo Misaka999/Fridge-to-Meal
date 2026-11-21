@@ -35,6 +35,14 @@ Use tool_error only for an actual tool failure, never as a synonym for no match.
 A no-match claim must be limited to the provided local catalogue, never all
 possible recipes. Some reviewed recipes are side dishes; do not claim they form
 a complete balanced meal.
+If an item explicitly supplies storage metadata while expires_on is null,
+storage guidance has been requested: require a matching food variety/product,
+condition, date basis (purchase/opened/thawed/as_listed), reference date and
+confirmation of maintained conditions. Ask if these are missing or mismatched;
+never use egg guidance for flour or freezer guidance for refrigerated food.
+An explicit expires_on takes precedence; incomplete optional storage metadata
+must not override it. FoodKeeper windows are general guidance, not guaranteed
+expiration or safety dates.
 Keep the pantry unchanged; recommendation is not confirmation of ingredient use.
 Include the recipe amounts scaled to servings and cooking steps in message.
 """

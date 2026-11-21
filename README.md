@@ -51,3 +51,17 @@ tool_trace = run["tool_trace"]
 ```
 
 接真实工具时，改为 `run_agent(request, model=model, search=real_search_recipes)`。真实工具用关键字参数接收 `pantry`、`servings`、`preferences`、`as_of_date`，按接口约定返回查询状态和候选列表。模型只选择调用哪个工具，ReAct 从已校验的请求传入这些参数。
+
+
+## Yangyang: tools and Plan-and-Replan
+
+The additional Plan-and-Replan implementation, conservative RecipeNLG parsing, FoodKeeper archive lookup, and member test partitions are documented in [the integration handoff](docs/YANGYANG_HANDOFF.md). See [architecture](docs/ARCHITECTURE.md) and [interfaces](docs/INTEGRATION.md).
+
+```sh
+python plan_replan_agent.py examples/example_request_expanded_pasta.json --trace
+python -m unittest discover -s tests -q
+python -m eval.evaluate_project --check-only
+python -m eval.evaluate_safety --check-only
+```
+
+The included expanded catalogue has 20 source-linked records; it does not provide complete RecipeNLG coverage. Automatically parsed records are not human-reviewed. FoodKeeper is a pinned third-party archive with explicit provenance, not a safety guarantee. Large CSV/index files, credentials and evaluation results are not included. The existing ReAct entry point and its default historical catalogue are preserved.
