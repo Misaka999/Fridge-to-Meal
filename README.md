@@ -112,7 +112,7 @@ state = sessions.get_state("user-a")
 
 选择 **Load example** 会填入 Glazed Carrots 样例的库存和参考日期。点击 **Find recipes** 才会提交给 ReAct。可直接在表格中增加、修改或删除食材，再次提交即更新本轮库存。推荐完成后，在 **Ask a follow-up** 输入“改成两人份”，可观察人数和结果变化。点击 **Run details** 可查看菜谱 ID、模型调用次数和耗时。
 
-同一标签页刷新后会恢复已提交的库存和偏好，聊天记录只在当前页面展示。服务重启后需要重新提交库存。
+在 **My fridge** 中编辑食材并点击 **Save fridge**，即可在当前浏览器保存库存，无需调用模型。以后用同一浏览器打开同一地址会恢复已保存的食材，并按当天日期标记过期项。可以调整 Planning date，再点击 **Find recipes** 按指定日期推荐。清空食材后再次保存即可保存空库存。聊天记录仅在当前页面展示。
 
 ## Yangyang: tools and Plan-and-Replan
 

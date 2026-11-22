@@ -11,8 +11,8 @@
 <h1>What’s in your fridge<span>?</span></h1>
 <div class="layout">
 <form id="kitchen"><fieldset id="fields" disabled>
-<section><div class="section-head"><h2>Your pantry</h2><button type="button" id="example" class="link">Load example</button></div>
-<div id="rows"></div><button class="add" id="add" type="button">＋ Add ingredient</button></section>
+<section><div class="section-head"><h2>My fridge</h2><button type="button" id="example" class="link">Load example</button></div>
+<div id="rows"></div><div class="fridge-actions"><button class="add" id="add" type="button">＋ Add ingredient</button><button type="button" id="save-fridge">Save fridge</button></div><small id="fridge-status" role="status"></small></section>
 <section><h2>Meal preferences</h2><div class="pair"><label>Servings<input required type="number" min="1" step="1" id="servings" value="2"></label><label>Planning date<input required type="date" id="date"></label></div>
 <p class="label">Dietary restrictions</p><div id="restrictions"></div>
 <label>Favorite ingredients<input id="likes" placeholder="e.g. tofu, spinach"></label>
@@ -24,5 +24,5 @@
 <form id="chat"><label for="message">Ask a follow-up</label><div class="compose"><input id="message" placeholder="Make it for two people…" required disabled><button aria-label="Send follow-up" id="send" disabled>↑</button></div></form>
 </aside></div><p id="status" role="status"></p>
 </main>
-<template id="row"><div class="ingredient"><label>Name<input class="name" placeholder="Ingredient" required></label><label>Amount<input class="qty" type="number" step="any" min="0" required></label><label>Unit<select class="unit"></select></label><label>Expires<input class="expiry" type="date"></label><button class="remove" type="button" aria-label="Remove ingredient">×</button></div></template>
+<template id="row"><div class="ingredient"><label>Name<input class="name" placeholder="Ingredient" required></label><label>Amount<input class="qty" type="number" step="any" min="0" required></label><label>Unit<select class="unit"></select></label><label>Expires <span class="expired" hidden>Expired</span><input class="expiry" type="date"></label><button class="remove" type="button" aria-label="Remove ingredient">×</button></div></template>
 </body></html>
