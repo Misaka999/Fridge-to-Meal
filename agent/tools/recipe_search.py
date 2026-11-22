@@ -3,8 +3,8 @@ from copy import deepcopy
 from datetime import date
 from pathlib import Path
 import json
-import math
 import os
+import sys
 
 from .ingredient_names import normalize_name
 
@@ -69,17 +69,26 @@ def validate_request(request):
         date.fromisoformat(request['as_of_date'])
     except (KeyError,TypeError,ValueError):
         return clarification('Provide a valid as_of_date in YYYY-MM-DD format.', 'as_of_date')
-    for item in request['pantry']:
+    return validate_pantry(request['pantry'])
+
+
+def validate_pantry(pantry):
+    """Validate a complete pantry for both inventory writes and recipe search."""
+    if not isinstance(pantry, list):
+        return clarification('Provide the pantry list; [] means empty.', 'pantry')
+    for item in pantry:
         if not isinstance(item,dict) or not isinstance(item.get('name'),str) or not item['name'].strip():
             return clarification('Provide an ingredient name.', 'pantry.name')
         q = item.get('quantity')
-        if type(q) not in (int,float) or not math.isfinite(q) or q < 0:
+        if type(q) not in (int,float) or not 0 <= q <= sys.float_info.max:
             return clarification(f"What quantity of {item['name']} is available?", 'pantry.quantity')
-        if item.get('unit') not in UNITS:
+        if not isinstance(item.get('unit'), str) or item['unit'] not in UNITS:
             return clarification(f"Provide a supported unit for {item['name']}; do not assume cups-to-grams.", 'pantry.unit')
         if item.get('expires_on') is not None:
             try:
-                date.fromisoformat(item['expires_on'])
+                expiry = date.fromisoformat(item['expires_on'])
+                if expiry.isoformat() != item['expires_on']:
+                    return clarification('Provide expires_on in YYYY-MM-DD format.', 'pantry.expires_on')
             except (TypeError,ValueError):
                 return clarification('Provide a valid expires_on date or null.', 'pantry.expires_on')
     return None

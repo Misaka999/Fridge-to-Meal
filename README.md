@@ -51,3 +51,65 @@ tool_trace = run["tool_trace"]
 ```
 
 接真实工具时，改为 `run_agent(request, model=model, search=real_search_recipes)`。真实工具用关键字参数接收 `pantry`、`servings`、`preferences`、`as_of_date`，按接口约定返回查询状态和候选列表。模型只选择调用哪个工具，ReAct 从已校验的请求传入这些参数。
+
+## 连续对话与会话状态
+
+在已激活的 Python 环境中，从项目根目录启动：
+
+```powershell
+python react_agent.py examples/example_request_real.json --chat --trace
+```
+
+程序先处理初始请求，然后接受自然语言追问或 JSON 更新。例如依次输入：
+
+```text
+改成两人份
+也不要鸡蛋
+/state
+/exit
+```
+
+人数和饮食偏好的自然语言更新会额外调用一次 DeepSeek 提取变化，再把完整的会话库存、人数和偏好交给 ReAct。新的硬限制会加入现有要求。可以用 `/state` 查看当前状态，用 `/reset` 清空当前会话。初始样例的参考日期会继续保留。
+
+JSON 更新按提供的字段覆盖，省略的字段继续沿用。偏好只覆盖提供的子字段，空数组可以清除对应偏好：
+
+```json
+{"servings": 2}
+{"preferences": {"dietary_restrictions": ["vegetarian", "egg-free"]}}
+{"preferences": {"likes": []}}
+```
+
+在聊天模式下，每行输入一条明确的库存操作。下面三行依次新增一批大米、把这批大米的剩余量设为 50 g、删除整批。网页或另一个 Agent 可以把同样的对象传给同一实例的 `sessions.run_turn(session_id, update)`。
+
+```jsonl
+{"inventory":{"op":"add","name":"rice","quantity":100,"unit":"g"}}
+{"inventory":{"op":"update","name":"rice","quantity":50}}
+{"inventory":{"op":"delete","name":"rice"}}
+```
+
+每次成功写入后，ReAct 会使用新库存重新推荐。普通推荐只读取库存。输入 `/state` 可以检查剩余量。新增操作可带 `expires_on`，更新操作会保留省略的字段。如果同名食材有多批，系统会询问要编辑哪一批，并列出从 0 开始的行号；在操作中补入 `"index": 行号` 即可指定。编辑时请使用库存中登记的名称。
+
+缺少数量、单位或目标不明确时，系统会返回 `needs_clarification` 并保留原库存。补齐信息后重新发送完整操作。自然语言要求修改库存时，系统会引导用户提交显式 JSON。仍可用 `{"pantry": []}` 清空库存，或提交完整的新库存数组整体替换。参考日期可用 `as_of_date` 单独更新。
+
+网页可创建一个 `MealSessions` 实例，用独立的会话 ID 调用：
+
+```python
+from agent.session import MealSessions
+from react_agent import deepseek_model
+
+sessions = MealSessions(model=deepseek_model())
+first = sessions.run_turn("user-a", request)
+second = sessions.run_turn("user-a", message="也不要鸡蛋")
+other = sessions.run_turn("user-b", another_request)
+state = sessions.get_state("user-a")
+```
+
+会话状态存在该实例的内存里，重启后需重新初始化。返回值在原有 `result`、`metrics` 和 `tool_trace` 之外附带本轮完整 `request`。模型调用和 token 指标包含自然语言更新提取步骤，未知 token 用量保留为 `null`。显式用户更新在推荐运行前保存，因此模型调用失败后可以沿用已更新的状态重试。
+
+## 本地网页
+
+在项目根目录激活 LLM 环境，运行 `python web_app.py`，打开 http://127.0.0.1:8765 。网页沿用项目根目录的 DeepSeek 环境配置。端口被占用时可以运行 `python web_app.py --port 8766`。
+
+选择 **Load example** 会填入 Glazed Carrots 样例的库存和参考日期。点击 **Find recipes** 才会提交给 ReAct。可直接在表格中增加、修改或删除食材，再次提交即更新本轮库存。推荐完成后，在 **Ask a follow-up** 输入“改成两人份”，可观察人数和结果变化。点击 **Run details** 可查看菜谱 ID、模型调用次数和耗时。
+
+同一标签页刷新后会恢复已提交的库存和偏好，聊天记录只在当前页面展示。服务重启后需要重新提交库存。

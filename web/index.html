@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fridge to Meal · Kitchen</title>
+<link rel="stylesheet" href="/style.css"><script defer src="/app.js"></script>
+</head>
+<body>
+<header><div class="brand"><span class="brandmark" aria-hidden="true">✳</span> Fridge to Meal</div><span>Kitchen workspace</span></header>
+<main>
+<h1>What’s in your fridge<span>?</span></h1>
+<div class="layout">
+<form id="kitchen"><fieldset id="fields" disabled>
+<section><div class="section-head"><h2>Your pantry</h2><button type="button" id="example" class="link">Load example</button></div>
+<div id="rows"></div><button class="add" id="add" type="button">＋ Add ingredient</button></section>
+<section><h2>Meal preferences</h2><div class="pair"><label>Servings<input required type="number" min="1" step="1" id="servings" value="2"></label><label>Planning date<input required type="date" id="date"></label></div>
+<p class="label">Dietary restrictions</p><div id="restrictions"></div>
+<label>Favorite ingredients<input id="likes" placeholder="e.g. tofu, spinach"></label>
+</section>
+<button class="primary" id="recommend">Find recipes <span>→</span></button>
+</fieldset></form>
+<aside><div class="section-head"><h2>Meal notebook</h2><span aria-hidden="true" class="dot"></span></div>
+<div id="history" role="log" aria-live="polite"><div id="empty"><div class="plate" aria-hidden="true">✳</div><h3>Your recipes go here</h3><p>Add your ingredients or load the example, then select Find recipes.</p></div></div>
+<form id="chat"><label for="message">Ask a follow-up</label><div class="compose"><input id="message" placeholder="Make it for two people…" required disabled><button aria-label="Send follow-up" id="send" disabled>↑</button></div></form>
+</aside></div><p id="status" role="status"></p>
+</main>
+<template id="row"><div class="ingredient"><label>Name<input class="name" placeholder="Ingredient" required></label><label>Amount<input class="qty" type="number" step="any" min="0" required></label><label>Unit<select class="unit"></select></label><label>Expires<input class="expiry" type="date"></label><button class="remove" type="button" aria-label="Remove ingredient">×</button></div></template>
+</body></html>

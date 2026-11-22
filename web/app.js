@@ -1,0 +1,124 @@
+"use strict";
+const el = id => document.getElementById(id);
+const key = sessionStorage.mealKey || crypto.randomUUID().replaceAll("-", "");
+sessionStorage.mealKey = key;
+let config, busy = true, ready = false, dirty = false;
+
+async function api(path, body) {
+  const response = await fetch(path, {
+    method: body ? "POST" : "GET",
+    headers: {"X-Meal-Session": key, "Content-Type": "application/json"},
+    body: body && JSON.stringify(body)
+  });
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.error || "Request failed.");
+  return data;
+}
+function controls() {
+  el("fields").disabled = busy;
+  el("message").disabled = el("send").disabled = busy || !ready || dirty;
+}
+function edited() {
+  dirty = true;
+  controls();
+  el("status").textContent = "Select Find recipes to apply your changes.";
+}
+function addRow(item = {}) {
+  const row = el("row").content.firstElementChild.cloneNode(true);
+  const unit = row.querySelector(".unit");
+  config.units.forEach(value => unit.add(new Option(value, value)));
+  unit.value = item.unit || "g";
+  row.querySelector(".name").value = item.name || "";
+  row.querySelector(".qty").value = item.quantity ?? "";
+  row.querySelector(".expiry").value = item.expires_on || "";
+  row.querySelector(".remove").onclick = () => { row.remove(); edited(); };
+  el("rows").append(row);
+}
+function populate(state) {
+  el("rows").replaceChildren();
+  (state.pantry ?? [{}]).forEach(addRow);
+  el("servings").value = state.servings ?? 2;
+  el("date").value = state.as_of_date || new Date(Date.now() - new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);
+  el("likes").value = state.preferences.likes.join(", ");
+  for (const box of el("restrictions").querySelectorAll("input"))
+    box.checked = state.preferences.dietary_restrictions.includes(box.value);
+}
+function requestFromForm() {
+  return {
+    pantry: Array.from(el("rows").children, row => ({
+      name: row.querySelector(".name").value.trim(), quantity: row.querySelector(".qty").valueAsNumber,
+      unit: row.querySelector(".unit").value, expires_on: row.querySelector(".expiry").value || null
+    })),
+    preferences: {
+      dietary_restrictions: Array.from(el("restrictions").querySelectorAll(":checked"), box => box.value),
+      likes: el("likes").value.split(",").map(s => s.trim()).filter(Boolean)
+    },
+    servings: el("servings").valueAsNumber, as_of_date: el("date").value
+  };
+}
+const titles = {recommended:"Recipe recommendation", no_feasible_recipe:"No matching recipe",
+  needs_clarification:"A question for you", tool_error:"Search unavailable"};
+function entry(title, text, meta) {
+  el("empty")?.remove();
+  const article = document.createElement("article");
+  article.className = "entry";
+  const heading = document.createElement("small");
+  heading.textContent = title;
+  const p = document.createElement("p");
+  p.textContent = text;
+  article.append(heading, p);
+  if (meta) {
+    const details = document.createElement("details"), summary = document.createElement("summary");
+    summary.textContent = "Run details";
+    details.append(summary, document.createTextNode(meta));
+    article.append(details);
+  }
+  el("history").append(article);
+  el("history").scrollTop = el("history").scrollHeight;
+}
+async function submit(body) {
+  if (busy) return;
+  busy = true;
+  controls();
+  el("status").textContent = "Checking your pantry and finding recipes…";
+  try {
+    const run = await api("/api/turn", body);
+    if (body.message) entry("You", body.message);
+    const result = run.result;
+    entry(titles[result.status] || "Meal assistant", result.message,
+      [...result.recipe_ids, run.metrics.model_calls + " model calls", run.metrics.elapsed_seconds + " s"].join(" · "));
+    // Preserve editable input on a rejected pantry update so it can be corrected.
+    if (!body.update || result.status !== "needs_clarification") {
+      populate(run.request);
+      dirty = false;
+    }
+    ready = run.request.pantry !== null;
+    el("message").value = "";
+    el("status").textContent = "";
+  } catch (error) {
+    el("status").textContent = error.message;
+  } finally {
+    busy = false;
+    controls();
+  }
+}
+el("add").onclick = () => { addRow(); edited(); };
+el("example").onclick = () => { populate(config.example); edited(); };
+el("kitchen").oninput = edited;
+el("kitchen").onsubmit = event => { event.preventDefault(); submit({update:requestFromForm()}); };
+el("chat").onsubmit = event => { event.preventDefault(); const message = el("message").value.trim(); if (message) submit({message}); };
+async function start() {
+  try {
+    config = await api("/api/kitchen");
+    for (const value of config.restrictions) {
+      const label = document.createElement("label"), box = document.createElement("input");
+      box.type = "checkbox"; box.value = value; label.append(box, document.createTextNode(value));
+      el("restrictions").append(label);
+    }
+    populate(config.state);
+    ready = config.state.pantry !== null;
+    busy = false;
+    controls();
+  } catch (error) { el("status").textContent = error.message; }
+}
+start();

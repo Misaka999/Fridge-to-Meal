@@ -13,7 +13,7 @@ from typing import Literal, TypedDict
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, ToolMessage
 from langchain_openai import ChatOpenAI
 from langgraph.graph import END, START, MessagesState, StateGraph
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ValidationError
 
 from agent.tools.mock_recipes import failing_search, search_recipes as mock_search_recipes
 from agent.model_client import load_project_env
@@ -174,9 +174,21 @@ def parse_response(state: ReactState) -> MealResponse:
     text = state["messages"][-1].text.strip()
     if text.startswith(("```json\n", "```\n")) and text.endswith("```"):
         text = text.split("\n", 1)[1][:-3].strip()
-    response = MealResponse.model_validate_json(text)
-
     observed = state["search_result"]
+    try:
+        response = MealResponse.model_validate_json(text)
+    except ValidationError as exc:
+        if observed is None or observed.status != "no_match":
+            raise
+        errors = exc.errors(include_input=False, include_url=False)
+        if len(errors) != 1 or errors[0]["loc"] != ("message",) or errors[0]["type"] != "missing":
+            raise
+        answer = json.loads(text)
+        if answer["status"] != "no_feasible_recipe" or answer["recipe_ids"] != []:
+            raise
+        answer["message"] = "No recipe in the searched catalogue matches your current request."
+        response = MealResponse.model_validate(answer)
+
     if observed is None:
         raise ValueError("DeepSeek answered without searching the recipe inventory.")
     if observed.error_code in CLARIFICATION_CODES:
@@ -252,6 +264,8 @@ def main() -> int:
     source.add_argument("--mock", action="store_true", help="Use the original spinach-tofu mock.")
     source.add_argument("--mock-error", action="store_true", help="Simulate a recipe search failure.")
     parser.add_argument("--trace", action="store_true", help="Write metrics and tool calls to standard error.")
+    parser.add_argument("--chat", action="store_true", help="Continue with session updates and follow-up messages.")
+    parser.add_argument("--session-id", default="cli", help="Session name for interactive mode.")
     args = parser.parse_args()
     try:
         raw = sys.stdin.read() if args.request == "-" else Path(args.request).read_text(encoding="utf-8-sig")
@@ -262,7 +276,10 @@ def main() -> int:
             search = failing_search
         elif args.mock:
             search = mock_search_recipes
-        run = run_agent(json.loads(raw.lstrip("\ufeff")), search=search)
+        request = json.loads(raw.lstrip("\ufeff"))
+        if args.chat:
+            return chat(request, search=search, session_id=args.session_id, trace=args.trace)
+        run = run_agent(request, search=search)
     except Exception as exc:
         print(f"{type(exc).__name__}: {exc}", file=sys.stderr)
         return 1
@@ -271,6 +288,38 @@ def main() -> int:
     if args.trace:
         print(json.dumps({"metrics": run["metrics"], "tool_trace": run["tool_trace"]}), file=sys.stderr)
     return 0
+
+
+def chat(request, *, search, session_id, trace):
+    from agent.session import MealSessions
+
+    sessions = MealSessions(search=search)
+
+    def display(run):
+        print(json.dumps(run["result"], ensure_ascii=True))
+        if trace:
+            print(json.dumps({key: run[key] for key in ("metrics", "tool_trace", "request")}), file=sys.stderr)
+
+    display(sessions.run_turn(session_id, request))
+    print("Enter a follow-up or JSON update. Commands: /state, /reset, /exit", file=sys.stderr)
+    while True:
+        try:
+            text = input("> ").strip()
+        except (EOFError, KeyboardInterrupt):
+            return 0
+        if text == "/exit":
+            return 0
+        if text == "/reset":
+            sessions.reset(session_id)
+            print("Session cleared.", file=sys.stderr)
+        elif text == "/state":
+            print(json.dumps(sessions.get_state(session_id), ensure_ascii=True))
+        elif text:
+            try:
+                run = sessions.run_turn(session_id, json.loads(text)) if text.startswith("{") else sessions.run_turn(session_id, message=text)
+                display(run)
+            except Exception as exc:
+                print(f"{type(exc).__name__}: {exc}", file=sys.stderr)
 
 
 if __name__ == "__main__":
