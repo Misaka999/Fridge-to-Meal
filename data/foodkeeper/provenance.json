@@ -1,0 +1,13 @@
+{
+  "publisher_attribution": "USDA FSIS FoodKeeper",
+  "official_url": "https://www.fsis.usda.gov/shared/data/EN/foodkeeper.json",
+  "official_catalogue": "https://catalog.data.gov/dataset/fsis-foodkeeper-data",
+  "retrieved_from": "https://github.com/haggman/A4I2026-challenge-2-food-equity/blob/main/data/foodkeeper.json",
+  "mirror_blob_sha": "84210eb712fcfa71dd01e1480e43fda18e249fbf",
+  "retrieved_on": "2026-11-21",
+  "sha256": "e84caab9d4b603209e31d21d5027c41d29adfecbca7051ff7322e9fb0226c01d",
+  "bytes": 583163,
+  "official_fetch_status": "HTTP 403; this is a mirrored archive, not authenticated as the current official release.",
+  "use": "General storage guidance only, no safety guarantee.",
+  "snapshot_format": "Third-party product_data export; not asserted to be byte-identical to the upstream JSON."
+}

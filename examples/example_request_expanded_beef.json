@@ -1,0 +1,28 @@
+{
+  "pantry": [
+    {
+      "name": "lean ground beef",
+      "quantity": 500,
+      "unit": "g",
+      "expires_on": "2026-11-19"
+    },
+    {
+      "name": "medium potato",
+      "quantity": 4,
+      "unit": "count",
+      "expires_on": null
+    },
+    {
+      "name": "medium onion",
+      "quantity": 4,
+      "unit": "count",
+      "expires_on": null
+    }
+  ],
+  "servings": 4,
+  "preferences": {
+    "dietary_restrictions": [],
+    "likes": []
+  },
+  "as_of_date": "2026-11-18"
+}

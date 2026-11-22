@@ -9,13 +9,14 @@ ALIASES = {
  'spring onions':'green onion', 'green onions':'green onion', 'onions':'onion',
  'olive oil':'oil', 'vegetable oil':'oil', 'cooking oil':'oil', 'wesson oil':'oil',
  'spinach leaves':'spinach', 'fresh spinach':'spinach', 'baby spinach':'spinach',
- 'chicken breast':'chicken', 'cooked rice':'rice',
+ 'chicken breast':'chicken',
  'black pepper':'pepper', 'ground black pepper':'pepper',
  'unsalted butter':'butter', 'salted butter':'butter',
  'diced red apples':'diced apple', 'diced apples':'diced apple',
  'walnut pieces':'walnut', 'walnuts':'walnut',
 }
 RETRIEVAL_VARIANTS = {
+ 'cooked rice':'rice',
  'firm tofu':'tofu', 'extra firm tofu':'tofu', 'soft tofu':'tofu', 'silken tofu':'tofu',
  'red onion':'onion', 'yellow onion':'onion', 'medium sweet potato':'sweet potato',
  'diced apple':'apple', 'sliced carrot':'carrot',

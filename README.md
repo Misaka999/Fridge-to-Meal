@@ -113,3 +113,16 @@ state = sessions.get_state("user-a")
 选择 **Load example** 会填入 Glazed Carrots 样例的库存和参考日期。点击 **Find recipes** 才会提交给 ReAct。可直接在表格中增加、修改或删除食材，再次提交即更新本轮库存。推荐完成后，在 **Ask a follow-up** 输入“改成两人份”，可观察人数和结果变化。点击 **Run details** 可查看菜谱 ID、模型调用次数和耗时。
 
 同一标签页刷新后会恢复已提交的库存和偏好，聊天记录只在当前页面展示。服务重启后需要重新提交库存。
+
+## Yangyang: tools and Plan-and-Replan
+
+The additional Plan-and-Replan implementation, conservative RecipeNLG parsing, FoodKeeper archive lookup, and member test partitions are documented in [the integration handoff](docs/YANGYANG_HANDOFF.md). See [architecture](docs/ARCHITECTURE.md) and [interfaces](docs/INTEGRATION.md).
+
+```sh
+python plan_replan_agent.py examples/example_request_expanded_pasta.json --trace
+python -m unittest discover -s tests -q
+python -m eval.evaluate_project --check-only
+python -m eval.evaluate_safety --check-only
+```
+
+The included expanded catalogue has 20 source-linked records; it does not provide complete RecipeNLG coverage. Automatically parsed records are not human-reviewed. FoodKeeper is a pinned third-party archive with explicit provenance, not a safety guarantee. Large CSV/index files, credentials and evaluation results are not included. The existing ReAct entry point and its default historical catalogue are preserved.

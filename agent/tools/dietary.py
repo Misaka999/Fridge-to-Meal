@@ -22,3 +22,17 @@ def detected_conflicts(ingredients, restrictions):
             if re.search(r'\b' + re.escape(term) + r'(?:s|es)?\b', text):
                 result.append({'restriction':restriction, 'ingredient_term':term})
     return result
+
+
+def preparation_conflicts(steps,restrictions):
+    """Flag known banned additions in preparation clauses, not arbitrary role claims.
+
+This is a conservative second check, not a complete language or allergy parser.
+"""
+    findings=[]
+    for step in steps:
+        for match in re.finditer(r'\b(?:add|stir in|mix in|top with|garnish with|coat with|spread)\b[^.!?]{0,120}',step,re.I):
+            prefix=step[max(0,match.start()-18):match.start()].lower()
+            if re.search(r'(?:do not|don\x27t|never)\s*$',prefix):continue
+            findings.extend(detected_conflicts([match.group(0)],restrictions))
+    return findings

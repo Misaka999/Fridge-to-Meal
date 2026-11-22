@@ -1,54 +1,89 @@
-# Compatibility with the repository README
+# Local integration: Yangyang contribution and unchanged ReAct
 
-The root `react_agent.run_agent` now uses Yangyang's search tool. The evaluator calls it through `eval.agent_adapter:run`. See the [root README](../README.md) for commands to run both from the project root.
+## Shared tools and source pools
 
-## Compatible boundary
-
-The real search function accepts exactly the documented keyword arguments:
-
-```python
-from agent.tools.recipe_search import search_recipes
-
-# Inside the teammate's Agent integration:
-run = run_agent(request, model=model, search=search_recipes)
-```
-
-`found`, `no_match`, and genuine `RECIPE_SEARCH_FAILED` responses follow the agreed shared interface. Ingredients in `found` are already scaled to the requested servings. For deterministic testing without the full CSV, bind the reviewed catalogue:
+`agent.tools.recipe_search.search_recipes` takes the agreed four keyword fields:
+`pantry`, `servings`, `preferences`, `as_of_date`. Found candidates already have
+scaled ingredient amounts. The source pool may be the original three-record
+Week 6 catalogue or the 20-record expanded catalogue; a comparison must give
+both versions the same pool for each case.
 
 ```python
 from functools import partial
-from pathlib import Path
 from agent.tools.recipe_search import load_recipes, search_recipes
 
-recipes = load_recipes(recipe_file=Path('data/recipes_recipenlg.json'))
-real_search = partial(search_recipes, recipes=recipes)
-run = run_agent(request, model=model, search=real_search)
+recipes = load_recipes(recipe_file='data/recipes_expanded.json')
+search = partial(search_recipes, recipes=recipes)
 ```
 
-The spinach/tofu example in `examples/example_request_mock.json` belongs to the mock/legacy catalogue, so it is not expected to return the same ID from the new real-source catalogue. Use `examples/example_request_real.json` for the checked real-source example.
+## Agent boundaries
 
-## Differences that must be handled in the Agent
+The teammate's `react_agent.py` remains unchanged. Its default three-record
+catalogue is preserved; pass the real search above or use --recipe-file to
+select another source pool.
 
-- `INPUT_INCOMPLETE`: return `needs_clarification`, not `tool_error`.
-- `RECIPE_DETAILS_UNVERIFIED`: raw recipe information requires checking; return clarification, never invent yield or claim feasibility.
-- `NO_RETRIEVAL_MATCH`: return `needs_clarification` and explain that retrieval found no records.
-- `REQUEST_STATE_MISMATCH`: the bound registry prevents model-invented pantry changes.
-- The root Agent should validate unknown serving count before calling the tool, as its README already describes. Dietary labels and unit conversions can require further clarification after a tool call.
+```python
+from react_agent import run_agent as run_react
+from agent.plan_replan import run_agent as run_plan
 
-The ReAct runner distinguishes these cases by error code. A genuine search failure can be retried once.
+react_run = run_react(request, search=search)
+plan_run = run_plan(request, context={'recipes': recipes})
+```
 
-## Evaluation envelope
+Both return `{result, metrics, tool_trace}`. Final result fields are `status`,
+`recipe_ids`, `message`. Evaluation adapters map them to `{answer, metrics, trace}`.
+The ReAct trace mainly contains tools; plan traces also include explicit plans,
+model usage, validation and any display-order normalization.
 
-The root README documents `{result, metrics, tool_trace}`. The adapter maps it to what `evaluate.py` expects:
+## Clarification and source limits
 
-| Root runner | Evaluation runner |
-|---|---|
-| result | answer |
-| metrics | metrics |
-| tool_trace | trace |
+- INPUT_INCOMPLETE: missing inventory, incompatible units, unknown labels or storage metadata.
+- RECIPE_DETAILS_UNVERIFIED: raw source details cannot be reliably established.
+- NO_RETRIEVAL_MATCH: bounded search missed records; not proof no recipe exists.
+- FOODKEEPER_UNAVAILABLE: genuine storage-source failure.
+- RECIPE_SEARCH_FAILED: genuine recipe-tool failure.
 
-Metrics record actual `model_calls`, `input_tokens`, `output_tokens` and `total_tokens`. Missing token counts remain unknown. The adapter binds `context['recipes']` so both runners see the same candidate collection.
+Clarification and operational failure remain distinct. The teammate already
+handles the common clarification codes; do not modify ReAct silently to hide
+model-format failures. Its known missing-message behavior is documented.
 
-## Running from the project root
+## Optional storage metadata
 
-See the [offline checks](README.md#run-without-the-full-dataset-or-api-credentials) and [root README](../README.md).
+A pantry item may include storage fields:
+
+```json
+{
+  "name": "eggs",
+  "quantity": 6,
+  "unit": "count",
+  "expires_on": null,
+  "storage": {
+    "product_id": "21",
+    "condition": "refrigerator",
+    "stage": "purchase",
+    "reference_date": "2026-11-01",
+    "stored_as_directed": true
+  }
+}
+```
+
+Use actual user-confirmed values; this is an illustrative input, not a real
+pantry record or an assurance of safety. Missing variety, condition, stage or
+date leads to clarification. Explicit expires_on is not overwritten. Quality
+guidance can inform priority but is not stored as an expiry date. Official
+FoodKeeper fetch returned 403; the local archive provenance is explicit.
+
+## Current state versus persistent sessions
+
+Plan-and-replan can receive explicit full request_updates snapshots from a
+caller and invalidates old candidates before searching revised conditions.
+It does not implement Shuhua's natural-language update parsing, authentication,
+persistent inventory or hosted UI. Recipe text never authorizes a pantry write.
+
+## Display and experiment interpretation
+
+The plan Agent uses validated tool facts for quantities and clarification
+wording. Baseline and unchanged ReAct produce their own prose. This comparison
+is of whole pipelines, not an isolated causal study of the planning pattern.
+Narrative/cooking completeness still requires review. Do not interpret a
+structured-grader pass rate as full meal-planning quality.

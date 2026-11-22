@@ -153,7 +153,11 @@ def matching_reviewed_records(records):
         for record in records:
             row = conn.execute("SELECT payload FROM recipes WHERE json_extract(payload, '$.id')=? LIMIT 1",
                                (record['id'],)).fetchone()
-            if row and hashlib.sha256(row[0].encode()).hexdigest() == record.get('raw_record_sha256'):
+            if not row:
+                continue
+            raw_match=hashlib.sha256(row[0].encode()).hexdigest()==record.get('raw_record_sha256')
+            parsed_match=hashlib.sha256(json.dumps(json.loads(row[0]),sort_keys=True).encode()).hexdigest()==record.get('source_record_sha256')
+            if raw_match or parsed_match:
                 matched.append(record)
         return matched
 

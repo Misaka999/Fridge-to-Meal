@@ -1,0 +1,42 @@
+{
+  "pantry": [
+    {
+      "name": "lentils",
+      "quantity": 100,
+      "unit": "ml",
+      "expires_on": null
+    },
+    {
+      "name": "rice",
+      "quantity": 100,
+      "unit": "ml",
+      "expires_on": null
+    },
+    {
+      "name": "large onion",
+      "quantity": 1,
+      "unit": "count",
+      "expires_on": "2026-11-20"
+    },
+    {
+      "name": "oil",
+      "quantity": 50,
+      "unit": "ml",
+      "expires_on": null
+    },
+    {
+      "name": "salt",
+      "quantity": 3,
+      "unit": "ml",
+      "expires_on": null
+    }
+  ],
+  "servings": 2,
+  "preferences": {
+    "dietary_restrictions": [
+      "vegan"
+    ],
+    "likes": []
+  },
+  "as_of_date": "2026-11-18"
+}
