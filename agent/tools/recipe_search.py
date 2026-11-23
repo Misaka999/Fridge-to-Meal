@@ -23,13 +23,13 @@ RESTRICTIONS = {
 }
 
 
-def load_recipes(request=None, recipe_file=None):
-    configured=recipe_file or os.environ.get('FRIDGE_RECIPE_FILE')
+def load_recipes(request=None, recipe_file=None, *, full_index=False):
+    configured=None if full_index else recipe_file or os.environ.get('FRIDGE_RECIPE_FILE')
     if not configured:
         from .recipenlg_store import matching_reviewed_records, retrieve
         if request is None:
             raise ValueError('CSV retrieval requires a request. Old fixture evaluations require an explicit FRIDGE_RECIPE_FILE.')
-        raw = [] if validate_request(request) else retrieve(request)
+        raw = [] if validate_request(request) else (retrieve(request,limit=24,prefer_titles=True) if full_index else retrieve(request))
         expanded_path=ROOT/'data/recipes_expanded.json'
         reviewed_path=expanded_path if expanded_path.exists() else ROOT/'data/recipes_recipenlg.json'
         reviewed = json.loads(reviewed_path.read_text(encoding='utf-8')) if reviewed_path.exists() else []

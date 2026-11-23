@@ -18,6 +18,20 @@ async function api(path, body) {
 function controls() {
   el("fields").disabled = busy;
   el("message").disabled = el("send").disabled = busy || !ready || dirty;
+  el("message").placeholder = busy ? "Please wait for the current request…"
+    : !ready ? "Select Find recipes first to start a conversation…"
+    : dirty ? "Select Find recipes to apply your changes first…"
+    : "Make it for two people…";
+}
+
+function sameMealRequest(a, b) {
+  if (!a || !b) return false;
+  const values = request => [
+    request.pantry?.map(item => [item.name, item.quantity, item.unit, item.expires_on ?? null]),
+    request.servings, request.preferences?.dietary_restrictions,
+    request.preferences?.likes, request.as_of_date
+  ];
+  return JSON.stringify(values(a)) === JSON.stringify(values(b));
 }
 function edited() {
   dirty = true;
@@ -102,10 +116,11 @@ async function submit(body) {
     const run = await api("/api/turn", body);
     if (body.message) entry("You", body.message);
     const result = run.result;
-    entry(titles[result.status] || "Meal assistant", result.message,
+    entry(run.display_title || titles[result.status] || "Meal assistant", result.message,
       [...result.recipe_ids, run.metrics.model_calls + " model calls", run.metrics.elapsed_seconds + " s"].join(" · "));
-    // Preserve editable input on a rejected pantry update so it can be corrected.
-    if (!body.update || result.status !== "needs_clarification") {
+    // A source clarification can still accept the submitted pantry. Only retain
+    // dirty input when the server did not accept that request snapshot.
+    if (!body.update || result.status !== "needs_clarification" || sameMealRequest(body.update, run.request)) {
       populate(run.request);
       dirty = false;
     }
@@ -148,6 +163,7 @@ el("chat").onsubmit = event => { event.preventDefault(); const message = el("mes
 async function start() {
   try {
     config = await api("/api/kitchen");
+    el("catalogue-status").textContent = config.catalogue?.description || "";
     for (const value of config.restrictions) {
       const label = document.createElement("label"), box = document.createElement("input");
       box.type = "checkbox"; box.value = value; label.append(box, document.createTextNode(value));

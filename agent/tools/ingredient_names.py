@@ -3,7 +3,7 @@ import re
 import unicodedata
 
 ALIASES = {
- 'eggs':'egg', 'tomatoes':'tomato', 'potatoes':'potato', 'carrots':'carrot',
+ 'eggs':'egg', 'tomatoes':'tomato', 'tomatos':'tomato', 'potatoes':'potato', 'carrots':'carrot',
  'peanuts':'peanut', 'sweet potatoes':'sweet potato', 'soybean curd':'tofu',
  'soya sauce':'soy sauce', 'scallions':'green onion', 'scallion':'green onion',
  'spring onions':'green onion', 'green onions':'green onion', 'onions':'onion',
@@ -16,6 +16,8 @@ ALIASES = {
  'walnut pieces':'walnut', 'walnuts':'walnut',
 }
 RETRIEVAL_VARIANTS = {
+ 'chicken breasts':'chicken', 'boneless chicken breast':'chicken',
+ 'boneless chicken breasts':'chicken',
  'cooked rice':'rice',
  'firm tofu':'tofu', 'extra firm tofu':'tofu', 'soft tofu':'tofu', 'silken tofu':'tofu',
  'red onion':'onion', 'yellow onion':'onion', 'medium sweet potato':'sweet potato',
