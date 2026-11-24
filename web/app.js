@@ -42,8 +42,8 @@ function controls() {
   el("fields").disabled = busy;
   el("message").disabled = el("send").disabled = busy || !ready || dirty;
   el("message").placeholder = busy ? "Please wait for the current request…"
-    : !ready ? "Select Find recipes first to start a conversation…"
-    : dirty ? "Select Find recipes to apply your changes first…"
+    : !ready ? "Select Find recipes first…"
+    : dirty ? "Select Find recipes to apply your changes…"
     : "Make it for two people…";
 }
 
@@ -65,12 +65,42 @@ function today() {
   const now = new Date();
   return new Date(now - now.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
 }
+function displayDate(iso) {
+  if (!iso) return "";
+  const [year, month, day] = iso.split("-");
+  return `${month}/${day}/${year}`;
+}
+function isoDate(value) {
+  const match = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(value.trim());
+  if (!match || match[3] === "0000") return null;
+  const [, month, day, year] = match;
+  const iso = `${year}-${month}-${day}`;
+  return new Date(iso).toJSON()?.slice(0, 10) === iso ? iso : null;
+}
+function validateFields(fields) {
+  for (const field of fields) {
+    field.setCustomValidity("");
+    if (field.matches(".qty, #servings")) {
+      const amount = field.valueAsNumber;
+      const portions = field.id === "servings";
+      if (portions ? !Number.isInteger(amount) || amount < 1 : !Number.isFinite(amount) || amount < 0)
+        field.setCustomValidity(portions ? "Enter a whole number of servings greater than zero." : "Enter an amount of zero or more.");
+    } else if (field.matches(".name") && !field.value.trim()) {
+      field.setCustomValidity("Enter an ingredient name.");
+    } else if (field.matches(".expiry, #date") && (field.required || field.value.trim()) && !isoDate(field.value)) {
+      field.setCustomValidity("Enter a valid date in mm/dd/yyyy format, for example 11/23/2026.");
+    }
+    if (!field.reportValidity()) return false;
+  }
+  return true;
+}
 function markExpiry(row) {
-  const expiry = row.querySelector(".expiry").value;
-  row.querySelector(".expired").hidden = !expiry || !el("date").value || expiry >= el("date").value;
+  const expiry = isoDate(row.querySelector(".expiry").value);
+  const planningDate = isoDate(el("date").value);
+  row.querySelector(".expired").hidden = !expiry || !planningDate || expiry >= planningDate;
 }
 function fridgeEdited() {
-  el("fridge-status").textContent = "Save fridge to keep these ingredients for next time.";
+  el("fridge-status").textContent = "Select Save fridge to keep these ingredients for your next visit.";
   edited();
 }
 function addRow(item = {}) {
@@ -80,7 +110,7 @@ function addRow(item = {}) {
   unit.value = item.unit || "g";
   row.querySelector(".name").value = item.name || "";
   row.querySelector(".qty").value = item.quantity ?? "";
-  row.querySelector(".expiry").value = item.expires_on || "";
+  row.querySelector(".expiry").value = displayDate(item.expires_on);
   row.querySelector(".remove").onclick = () => { row.remove(); fridgeEdited(); };
   el("rows").append(row);
   markExpiry(row);
@@ -88,7 +118,7 @@ function addRow(item = {}) {
 function populate(state) {
   el("rows").replaceChildren();
   el("servings").value = state.servings ?? 2;
-  el("date").value = state.as_of_date || today();
+  el("date").value = displayDate(state.as_of_date || today());
   (state.pantry ?? [{}]).forEach(addRow);
   el("likes").value = state.preferences.likes.join(", ");
   for (const box of el("restrictions").querySelectorAll("input"))
@@ -97,7 +127,7 @@ function populate(state) {
 function pantryFromForm() {
   return Array.from(el("rows").children, row => ({
       name: row.querySelector(".name").value.trim(), quantity: row.querySelector(".qty").valueAsNumber,
-      unit: row.querySelector(".unit").value, expires_on: row.querySelector(".expiry").value || null
+      unit: row.querySelector(".unit").value, expires_on: isoDate(row.querySelector(".expiry").value)
     }));
 }
 function requestFromForm() {
@@ -107,7 +137,7 @@ function requestFromForm() {
       dietary_restrictions: Array.from(el("restrictions").querySelectorAll(":checked"), box => box.value),
       likes: el("likes").value.split(",").map(s => s.trim()).filter(Boolean)
     },
-    servings: el("servings").valueAsNumber, as_of_date: el("date").value
+    servings: el("servings").valueAsNumber, as_of_date: isoDate(el("date").value)
   };
 }
 const titles = {recommended:"Recipe recommendation", no_feasible_recipe:"No matching recipe",
@@ -269,29 +299,28 @@ async function submit(body) {
 }
 el("add").onclick = () => { addRow(); fridgeEdited(); };
 el("rows").oninput = event => {
-  if (event.target.matches(".name")) event.target.setCustomValidity("");
   markExpiry(event.target.closest(".ingredient"));
   fridgeEdited();
 };
 el("date").oninput = () => Array.from(el("rows").children).forEach(markExpiry);
 el("save-fridge").onclick = () => {
-  for (const row of el("rows").children) {
-    const name = row.querySelector(".name");
-    name.setCustomValidity(name.value.trim() ? "" : "Enter an ingredient name.");
-    for (const field of row.querySelectorAll("input,select")) {
-      if (!field.reportValidity()) return;
-    }
-  }
+  if (!validateFields(el("rows").querySelectorAll("input"))) return;
   try {
     localStorage.setItem(fridgeKey, JSON.stringify(pantryFromForm()));
     el("fridge-status").textContent = "Fridge saved in this browser.";
   } catch {
-    el("fridge-status").textContent = "Could not save. Check browser storage settings.";
+    el("fridge-status").textContent = "Could not save. Check your browser storage settings.";
   }
 };
 el("example").onclick = () => { populate(config.example); fridgeEdited(); };
-el("kitchen").oninput = edited;
-el("kitchen").onsubmit = event => { event.preventDefault(); submit({update:requestFromForm()}); };
+el("kitchen").oninput = event => {
+  event.target.setCustomValidity("");
+  edited();
+};
+el("kitchen").onsubmit = event => {
+  event.preventDefault();
+  if (validateFields(el("kitchen").querySelectorAll("input"))) submit({update:requestFromForm()});
+};
 el("chat").onsubmit = event => { event.preventDefault(); const message = el("message").value.trim(); if (message) submit({message}); };
 async function start() {
   try {
@@ -316,10 +345,10 @@ async function start() {
         view.as_of_date = today();
         dirty = JSON.stringify(pantry) !== JSON.stringify(config.state.pantry) ||
           view.as_of_date !== config.state.as_of_date;
-        el("fridge-status").textContent = "Saved fridge loaded for today.";
+        el("fridge-status").textContent = "Saved fridge loaded. The planning date is set to today.";
       }
     } catch {
-      el("fridge-status").textContent = "Saved fridge unavailable. Check the ingredients before saving again.";
+      el("fridge-status").textContent = "Could not load your saved fridge. Check the ingredients before saving again.";
     }
     populate(view);
     ready = config.state.pantry !== null;

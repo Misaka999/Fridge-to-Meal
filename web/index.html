@@ -11,10 +11,10 @@
 <h1>What’s in your fridge<span>?</span></h1>
 <p id="catalogue-status" role="status"></p>
 <div class="layout">
-<form id="kitchen"><fieldset id="fields" disabled>
+<form id="kitchen" novalidate><fieldset id="fields" disabled>
 <section><div class="section-head"><h2>My fridge</h2><button type="button" id="example" class="link">Load example</button></div>
 <div id="rows"></div><div class="fridge-actions"><button class="add" id="add" type="button">＋ Add ingredient</button><button type="button" id="save-fridge">Save fridge</button></div><small id="fridge-status" role="status"></small></section>
-<section><h2>Meal preferences</h2><div class="pair"><label>Servings<input required type="number" min="1" step="1" id="servings" value="2"></label><label>Planning date<input required type="date" id="date"></label></div>
+<section><h2>Meal preferences</h2><div class="pair"><label>Servings<input required type="number" min="1" step="1" id="servings" value="2"></label><label>Planning date<input required type="text" id="date" placeholder="mm/dd/yyyy" maxlength="10"></label></div>
 <p class="label">Dietary restrictions</p><div id="restrictions"></div>
 <label>Favorite ingredients<input id="likes" placeholder="e.g. tofu, spinach"></label>
 </section>
@@ -22,8 +22,8 @@
 </fieldset></form>
 <aside><div class="section-head"><h2>Meal notebook</h2><span aria-hidden="true" class="dot"></span></div>
 <div id="history" role="log" aria-live="polite"><div id="empty"><div class="plate" aria-hidden="true">✳</div><h3>Your recipes go here</h3><p>Add your ingredients or load the example, then select Find recipes.</p></div></div>
-<form id="chat"><label for="message">Ask a follow-up</label><div class="compose"><input id="message" placeholder="Make it for two people…" required disabled><button aria-label="Send follow-up" id="send" disabled>↑</button></div></form>
+<form id="chat" novalidate><label for="message">Ask a follow-up</label><div class="compose"><input id="message" placeholder="Make it for two people…" required disabled><button aria-label="Send follow-up" id="send" disabled>↑</button></div></form>
 </aside></div><p id="status" role="status"></p>
 </main>
-<template id="row"><div class="ingredient"><label>Name<input class="name" placeholder="Ingredient" required></label><label>Amount<input class="qty" type="number" step="any" min="0" required></label><label>Unit<select class="unit"></select></label><label>Expires <span class="expired" hidden>Expired</span><input class="expiry" type="date"></label><button class="remove" type="button" aria-label="Remove ingredient">×</button></div></template>
+<template id="row"><div class="ingredient"><label>Name<input class="name" placeholder="Enter an ingredient name" required></label><label>Amount<input class="qty" type="number" step="any" min="0" required></label><label>Unit<select class="unit"></select></label><label>Expires <span class="expired" hidden>Expired</span><input class="expiry" type="text" placeholder="mm/dd/yyyy" maxlength="10"></label><button class="remove" type="button" aria-label="Remove ingredient">×</button></div></template>
 </body></html>
