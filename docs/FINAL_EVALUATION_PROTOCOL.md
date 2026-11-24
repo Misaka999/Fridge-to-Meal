@@ -77,3 +77,16 @@ python -m eval.compare_review --full results/final_primary --conversations resul
 answers) to avoid re-preparing identical retrievals. `--resume` verifies frozen
 inputs/code before continuing. Full CSV, index, credentials and raw run results
 remain local and are not part of the source upload.
+
+## Audited reviewer-reference revision
+
+The first formal reviewer pass was retained and stopped after objective QC
+errors: expired food was treated as usable, required missing-input questions
+were penalized, and a source present outside the detailed subset was called
+invented. The revised pass retains the SAME tasks, outputs and quality gate,
+adds mechanically derived expiry/missing-input facts and a complete source
+ID/title index, and applies the clarification/no-usable contract explicitly to
+BOTH systems. All eligible saved outputs are re-reviewed under one revision;
+there is no selective re-review of only one architecture. The original partial
+reviews and their protocol are preserved separately. These final judge scores
+are an audited post-hoc reviewer revision, not an untouched first blind pass.

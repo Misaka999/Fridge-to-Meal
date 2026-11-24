@@ -54,10 +54,16 @@ def safety_review(payload):
 def full_payload(row,case,context):
     answer=row.get('answer') or {};ids=set(answer.get('recipe_ids') or [])
     selected=[r for r in context['recipes'] if r['id'] in ids]
+    text=' '.join(str(answer.get('message','')).casefold().split())
+    mentioned=[r for r in context['recipes'] if ' '.join(str(r.get('title','')).casefold().split()) in text]
+    seen={r['id'] for r in selected}
+    selected+= [r for r in mentioned if r['id'] not in seen][:6]
     if not selected:selected=context['recipes'][:6]
     output={'result':answer,'adapted_recipes':row.get('adapted_recipes',[]),'conditional_options':row.get('conditional_options',[])}
     payload=make_payload('',[{'role':'user','content':case['request']}],output,
                          {'state':case['request'],'mode':case['expectation']},selected)
+    payload['source_index']=[{'id':r['id'],'title':r.get('title')} for r in context['recipes']]
+    payload['source_detail_scope']='Complete ID/title index; detailed selected or mentioned records only. Do not infer absence from the detailed subset.'
     return payload
 
 

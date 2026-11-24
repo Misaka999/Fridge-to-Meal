@@ -21,6 +21,15 @@ Do not penalize portion size or minimal-use preferences that the user never requ
 Do not assume densities, clove/bulb conversions, missing seasonings, yields or authorization to consume inventory.
 An explicit ingredient conflict or impossible process is major, even when another option is good.
 Source servings may be unknown; clearly labeled proposed portions can still be valid. Exact ingredient budgets are authoritative.
+The reference mode is the task's required action, not an earlier system score:
+clarify requires a specific question for missing/invalid required inputs such as quantity or servings.
+Do NOT penalize that appropriate question for not proposing a recipe instead. Never guess the missing input.
+no_usable means the recorded food cannot be used, including expired lots. Do NOT treat expired food as available
+or demand a ready recipe from it. A truthful no-feasible answer is not a major context failure merely because
+it does not repeat the expiration reason; an explanation could be more helpful without being materially wrong.
+source_recipes may contain only detailed selected/referenced records. source_index, when supplied, lists ALL
+available IDs/titles. Absence from the detailed subset is NOT proof that a named source was invented.
+Do not make an exclusivity/absence claim without sufficient evidence; use uncertainty when sources are incomplete.
 Be cautious about uncertain cooking semantics; mark unassessable rather than inventing a conclusion.
 Return JSON with exactly assessments, uncertainties, overall_reason. assessments has exactly context_handling, helpfulness,
 consistency. Each has exactly severity, evidence_ids, reason. severity is none/minor/major/unassessable.
@@ -43,8 +52,27 @@ def visible(response):
 
 def make_payload(goal, history, response, reference, recipes):
     result=visible(response)
+    reference=deepcopy(reference)
+    from datetime import date
+    state=reference.get('state',{})
+    expired=[];nonexpired=[];unknown=[];date_errors=[]
+    try:as_of=date.fromisoformat(state.get('as_of_date',''))
+    except (TypeError,ValueError):as_of=None
+    for lot in state.get('pantry') or []:
+        if not isinstance(lot,dict):continue
+        quantity=lot.get('quantity')
+        if type(quantity) not in (int,float):unknown.append(lot.get('name'));continue
+        if quantity<=0:continue
+        expiry=lot.get('expires_on')
+        try:expiry=date.fromisoformat(expiry) if expiry else None
+        except (TypeError,ValueError):date_errors.append(lot.get('name'));continue
+        (expired if as_of and expiry and expiry<as_of else nonexpired).append(deepcopy(lot))
+    reference['objective_input_facts']={'recorded_expired_lots':expired,'recorded_nonexpired_positive_lots':nonexpired,
+        'unknown_quantity_items':unknown,'invalid_expiry_items':date_errors,
+        'missing_or_invalid_servings':type(state.get('servings')) is not int or state.get('servings',0)<1,
+        'inventory_rule':'Expired lots are unavailable; unknown quantities/servings require clarification, not guessed values.'}
     return {'conversation':deepcopy(history),'current_response':result,
-            'reference_facts':deepcopy(reference),'source_recipes':deepcopy(recipes),'evidence_lines':evidence_lines(result)}
+            'reference_facts':reference,'source_recipes':deepcopy(recipes),'evidence_lines':evidence_lines(result)}
 
 
 def validate(value,payload):

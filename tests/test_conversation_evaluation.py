@@ -86,6 +86,22 @@ class ConversationEvaluationTests(TestCase):
         result=validate(judgment('unassessable'),payload);self.assertTrue(result['needs_human_review'])
         self.assertEqual(set(result['scores'].values()),{None})
 
+    def test_judge_gets_objective_expiry_and_missing_input_facts(self):
+        state=deepcopy(CASE['initial']);state['servings']=None
+        state['pantry'][0]['expires_on']='2026-11-01'
+        payload=make_payload('',[],good(),{'state':state,'mode':'clarify'},RECIPES)
+        facts=payload['reference_facts']['objective_input_facts']
+        self.assertTrue(facts['missing_or_invalid_servings'])
+        self.assertEqual(facts['recorded_nonexpired_positive_lots'],[])
+        self.assertEqual(len(facts['recorded_expired_lots']),1)
+
+    def test_full_judge_reference_index_does_not_hide_named_sources(self):
+        from eval.compare_review import full_payload
+        row={'answer':{'status':'needs_clarification','recipe_ids':[],'message':'Fried Mushrooms is in the supplied pool.'},'adapted_recipes':[]}
+        payload=full_payload(row,{'request':CASE['initial'],'expectation':'clarify'},{'recipes':RECIPES})
+        self.assertEqual(len(payload['source_index']),len(RECIPES))
+        self.assertIn('recipenlg_683038',{r['id'] for r in payload['source_recipes']})
+
     def test_invalid_judge_is_retried_and_never_counts_as_a_perfect_answer(self):
         payload=make_payload('Meal goal',[],good(),CASE['turns'][0]['reference'],RECIPES)
         result=review(payload,call=lambda m:({}, {'model_calls':1},[]))
