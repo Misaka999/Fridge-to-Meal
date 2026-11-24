@@ -161,3 +161,15 @@ def render_adaptations(request,drafts):
         lines.append('\nWater is treated as a cooking utility, not as recorded food stock.')
     lines.append('\nIngredient amounts were checked against the current pantry. Each option is an alternative meal; recommending it does not deduct inventory.')
     return '\n'.join(lines)
+
+
+def adaptation_failure_message(request):
+    """Describe an unsuccessful attempt without exposing internal model errors.
+
+    A generation or validation failure is not evidence of insufficient stock.
+    The current request already passed input checks, so do not ask the user to
+    repeat known quantities. Detailed errors remain in the validation trace.
+    """
+    people = '1 person' if request['servings'] == 1 else f"{request['servings']} people"
+    return (f"I found related recipes, but couldn't complete a checked recommendation for {people}. "
+            "Your pantry is unchanged. You can ask to see one of the original recipes.")
