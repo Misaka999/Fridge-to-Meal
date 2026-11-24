@@ -9,7 +9,7 @@
 <header><div class="brand"><span class="brandmark" aria-hidden="true">✳</span> Fridge to Meal</div><span>Kitchen workspace</span></header>
 <main>
 <h1>What’s in your fridge<span>?</span></h1>
-<p id="catalogue-status" role="status"></p>
+<p id="catalogue-status" role="status" hidden></p>
 <div class="layout">
 <form id="kitchen" novalidate><fieldset id="fields" disabled>
 <section><div class="section-head"><h2>My fridge</h2><button type="button" id="example" class="link">Load example</button></div>
@@ -25,5 +25,5 @@
 <form id="chat" novalidate><label for="message">Ask a follow-up</label><div class="compose"><input id="message" placeholder="Make it for two people…" required disabled><button aria-label="Send follow-up" id="send" disabled>↑</button></div></form>
 </aside></div><p id="status" role="status"></p>
 </main>
-<template id="row"><div class="ingredient"><label>Name<input class="name" placeholder="Enter an ingredient name" required></label><label>Amount<input class="qty" type="number" step="any" min="0" required></label><label>Unit<select class="unit"></select></label><label>Expires <span class="expired" hidden>Expired</span><input class="expiry" type="text" placeholder="mm/dd/yyyy" maxlength="10"></label><button class="remove" type="button" aria-label="Remove ingredient">×</button></div></template>
+<template id="row"><div class="ingredient"><label>Name<input class="name" placeholder="Enter an ingredient name" required></label><label>Amount<input class="qty" type="number" step="any" min="0" required></label><label>Unit<select class="unit"></select></label><div class="expiry-field"><label>Expires <span class="expired" hidden>Expired</span><input class="expiry" type="text" placeholder="mm/dd/yyyy" maxlength="10"></label><button type="button" class="expiry-calendar" aria-label="Choose expiry date" title="Choose expiry date" aria-expanded="false">▦</button><div class="expiry-picker" hidden></div></div><button class="remove" type="button" aria-label="Remove ingredient">×</button></div></template>
 </body></html>

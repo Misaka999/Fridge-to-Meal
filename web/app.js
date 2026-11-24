@@ -103,6 +103,82 @@ function fridgeEdited() {
   el("fridge-status").textContent = "Select Save fridge to keep these ingredients for your next visit.";
   edited();
 }
+function bindExpiryCalendar(row, input) {
+  const panel = row.querySelector(".expiry-picker");
+  const toggle = row.querySelector(".expiry-calendar");
+  let month;
+  function close() {
+    panel.hidden = true;
+    toggle.setAttribute("aria-expanded", "false");
+  }
+  function choose(iso) {
+    close();
+    input.value = displayDate(iso);
+    input.dispatchEvent(new Event("input", {bubbles: true}));
+    toggle.focus();
+  }
+  function render() {
+    const button = (text, action, label) => {
+      const node = document.createElement("button");
+      node.type = "button";
+      node.textContent = text;
+      if (label) node.setAttribute("aria-label", label);
+      node.onclick = action;
+      return node;
+    };
+    const move = delta => {
+      month.setUTCMonth(month.getUTCMonth() + delta);
+      render();
+      panel.querySelector(delta < 0 ? "button" : ".next-month").focus();
+    };
+    const header = document.createElement("div");
+    header.className = "calendar-header";
+    const title = document.createElement("strong");
+    title.textContent = month.toLocaleDateString("en-US", {month: "long", year: "numeric", timeZone: "UTC"});
+    const next = button("›", () => move(1), "Next month");
+    next.className = "next-month";
+    header.append(button("‹", () => move(-1), "Previous month"), title, next);
+    const grid = document.createElement("div");
+    grid.className = "calendar-grid";
+    for (const day of ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]) {
+      const heading = document.createElement("span");
+      heading.textContent = day;
+      grid.append(heading);
+    }
+    for (let i = 0; i < month.getUTCDay(); i++) grid.append(document.createElement("span"));
+    const selected = isoDate(input.value);
+    const date = new Date(month);
+    while (date.getUTCMonth() === month.getUTCMonth()) {
+      const iso = date.toISOString().slice(0, 10);
+      const day = button(String(date.getUTCDate()), () => choose(iso), displayDate(iso));
+      if (iso === selected) day.className = "selected-day";
+      grid.append(day);
+      date.setUTCDate(date.getUTCDate() + 1);
+    }
+    const footer = document.createElement("div");
+    footer.className = "calendar-header";
+    footer.append(button("Clear", () => choose(null)), button("Today", () => choose(today())));
+    panel.replaceChildren(header, grid, footer);
+  }
+  toggle.onclick = () => {
+    if (!panel.hidden) return close();
+    month = new Date(isoDate(input.value) || today());
+    month.setUTCDate(1);
+    render();
+    panel.hidden = false;
+    toggle.setAttribute("aria-expanded", "true");
+  };
+  const field = toggle.parentElement;
+  field.addEventListener("focusout", event => {
+    if (event.relatedTarget && !field.contains(event.relatedTarget)) close();
+  });
+  field.addEventListener("keydown", event => {
+    if (event.key === "Escape" && !panel.hidden) {
+      close();
+      toggle.focus();
+    }
+  });
+}
 function addRow(item = {}) {
   const row = el("row").content.firstElementChild.cloneNode(true);
   const unit = row.querySelector(".unit");
@@ -110,7 +186,9 @@ function addRow(item = {}) {
   unit.value = item.unit || "g";
   row.querySelector(".name").value = item.name || "";
   row.querySelector(".qty").value = item.quantity ?? "";
-  row.querySelector(".expiry").value = displayDate(item.expires_on);
+  const expiry = row.querySelector(".expiry");
+  expiry.value = displayDate(item.expires_on);
+  bindExpiryCalendar(row, expiry);
   row.querySelector(".remove").onclick = () => { row.remove(); fridgeEdited(); };
   el("rows").append(row);
   markExpiry(row);
@@ -325,7 +403,11 @@ el("chat").onsubmit = event => { event.preventDefault(); const message = el("mes
 async function start() {
   try {
     config = await api("/api/kitchen");
-    el("catalogue-status").textContent = config.catalogue?.description || "";
+    if (config.catalogue?.mode === "full_index") {
+      const status = el("catalogue-status");
+      status.textContent = config.catalogue.description;
+      status.hidden = false;
+    }
     for (const value of config.restrictions) {
       const label = document.createElement("label"), box = document.createElement("input");
       box.type = "checkbox"; box.value = value; label.append(box, document.createTextNode(value));

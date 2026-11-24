@@ -16,3 +16,36 @@ aside{background:#f8f9ee}.dot{width:12px;height:12px;background:#dc783f;border-r
 .run-details ul, .run-details ol { margin: 3px 0 8px; padding-inline-start: 1.4em; }
 .run-details a { color: var(--green); overflow-wrap: anywhere; }
 .run-details .run-metrics { padding-top: 6px; border-top: 1px solid var(--line); }
+
+.expiry-field { position: relative; min-width: 0; }
+.expiry-field .expiry { padding-right: 32px; }
+.expiry-calendar {
+  position: absolute;
+  right: 3px;
+  bottom: 3px;
+  width: 26px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.expiry-picker {
+  position: absolute;
+  z-index: 2;
+  top: calc(100% + 4px);
+  right: 0;
+  width: min(280px, 84vw);
+  padding: 8px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px #0002;
+}
+.calendar-header { display: flex; align-items: center; justify-content: space-between; gap: 4px; }
+.calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; margin: 6px 0; }
+.calendar-grid span { font-size: .75rem; }
+.calendar-grid button { padding: 4px 0; border-color: transparent; font-size: .85rem; }
+.calendar-grid .selected-day { background: var(--green); color: white; }
+@media (max-width: 1050px) {
+  .ingredient .expiry-field { grid-row: 2; }
+}
