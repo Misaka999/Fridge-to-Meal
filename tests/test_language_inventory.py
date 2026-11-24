@@ -69,3 +69,21 @@ class LanguageInventoryTests(TestCase):
         sessions.run_turn('a',message='Forget adding oil')
         self.assertEqual(sessions.get_state('a'),request())
         self.assertEqual(sessions._pending_inventory.get('a',[]),[])
+
+class MealFlagShapeTests(TestCase):
+    def test_consistent_per_edit_flags_are_lifted_without_changing_amounts(self):
+        from agent.tools.language_inventory import normalize_meal_flag
+        value={'inventory_updates':[{'op':'add','name':'tomato','quantity':3,'unit':'count','use_in_meal':True},
+                                    {'op':'add','name':'oil','quantity':2,'unit':'tbsp','use_in_meal':True}]}
+        result=normalize_meal_flag(value)
+        self.assertIs(result['use_in_meal'],True)
+        self.assertEqual(result['inventory_updates'][0]['quantity'],3)
+        self.assertNotIn('use_in_meal',result['inventory_updates'][0])
+        self.assertIn('use_in_meal',value['inventory_updates'][0])
+
+    def test_conflicting_or_partial_flags_are_not_guessed(self):
+        from agent.tools.language_inventory import normalize_meal_flag
+        for flags in [(True,False),(True,None),('yes',True)]:
+            edits=[{'op':'add','name':name,**({'use_in_meal':flag} if flag is not None else {})}
+                   for name,flag in zip(['tomato','oil'],flags)]
+            with self.assertRaises(ValueError):normalize_meal_flag({'inventory_updates':edits})

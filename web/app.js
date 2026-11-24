@@ -403,11 +403,6 @@ el("chat").onsubmit = event => { event.preventDefault(); const message = el("mes
 async function start() {
   try {
     config = await api("/api/kitchen");
-    if (config.catalogue?.mode === "full_index") {
-      const status = el("catalogue-status");
-      status.textContent = config.catalogue.description;
-      status.hidden = false;
-    }
     for (const value of config.restrictions) {
       const label = document.createElement("label"), box = document.createElement("input");
       box.type = "checkbox"; box.value = value; label.append(box, document.createTextNode(value));

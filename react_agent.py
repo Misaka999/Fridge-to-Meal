@@ -312,7 +312,7 @@ def run_agent(request: dict, *, model=None, search: Callable[..., dict] | None =
         "tool_trace": [],
     })
     adapted=[]
-    from agent.recipe_adaptation import can_adapt, messages as adaptation_messages, validate_proposal, render_adaptations, adaptation_failure_message
+    from agent.recipe_adaptation import can_adapt, messages as adaptation_messages, validate_options, render_adaptations, adaptation_failure_message
     observed=state['search_result'].model_dump() if state['search_result'] is not None else None
     adapting=adapt_recipes and can_adapt(observed)
     if adapting:
@@ -322,7 +322,7 @@ def run_agent(request: dict, *, model=None, search: Callable[..., dict] | None =
             if text.startswith('```') and text.endswith('```'):
                 text=text.split('\n',1)[1][:-3].strip()
             try:
-                adapted=validate_proposal(json.loads(text),request,observed)
+                adapted,rejected=validate_options(json.loads(text),request,observed)
             except (ValueError,TypeError) as exc:
                 error=str(exc)
                 state['tool_trace'].append({'tool':'validate_adaptation',
@@ -333,14 +333,14 @@ def run_agent(request: dict, *, model=None, search: Callable[..., dict] | None =
                     state['messages'].append(reply);state['model_calls']+=1
             else:
                 state['tool_trace'].append({'tool':'validate_adaptation','attempt':attempt+1,
-                                           'result':{'valid':True,'adapted_recipes':adapted}})
+                                           'result':{'valid':True,'adapted_recipes':adapted,'rejected_options':rejected}})
                 break
         if adapted:
             result=MealResponse(status='recommended',recipe_ids=[d['source_recipe_id'] for d in adapted],
                                 message=render_adaptations(request,adapted))
         else:
             result=MealResponse(status='needs_clarification',recipe_ids=[],
-                                message=adaptation_failure_message(request))
+                                message=adaptation_failure_message(request,observed))
     usage = [message.usage_metadata for message in state["messages"] if isinstance(message, AIMessage)]
     metrics = {
         "model_calls": state["model_calls"],
@@ -363,6 +363,11 @@ def run_agent(request: dict, *, model=None, search: Callable[..., dict] | None =
     if on_event:
         on_event('text', result.message)
     output={"result": result.model_dump(), "metrics": metrics, "tool_trace": state["tool_trace"]}
+    if result.status=='needs_clarification' and observed:
+        from agent.grounded_messages import render_closest_options
+        _,conditional=render_closest_options(observed,include_records=True)
+        if conditional and all(option['title'] in result.message for option in conditional):
+            output['conditional_options']=conditional
     if adapted:
         output.update(adapted_recipes=adapted,display_title='Adjusted recipe suggestions')
     return output

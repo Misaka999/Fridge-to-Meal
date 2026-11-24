@@ -66,6 +66,10 @@ recipe is recommended. Do not ask users to type JSON or code. For cancellation
 of pending additions return exactly {"cancel_inventory":true}.
 Inventory availability does not mean an ingredient must be used in this meal.
 For inventory_updates, optionally add "use_in_meal":true ONLY when the user
+explicitly asks to use the new ingredients. This flag is a TOP-LEVEL sibling
+of inventory_updates, NEVER a field inside an ingredient edit. Example:
+{"inventory_updates":[{"op":"add","name":"tomato","quantity":3,"unit":"count"}],"use_in_meal":true}.
+Set it true when the user
 explicitly asks to use the new ingredients now, or false when they explicitly
 say to save them for later. Otherwise omit use_in_meal; code asks after quantities
 are known. "I have chicken" alone is not an instruction to use it in the meal.
@@ -184,6 +188,11 @@ class MealSessions:
                     self._pending_inventory.pop(session_id,None)
                     return self._clarify(session_id,state,'The pending ingredient changes were cancelled. Your pantry is unchanged.',extraction,started)
                 if "inventory_updates" in update:
+                    from .tools.language_inventory import normalize_meal_flag
+                    try:
+                        update=normalize_meal_flag(update)
+                    except ValueError as exc:
+                        return self._clarify(session_id,state,str(exc),extraction,started)
                     if set(update)-{'inventory_updates','use_in_meal'}:raise ValueError('Send inventory edits separately from preference changes.')
                     use_in_meal=update.get('use_in_meal')
                     if use_in_meal is not None and type(use_in_meal) is not bool:raise ValueError('Invalid meal-use choice.')

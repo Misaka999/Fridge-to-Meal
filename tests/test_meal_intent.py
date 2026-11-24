@@ -64,3 +64,18 @@ class MealIntentTests(TestCase):
     def test_adaptation_cannot_ignore_an_explicit_chicken_focus(self):
         r=adaptation_request();r['meal_ingredients']=['chicken'];r['pantry'].append({'name':'chicken','quantity':200,'unit':'g'})
         with self.assertRaisesRegex(ValueError,'user-selected'):validate_proposal(payload(),r,observed())
+
+    def test_nested_meal_use_flags_work_in_the_session(self):
+        model,sessions=self.create()
+        model.invoke.return_value=AIMessage(content='{"inventory_updates":[{"op":"add","name":"tomato","quantity":3,"unit":"count","use_in_meal":true},{"op":"add","name":"oil","quantity":2,"unit":"tbsp","use_in_meal":true}]}')
+        with patch('react_agent.run_agent',return_value=result()) as agent:
+            out=sessions.run_turn('a',message='I also have 3 tomatoes and 2 tbsp oil. Use them now.')
+        self.assertEqual(set(agent.call_args.kwargs['meal_ingredients']),{'tomato','oil'})
+        self.assertEqual(out['request']['pantry'][-1]['quantity'],2)
+
+    def test_conflicting_meal_flags_return_a_question_without_changing_pantry(self):
+        model,sessions=self.create();before=sessions.get_state('a')
+        model.invoke.return_value=AIMessage(content='{"inventory_updates":[{"op":"add","name":"tomato","quantity":3,"unit":"count","use_in_meal":true},{"op":"add","name":"oil","quantity":2,"unit":"tbsp","use_in_meal":false}]}')
+        out=sessions.run_turn('a',message='Add ingredients')
+        self.assertEqual(out['result']['status'],'needs_clarification')
+        self.assertEqual(sessions.get_state('a'),before)

@@ -57,6 +57,51 @@ def render_answer(request,observation,answer):
     return {'status':status,'recipe_ids':list(answer['recipe_ids']),'message':message}
 
 
+def render_closest_options(observation, *, include_records=False):
+    """Keep the closest dishes and their gaps visible when adaptation fails."""
+    from .adaptation_checks import safe_source_title, control_directive
+    options = observation.get('alternatives') or observation.get('near_matches') or observation.get('retrieved_candidates') or []
+    blocks = ['Closest recipe options (not yet confirmed ready to cook):']
+    seen = set()
+    records = []
+    def names(values):
+        return ', '.join(x for x in values if isinstance(x,str) and not control_directive(x))
+    for recipe in options:
+        rid = recipe.get('recipe_id')
+        if not isinstance(rid,str) or rid in seen:
+            continue
+        title = safe_source_title(recipe.get('title'),rid)
+        title_key = title.strip().casefold()
+        if title_key in seen:
+            continue
+        seen.update((rid,title_key))
+        block = [str(len(blocks))+'. '+title]
+        missing = names(recipe.get('missing_ingredients') or recipe.get('possible_missing_ingredients') or recipe.get('missing_ingredient_names') or [])
+        short = names(recipe.get('insufficient_quantities') or [])
+        conversions = names(recipe.get('unknown_conversions') or [])
+        if missing:block.append('Missing ingredients: '+missing+'.')
+        if short:block.append('Not enough in the pantry: '+short+'.')
+        if conversions:block.append('Amounts cannot yet be compared for: '+conversions+'.')
+        raw = [x for x in recipe.get('raw_ingredients',[]) if isinstance(x,str) and not control_directive(x)]
+        if raw:block.append('Original source ingredient list: '+'; '.join(raw[:12])+'.')
+        uncertain = bool(recipe.get('uncertainty') or recipe.get('reason') or recipe.get('raw_ingredients'))
+        if uncertain:
+            block.append('Source portions are unverified. The original batch is not the amount required for your meal; extra ingredients in the directions may need to be omitted or supplied.')
+        elif not (missing or short or conversions):
+            block.append('Recipe quantities and suitability still need checking.')
+        records.append({'recipe_id':rid,'title':title,'ready_to_cook':False,
+                        'missing_ingredients':[x for x in (recipe.get('missing_ingredients') or recipe.get('possible_missing_ingredients') or recipe.get('missing_ingredient_names') or []) if isinstance(x,str) and not control_directive(x)],
+                        'insufficient_quantities':recipe.get('insufficient_quantities',[]),
+                        'unknown_conversions':recipe.get('unknown_conversions',[]),
+                        'unverified_quantities':uncertain})
+        blocks.append('\n'.join(block))
+        if len(blocks)==4:break
+    if len(blocks)==1:return ('',[]) if include_records else ''
+    blocks.append('Which option would you like to adapt or see the original recipes for? Your pantry is unchanged.')
+    message='\n\n'.join(blocks)
+    return (message,records) if include_records else message
+
+
 def render_react_answer(request, observation, answer):
     """Render checked tool facts rather than unchecked model-written claims."""
     from .adaptation_checks import safe_source_title, control_directive
@@ -75,11 +120,7 @@ def render_react_answer(request, observation, answer):
         # those instructions must not become the user-facing answer verbatim.
         options = evidence.get('alternatives') or evidence.get('retrieved_candidates') or []
         if options:
-            lines = ['Related source recipes were found, but their suitability for your pantry and serving size is not confirmed:']
-            for recipe in options[:3]:
-                lines.append('- '+safe_source_title(recipe.get('title'),recipe['recipe_id']))
-            lines.append('You can select a source recipe to inspect its ingredients and directions. Your pantry is unchanged.')
-            message = '\n'.join(lines)
+            message = render_closest_options(evidence)
         else:
             value = evidence.get('message')
             message = value if isinstance(value,str) and value.strip() and not control_directive(value) else 'Recipe suitability could not be confirmed. Check the recipe details or adjust your request. Your pantry is unchanged.'

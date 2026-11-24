@@ -1,0 +1,410 @@
+[
+  {
+    "id": "recipenlg_7524",
+    "title": "Homemade Pasta",
+    "source": "RecipeNLG/Gathered",
+    "source_url": "www.cookbooks.com/Recipe-Details.aspx?id=8749",
+    "raw_ingredients": [
+      "2 1/4 c. flour",
+      "3 eggs"
+    ],
+    "ingredient_names": [
+      "flour",
+      "eggs"
+    ],
+    "steps": [
+      "Make a well with flour.",
+      "Beat eggs and add to center.",
+      "Slowly add flour to the eggs.",
+      "When all together, knead 8-10 mins.",
+      "Put through pasta machine.",
+      "Serves 4."
+    ],
+    "servings": 4,
+    "quantity_verified": true,
+    "dietary_verified": false,
+    "ingredients": [
+      {
+        "name": "flour",
+        "quantity": 532.3235321249999,
+        "unit": "ml",
+        "raw_indices": [
+          0
+        ],
+        "quantity_basis": "2 1/4 c. flour",
+        "category": "plant",
+        "source_name": "flour"
+      },
+      {
+        "name": "egg",
+        "quantity": 3.0,
+        "unit": "count",
+        "raw_indices": [
+          1
+        ],
+        "quantity_basis": "3 eggs",
+        "category": "egg",
+        "source_name": "eggs"
+      }
+    ],
+    "dietary_compatibility": {
+      "vegetarian": true,
+      "vegan": false,
+      "egg-free": false,
+      "peanut-free": true,
+      "dairy-free": true,
+      "soy-free": true
+    },
+    "review_status": "automatically_source_parsed",
+    "parser_version": "explicit-facts-v1",
+    "servings_source": "Serves 4.",
+    "servings_evidence": "Serves 4",
+    "source_record_sha256": "11ab0e7aa6e6a67c49b338ab9361fc7c7816e2445cb43768496e234787bfc8df",
+    "parse_notes": [
+      "Automatically parsed explicit facts, not human-reviewed.",
+      "Ingredient-level screening only; no allergen or cooking-safety certification.",
+      "US customary volumes; no ingredient-density conversions."
+    ]
+  },
+  {
+    "id": "recipenlg_683038",
+    "title": "Fried Mushrooms",
+    "source": "RecipeNLG/Gathered",
+    "source_url": "www.cookbooks.com/Recipe-Details.aspx?id=885299",
+    "raw_ingredients": [
+      "1/2 lb. mushrooms",
+      "1/4 c. butter"
+    ],
+    "ingredient_names": [
+      "mushrooms",
+      "butter"
+    ],
+    "steps": [
+      "Clean and slice mushrooms.",
+      "Heat butter in skillet.",
+      "Add mushrooms to skillet.",
+      "Cook slowly, occasionally turning until brown.",
+      "Makes 2 servings."
+    ],
+    "servings": 2,
+    "quantity_verified": true,
+    "dietary_verified": false,
+    "ingredients": [
+      {
+        "name": "mushroom",
+        "quantity": 226.796185,
+        "unit": "g",
+        "raw_indices": [
+          0
+        ],
+        "quantity_basis": "1/2 lb. mushrooms",
+        "category": "plant",
+        "source_name": "mushrooms"
+      },
+      {
+        "name": "butter",
+        "quantity": 59.147059125,
+        "unit": "ml",
+        "raw_indices": [
+          1
+        ],
+        "quantity_basis": "1/4 c. butter",
+        "category": "dairy",
+        "source_name": "butter"
+      }
+    ],
+    "dietary_compatibility": {
+      "vegetarian": true,
+      "vegan": false,
+      "egg-free": true,
+      "peanut-free": null,
+      "dairy-free": false,
+      "soy-free": null
+    },
+    "review_status": "automatically_source_parsed",
+    "parser_version": "explicit-facts-v1",
+    "servings_source": "Makes 2 servings.",
+    "servings_evidence": "Makes 2 servings",
+    "source_record_sha256": "531c27019ecc6d7ca63b7d307a68cde903c2b3ac6f4d156ff428e7ed0d4e72a5",
+    "parse_notes": [
+      "Automatically parsed explicit facts, not human-reviewed.",
+      "Ingredient-level screening only; no allergen or cooking-safety certification.",
+      "US customary volumes; no ingredient-density conversions."
+    ]
+  },
+  {
+    "id": "recipenlg_693862",
+    "title": "Sweet And Sour Chicken",
+    "source": "RecipeNLG/Gathered",
+    "source_url": "www.cookbooks.com/Recipe-Details.aspx?id=848549",
+    "raw_ingredients": [
+      "1/2 c. sugar",
+      "1/4 c. white vinegar",
+      "2 Tbsp. soy sauce",
+      "2 lb. chicken"
+    ],
+    "ingredient_names": [
+      "sugar",
+      "white vinegar",
+      "soy sauce",
+      "chicken"
+    ],
+    "steps": [
+      "Combine all ingredients, except chicken, in a 12 x 8 x 2-inch baking dish.",
+      "Remove skin from chicken.",
+      "Place chicken in baking dish with marinade, turning to coat.",
+      "Cover and refrigerate 2 hours, turning chicken occasionally.",
+      "Bake uncovered at 350\u00b0 for 45 minutes, basting occasionally.",
+      "Yields 4 servings."
+    ],
+    "servings": 4,
+    "quantity_verified": true,
+    "dietary_verified": false,
+    "ingredients": [
+      {
+        "name": "sugar",
+        "quantity": 118.29411825,
+        "unit": "ml",
+        "raw_indices": [
+          0
+        ],
+        "quantity_basis": "1/2 c. sugar",
+        "category": "plant",
+        "source_name": "sugar"
+      },
+      {
+        "name": "white vinegar",
+        "quantity": 59.147059125,
+        "unit": "ml",
+        "raw_indices": [
+          1
+        ],
+        "quantity_basis": "1/4 c. white vinegar",
+        "category": "plant",
+        "source_name": "white vinegar"
+      },
+      {
+        "name": "soy sauce",
+        "quantity": 29.5735295625,
+        "unit": "ml",
+        "raw_indices": [
+          2
+        ],
+        "quantity_basis": "2 Tbsp. soy sauce",
+        "category": "soy",
+        "source_name": "soy sauce"
+      },
+      {
+        "name": "chicken",
+        "quantity": 907.18474,
+        "unit": "g",
+        "raw_indices": [
+          3
+        ],
+        "quantity_basis": "2 lb. chicken",
+        "category": "meat",
+        "source_name": "chicken"
+      }
+    ],
+    "dietary_compatibility": {
+      "vegetarian": false,
+      "vegan": false,
+      "egg-free": true,
+      "peanut-free": true,
+      "dairy-free": true,
+      "soy-free": false
+    },
+    "review_status": "automatically_source_parsed",
+    "parser_version": "explicit-facts-v1",
+    "servings_source": "Yields 4 servings.",
+    "servings_evidence": "Yields 4 servings",
+    "source_record_sha256": "3ae7d4f6aadbfa2d9b6352a7fe59579550422630918f9ea4e8bf7520f479511c",
+    "parse_notes": [
+      "Automatically parsed explicit facts, not human-reviewed.",
+      "Ingredient-level screening only; no allergen or cooking-safety certification.",
+      "US customary volumes; no ingredient-density conversions."
+    ]
+  },
+  {
+    "id": "recipenlg_68810",
+    "title": "Glazed Carrots",
+    "source": "RecipeNLG/Gathered",
+    "source_url": "www.cookbooks.com/Recipe-Details.aspx?id=260993",
+    "raw_ingredients": [
+      "1 lb. carrots, cut in 2-inch strips",
+      "2 Tbsp. Wesson oil",
+      "1/4 c. water",
+      "2 Tbsp. brown sugar",
+      "1/4 tsp. salt"
+    ],
+    "ingredient_names": [
+      "carrots",
+      "Wesson oil",
+      "water",
+      "brown sugar",
+      "salt"
+    ],
+    "steps": [
+      "Cook carrots in Wesson oil over medium heat until lightly browned.",
+      "Combine remaining ingredients and pour over carrots. Cover and cook over low heat until tender, about 15 minutes. Yields 4 servings."
+    ],
+    "servings": 4,
+    "quantity_verified": true,
+    "dietary_verified": true,
+    "servings_source": "Combine remaining ingredients and pour over carrots. Cover and cook over low heat until tender, about 15 minutes. Yields 4 servings.",
+    "review_status": "approved",
+    "dietary_compatibility": {
+      "vegetarian": true,
+      "vegan": true,
+      "egg-free": true,
+      "dairy-free": true,
+      "peanut-free": null,
+      "soy-free": null
+    },
+    "review_notes": [
+      "Explicit yield and every listed ingredient were checked against the local CSV.",
+      "US customary volume units; no density or cups-to-grams conversion.",
+      "Only ingredient-list dietary screening; no cross-contact or packaged-label certification.",
+      "Compatibility is true when ingredient-level compatible, false when a listed conflict exists, and null when packaged labels need checking.",
+      "This is a side-dish recipe, not a nutritionally complete meal."
+    ],
+    "raw_record_sha256": "181b9cedb453f092e3143c5d99dfd93f20d5e5bedb514e36fe444e5eff395bea",
+    "ingredients": [
+      {
+        "name": "carrot",
+        "quantity": 453.59237,
+        "unit": "g",
+        "raw_indices": [
+          0
+        ],
+        "quantity_basis": "1 lb.; exact mass/volume conversion only."
+      },
+      {
+        "name": "oil",
+        "quantity": 29.5735295625,
+        "unit": "ml",
+        "raw_indices": [
+          1
+        ],
+        "quantity_basis": "2 Tbsp.; exact mass/volume conversion only."
+      },
+      {
+        "name": "water",
+        "quantity": 59.147059125,
+        "unit": "ml",
+        "raw_indices": [
+          2
+        ],
+        "quantity_basis": "1/4 c.; exact mass/volume conversion only."
+      },
+      {
+        "name": "brown sugar",
+        "quantity": 29.5735295625,
+        "unit": "ml",
+        "raw_indices": [
+          3
+        ],
+        "quantity_basis": "2 Tbsp.; exact mass/volume conversion only."
+      },
+      {
+        "name": "salt",
+        "quantity": 1.2322303984375,
+        "unit": "ml",
+        "raw_indices": [
+          4
+        ],
+        "quantity_basis": "1/4 tsp.; exact mass/volume conversion only."
+      }
+    ],
+    "dataset_provenance": {
+      "filename": "RecipeNLG_dataset.csv",
+      "bytes": 2294981083,
+      "source_filter": "Gathered"
+    }
+  },
+  {
+    "id": "recipenlg_1282016",
+    "title": "Poached Eggs",
+    "raw_ingredients": [
+      "2 eggs"
+    ],
+    "ingredient_names": [
+      "egg"
+    ],
+    "steps": [
+      "Heat a pan of boiling water",
+      "Turn off the heat",
+      "Break eggs close to the surface",
+      "Put lid on pan",
+      "Time for 3 mins",
+      "Spoon eggs out and cut the messy white bit off with a sharp knife",
+      "Season and serve on toast with avocado, tomato and baby spinach"
+    ],
+    "source_url": "www.epicurious.com/recipes/member/views/poached-eggs-58390019",
+    "source": "RecipeNLG/Gathered",
+    "quantity_verified": false,
+    "parse_issue": "No explicit serving count in original directions."
+  },
+  {
+    "id": "recipenlg_1290537",
+    "title": "Hard-Boiled Eggs",
+    "raw_ingredients": [
+      "4 large eggs"
+    ],
+    "ingredient_names": [
+      "egg"
+    ],
+    "steps": [
+      "Put eggs into a 1-quart saucepan, then add enough cold water to cover them by 1/2 inch. Bring water to a boil over high heat, then reduce heat to moderately high and cook eggs at a gentle boil, uncovered, 10 minutes. Pour off hot water. If using eggs right away, shake pan gently so eggs bump into one another (to crack shells). Run cold water into pot to stop cooking. Let eggs stand in cold water 15 minutes, adding more cold water or ice to keep water cold."
+    ],
+    "source_url": "www.epicurious.com/recipes/food/views/hard-boiled-eggs-236719",
+    "source": "RecipeNLG/Gathered",
+    "quantity_verified": false,
+    "parse_issue": "No explicit serving count in original directions."
+  },
+  {
+    "id": "recipenlg_1302805",
+    "title": "Slow-Poached Eggs",
+    "raw_ingredients": [
+      "As many eggs as you'd like"
+    ],
+    "ingredient_names": [
+      "egg"
+    ],
+    "steps": [
+      "1. Fill your biggest, deepest pot with water & put it on the lowest heat possible.",
+      "",
+      "2. Use something to keep the eggs from sitting on the bottom of the pot, where the temperature will be the highest. If you've got a cake rack or steamer, use it",
+      "",
+      "3. Use an instant read thermometer to monitor the temperature in the pot - if it's too hot, add cold water or an ice cube. Once the water is between 140 - 145 degrees, add the eggs to the pot. Let them bathe for 40 - 45 minutes, checking the temperature regularly with the thermometer or by sticking your finger in the water (it should be the temperature of a very hot bath) and moderating it as needed.",
+      "",
+      "4. You can use the eggs immediately or store them in the fridge for up to 24 hours. (If you're planning on storing them, chill them until cold in an ice bath.) If you refrigerate the eggs, warm them under piping hot tap water for 1 minute before using.",
+      "",
+      "5. To serve eggs, crack them one at a time into a small saucer. The thin white will not and should not be firm or solid; tip the dish to pour off and discard the loosest part of the white, then slide the egg onto the dish it's destined for."
+    ],
+    "source_url": "www.epicurious.com/recipes/member/views/slow-poached-eggs-50165652",
+    "source": "RecipeNLG/Gathered",
+    "quantity_verified": false,
+    "parse_issue": "No explicit serving count in original directions."
+  },
+  {
+    "id": "recipenlg_1341310",
+    "title": "Eggs - Soft Boiled",
+    "raw_ingredients": [
+      "eggs"
+    ],
+    "ingredient_names": [
+      "egg"
+    ],
+    "steps": [
+      "1. Using a spoon, lower eggs into boiling water.",
+      "2. Lower heat to medium and cook for 5 minutes.",
+      "3. Run cold water over the pan to stop eggs from cooking.",
+      "4. Serve."
+    ],
+    "source_url": "www.epicurious.com/recipes/member/views/eggs-soft-boiled-52471361",
+    "source": "RecipeNLG/Gathered",
+    "quantity_verified": false,
+    "parse_issue": "No explicit serving count in original directions."
+  }
+]

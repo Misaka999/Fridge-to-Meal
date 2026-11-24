@@ -4,6 +4,26 @@ from .ingredient_names import normalize_name
 from .inventory import edit_pantry
 
 
+def normalize_meal_flag(update):
+    """Accept an unambiguous meal-use flag placed inside every edit by a model.
+
+    Do not guess when per-ingredient choices disagree or contradict a global flag.
+    Inventory amounts and all other fields still undergo the usual validation.
+    """
+    if not isinstance(update,dict) or not isinstance(update.get('inventory_updates'),list):
+        return update
+    result=deepcopy(update);edits=result['inventory_updates']
+    flags=[edit['use_in_meal'] for edit in edits if isinstance(edit,dict) and 'use_in_meal' in edit]
+    if not flags:return result
+    if len(flags)!=len(edits) or any(type(flag) is not bool for flag in flags) or len(set(flags))!=1:
+        raise ValueError('Please clarify which new ingredients you want to use in this meal.')
+    if 'use_in_meal' in result and (type(result['use_in_meal']) is not bool or result['use_in_meal']!=flags[0]):
+        raise ValueError('Please clarify whether to use the new ingredients now or save them for later.')
+    result['use_in_meal']=flags[0]
+    for edit in edits:edit.pop('use_in_meal')
+    return result
+
+
 def apply_language_edits(pantry, proposals):
     """Return (pantry, pending edits, question). Batch edits are atomic."""
     if not isinstance(proposals,list) or not 1<=len(proposals)<=12:

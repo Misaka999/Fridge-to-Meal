@@ -114,7 +114,7 @@ def read_source_recipe(recipe_id):
     return json.loads(row[0])
 
 
-def full_search_recipes(pantry,servings,preferences,as_of_date,*,meal_ingredients=None):
+def full_search_recipes(pantry,servings,preferences,as_of_date,*,meal_ingredients=None,_records=None):
     request=dict(pantry=pantry,servings=servings,preferences=preferences,as_of_date=as_of_date)
     if meal_ingredients:request['meal_ingredients']=list(meal_ingredients)
     issue=validate_request(request)
@@ -123,7 +123,7 @@ def full_search_recipes(pantry,servings,preferences,as_of_date,*,meal_ingredient
                 'message':issue['message'],'missing_field':issue['missing_field']}
     try:
         info=catalogue_info()
-        recipes=load_recipes(request,full_index=True)
+        recipes=load_recipes(request,full_index=True) if _records is None else _records
         if meal_ingredients:
             from .ingredient_names import retrieval_name
             focus={retrieval_name(name) for name in meal_ingredients}
