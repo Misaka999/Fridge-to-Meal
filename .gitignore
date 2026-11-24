@@ -19,4 +19,7 @@ results/
 /data/*.sqlite*
 /data/*.building
 /data/*review.jsonl*
+/data/render_recipe_manifest.json
+/data/.recipe-download-*
+/data/.recipe-manifest-*
 

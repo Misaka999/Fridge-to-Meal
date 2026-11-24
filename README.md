@@ -2,6 +2,8 @@
 
 The web app preserves the reviewed catalogue by default. For request-aware full RecipeNLG search, natural-language pantry updates and recipe adaptations, see [full catalogue setup](docs/LOCAL_FULL_SEARCH.md). Large datasets and API credentials are not bundled.
 
+For cloud hosting of the full catalogue without a persistent disk, use the [Render deployment guide](docs/RENDER_DEPLOY.md). The Render build downloads and verifies the CSV and creates the full index; the start command validates the prepared artifact and launches full mode. Existing Render services must update both commands in their dashboard.
+
 Week 6 的命令行版本使用 LangGraph 串联 DeepSeek Flash 和 Yangyang 的食谱搜索与库存匹配工具。默认使用经过核对的 RecipeNLG 子集。参见[接口约定](docs/interface_alignment.md)和[数据及评测说明](docs/README.md)。
 
 ## 运行
