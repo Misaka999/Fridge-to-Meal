@@ -15,6 +15,7 @@ from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, Tool
 from langchain_openai import ChatOpenAI
 from langgraph.graph import END, START, MessagesState, StateGraph
 from pydantic import BaseModel, Field, ValidationError
+from pydantic_core import from_json
 
 from agent.tools.mock_recipes import failing_search, search_recipes as mock_search_recipes
 from agent.model_client import load_project_env
@@ -138,7 +139,30 @@ def deepseek_model():
     )
 
 
-def build_graph(model, search: Callable[..., dict], *, adapt_recipes=False):
+def stream_answer(client, messages, observed, on_event):
+    """Preview only the user-facing field after checking its recipe IDs and status."""
+    reply = None
+    sent = ""
+    for chunk in client.stream(messages):
+        reply = chunk if reply is None else reply + chunk
+        text = reply.text.lstrip()
+        if text.startswith(("```json\n", "```\n")):
+            text = text.split("\n", 1)[1]
+        try:
+            partial_answer = from_json(text, allow_partial="trailing-strings")
+            preview = MealResponse.model_validate(partial_answer)
+            validate_response(preview, observed)
+        except ValueError:
+            continue
+        if preview.message.startswith(sent) and preview.message != sent:
+            on_event("text", preview.message[len(sent):])
+            sent = preview.message
+    if reply is None:
+        raise ValueError("DeepSeek returned an empty stream.")
+    return reply
+
+
+def build_graph(model, search: Callable[..., dict], *, adapt_recipes=False, on_event=None):
     with_tools = model.bind_tools([SEARCH_TOOL], tool_choice="auto")
     answer_only = model.bind_tools([SEARCH_TOOL], tool_choice="none")
 
@@ -155,7 +179,13 @@ def build_graph(model, search: Callable[..., dict], *, adapt_recipes=False):
             and len(state["tool_trace"]) < 2
         )
         client = model if adapting else with_tools if allow_search else answer_only
-        reply = client.invoke(messages)
+        if on_event and observed is not None:
+            on_event("progress", "Preparing the recipe response…")
+        if on_event and observed is not None and not adapting and not allow_search and hasattr(client, "stream"):
+            messages[0] = SystemMessage(content=SYSTEM_PROMPT + "\nWrite status and recipe_ids before message.")
+            reply = stream_answer(client, messages, observed, on_event)
+        else:
+            reply = client.invoke(messages)
         if reply.invalid_tool_calls:
             raise ValueError("DeepSeek returned a malformed tool call.")
         if reply.tool_calls and not allow_search:
@@ -170,6 +200,8 @@ def build_graph(model, search: Callable[..., dict], *, adapt_recipes=False):
         if len(calls) != 1 or calls[0]["name"] != "search_recipes" or calls[0]["args"]:
             raise ValueError("Expected a single search_recipes call using the current request.")
 
+        if on_event:
+            on_event("progress", "Searching the recipe catalogue…")
         started = perf_counter()
         try:
             fields={key:state['request'][key] for key in ('pantry','servings','preferences','as_of_date')}
@@ -233,6 +265,10 @@ def parse_response(state: ReactState) -> MealResponse:
         answer["message"] = "No recipe in the searched catalogue matches your current request."
         response = MealResponse.model_validate(answer)
 
+    return validate_response(response, observed)
+
+
+def validate_response(response, observed):
     if observed is None:
         raise ValueError("DeepSeek answered without searching the recipe inventory.")
     if observed.error_code in CLARIFICATION_CODES:
@@ -257,7 +293,7 @@ def parse_response(state: ReactState) -> MealResponse:
 
 
 def run_agent(request: dict, *, model=None, search: Callable[..., dict] | None = None,
-              adapt_recipes=False,meal_ingredients=None) -> AgentRun:
+              adapt_recipes=False,meal_ingredients=None,on_event=None) -> AgentRun:
     """Run against the reviewed catalogue unless a different search is supplied."""
     started = perf_counter()
     if meal_ingredients:
@@ -277,7 +313,7 @@ def run_agent(request: dict, *, model=None, search: Callable[..., dict] | None =
     if search is None:
         search = partial(search_recipes, recipes=load_recipes(recipe_file=REVIEWED_CATALOGUE))
     model = deepseek_model() if model is None else model
-    graph = build_graph(model, search,adapt_recipes=adapt_recipes)
+    graph = build_graph(model, search, adapt_recipes=adapt_recipes, on_event=on_event)
     state = graph.invoke({
         "messages": [HumanMessage(content=json.dumps(data, ensure_ascii=False))],
         "request": data,

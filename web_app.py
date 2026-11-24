@@ -11,6 +11,8 @@ from agent.session import MealSessions
 from agent.tools.recipe_search import RESTRICTIONS, UNITS
 
 ROOT = Path(__file__).resolve().parent
+STREAM_TYPE = "application/x-ndjson"
+TURN_ERROR = "The agent could not complete this turn. Check the server logs and try again."
 ASSETS = {
     "/": ("index.html", "text/html"),
     "/app.js": ("app.js", "text/javascript"),
@@ -74,13 +76,44 @@ class MealHandler(BaseHTTPRequestHandler):
                 raise ValueError()
         except (ValueError, UnicodeError):
             return self.respond(400, {"error": "Enter a meal request or a follow-up message."})
+        if self.headers.get("Accept") == STREAM_TYPE:
+            return self.stream_turn(key, data)
         try:
             run = self.server.sessions.run_turn(key, **data)
         except Exception as exc:
             self.log_error("Meal turn failed (%s)", type(exc).__name__)
-            return self.respond(502, {"error": "The agent could not complete this turn. Check the server's DeepSeek configuration and connection, then retry.",
+            return self.respond(502, {"error": TURN_ERROR,
                                       "state": self.server.sessions.get_state(key)})
         self.respond(200, run)
+
+
+    def stream_turn(self, key, data):
+        self.send_response(200)
+        self.send_header("Content-Type", STREAM_TYPE + "; charset=utf-8")
+        self.send_header("Cache-Control", "no-store, no-transform")
+        self.send_header("X-Accel-Buffering", "no")
+        self.send_header("Connection", "close")
+        self.end_headers()
+        self.close_connection = True
+
+        def send(kind, value):
+            event = json.dumps({"type": kind, "data": value}, allow_nan=False, ensure_ascii=False)
+            self.wfile.write((event + "\n").encode("utf-8"))
+            self.wfile.flush()
+
+        try:
+            send("progress", "Checking your meal request…")
+            try:
+                run = self.server.sessions.run_turn(key, on_event=send, **data)
+            except (BrokenPipeError, ConnectionResetError):
+                return
+            except Exception as exc:
+                self.log_error("Meal turn failed (%s)", type(exc).__name__)
+                send("error", TURN_ERROR)
+            else:
+                send("done", run)
+        except (BrokenPipeError, ConnectionResetError):
+            return
 
 
 def make_server(port, sessions=None, *, host="127.0.0.1", recipe_source="reviewed"):

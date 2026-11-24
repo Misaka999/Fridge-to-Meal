@@ -5,12 +5,35 @@ const key = sessionStorage.mealKey || crypto.randomUUID().replaceAll("-", "");
 sessionStorage.mealKey = key;
 let config, busy = true, ready = false, dirty = false;
 
-async function api(path, body) {
+async function api(path, body, onEvent) {
   const response = await fetch(path, {
     method: body ? "POST" : "GET",
-    headers: {"X-Meal-Session": key, "Content-Type": "application/json"},
+    headers: {"X-Meal-Session": key, "Content-Type": "application/json",
+      Accept: onEvent ? "application/x-ndjson" : "application/json"},
     body: body && JSON.stringify(body)
   });
+  if (response.ok && onEvent && response.headers.get("Content-Type")?.startsWith("application/x-ndjson")) {
+    const reader = response.body.pipeThrough(new TextDecoderStream()).getReader();
+    let pending = "";
+    try {
+      while (true) {
+        const {value, done} = await reader.read();
+        if (done) throw new Error("The response was interrupted. Please try again.");
+        const lines = (pending + value).split("\n");
+        pending = lines.pop();
+        for (const line of lines) {
+          if (!line) continue;
+          const event = JSON.parse(line);
+          if (event.type === "done") return event.data;
+          if (event.type === "error") throw new Error(event.data);
+          onEvent(event);
+        }
+      }
+    } finally {
+      await reader.cancel().catch(() => {});
+      reader.releaseLock();
+    }
+  }
   const data = await response.json();
   if (!response.ok) throw new Error(data.error || "Request failed.");
   return data;
@@ -89,7 +112,108 @@ function requestFromForm() {
 }
 const titles = {recommended:"Recipe recommendation", no_feasible_recipe:"No matching recipe",
   needs_clarification:"A question for you", tool_error:"Search unavailable"};
-function entry(title, text, meta) {
+function appendList(parent, title, items, ordered = false) {
+  const heading = document.createElement("h3");
+  heading.textContent = title;
+  parent.append(heading);
+  const list = document.createElement(ordered ? "ol" : "ul");
+  for (const item of items) {
+    const li = document.createElement("li");
+    li.append(item);
+    list.append(li);
+  }
+  parent.append(list);
+}
+function sourceLink(label, value) {
+  if (typeof value !== "string" || !value || /[\s\\]/.test(value)) return null;
+  try {
+    const url = new URL(value.startsWith("www.") ? "https://" + value : value);
+    if (!["http:", "https:"].includes(url.protocol) || url.username || url.password) return null;
+    const link = document.createElement("a");
+    link.href = url.href;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.textContent = label || url.hostname;
+    return link;
+  } catch {
+    return null;
+  }
+}
+function runDetails(run) {
+  const details = document.createElement("details");
+  details.className = "run-details";
+  const summary = document.createElement("summary");
+  summary.textContent = "Run details";
+  details.append(summary);
+
+  const tasks = [], steps = [], sources = new Map();
+  const trace = run.tool_trace || [];
+  const request = run.request;
+  if (run.follow_up_processed) steps.push("Interpreted your follow-up in this session.");
+  if (request?.servings && request.pantry) {
+    const restrictions = request.preferences.dietary_restrictions.join(", ") || "none";
+    steps.push(`Current meal request: ${request.servings} serving(s), ${request.pantry.length} pantry lot(s), dietary restrictions: ${restrictions}.`);
+  }
+  const selected = new Set(run.result.recipe_ids);
+  function cite(label, url) {
+    const link = sourceLink(label, url);
+    if (link && !sources.has(link.href)) sources.set(link.href, link);
+  }
+  for (const call of trace) {
+    const result = call.result || {};
+    tasks.push(call.tool);
+    if (call.tool === "search_recipes") {
+      const count = result.candidates?.length || 0;
+      if (result.status === "found") steps.push(`Searched the catalogue and matched ${count} feasible recipe(s).`);
+      else if (result.status === "no_match") steps.push("Searched the catalogue; no feasible recipe was confirmed.");
+      else steps.push(`Search returned ${result.error_code || "an error"}.`);
+      for (const recipe of result.candidates || []) {
+        if (!selected.has(recipe.recipe_id)) continue;
+        cite(recipe.title, recipe.source_url);
+        for (const note of recipe.storage_guidance || [])
+          cite("FoodKeeper storage guidance", note.source?.archive || note.source?.official_catalogue);
+      }
+    } else if (call.tool === "read_recipe") {
+      steps.push(call.error_type ? "Could not read the selected recipe." : "Read the selected recipe’s source record.");
+      cite(result.title, result.source_url);
+    } else if (call.tool === "validate_adaptation") {
+      steps.push(result.valid ? "Checked the adjusted recipe against quantities, servings and dietary restrictions."
+        : "Rejected an adjustment that did not pass validation.");
+    }
+  }
+  for (const recipe of run.adapted_recipes || []) {
+    cite(recipe.source_title, recipe.source_url);
+  }
+  if (run.adapted_recipes?.length && !tasks.includes("validate_adaptation")) {
+    steps.push("Rechecked the saved recipe adjustment against the current meal request.");
+  }
+  const outcomes = {recommended:"Returned the recipe recommendation.", no_feasible_recipe:"Reported no confirmed match.",
+    needs_clarification:"Returned a clarification or additional details.", tool_error:"Reported a tool error."};
+  steps.push(outcomes[run.result.status] || "Returned the response.");
+  appendList(details, "Tools called", tasks.length ? tasks.map(name => {
+    const code = document.createElement("code");
+    code.textContent = name;
+    return code;
+  }) : ["No tools were called this turn."]);
+  appendList(details, "Steps taken", steps, true);
+  appendList(details, "Sources", sources.size ? [...sources.values()] : ["No source link cited for this response."]);
+  if (run.result.status === "needs_clarification") {
+    const related = new Map();
+    for (const call of trace) {
+      for (const recipe of call.result?.alternatives || []) {
+        const link = sourceLink(recipe.title, recipe.source_url);
+        if (link && !related.has(link.href)) related.set(link.href, link);
+      }
+    }
+    if (related.size) appendList(details, "Related recipe records", [...related.values()]);
+  }
+  const metrics = document.createElement("p");
+  metrics.className = "run-metrics";
+  metrics.textContent = [...selected, run.metrics.model_calls + " model calls", run.metrics.elapsed_seconds + " s"].join(" · ");
+  details.append(metrics);
+  return details;
+}
+function entry(title, text) {
   el("empty")?.remove();
   const article = document.createElement("article");
   article.className = "entry";
@@ -98,26 +222,34 @@ function entry(title, text, meta) {
   const p = document.createElement("p");
   p.textContent = text;
   article.append(heading, p);
-  if (meta) {
-    const details = document.createElement("details"), summary = document.createElement("summary");
-    summary.textContent = "Run details";
-    details.append(summary, document.createTextNode(meta));
-    article.append(details);
-  }
   el("history").append(article);
   el("history").scrollTop = el("history").scrollHeight;
+  return {article, heading, p};
 }
 async function submit(body) {
   if (busy) return;
   busy = true;
   controls();
   el("status").textContent = "Checking your pantry and finding recipes…";
+  if (body.message) entry("You", body.message);
+  const reply = entry("Meal assistant", "Checking your pantry and finding recipes…");
+  let hasText = false;
+  reply.article.setAttribute("aria-busy", "true");
   try {
-    const run = await api("/api/turn", body);
-    if (body.message) entry("You", body.message);
+    const run = await api("/api/turn", body, event => {
+      if (event.type === "progress" && !hasText) reply.p.textContent = event.data;
+      if (event.type === "text") {
+        if (!hasText) reply.p.textContent = "";
+        hasText = true;
+        reply.p.append(event.data);
+        el("history").scrollTop = el("history").scrollHeight;
+      }
+    });
     const result = run.result;
-    entry(run.display_title || titles[result.status] || "Meal assistant", result.message,
-      [...result.recipe_ids, run.metrics.model_calls + " model calls", run.metrics.elapsed_seconds + " s"].join(" · "));
+    reply.heading.textContent = run.display_title || titles[result.status] || "Meal assistant";
+    reply.p.textContent = result.message;
+    reply.article.append(runDetails(run));
+    reply.article.removeAttribute("aria-busy");
     // A source clarification can still accept the submitted pantry. Only retain
     // dirty input when the server did not accept that request snapshot.
     if (!body.update || result.status !== "needs_clarification" || sameMealRequest(body.update, run.request)) {
@@ -128,6 +260,7 @@ async function submit(body) {
     el("message").value = "";
     el("status").textContent = "";
   } catch (error) {
+    reply.article.remove();
     el("status").textContent = error.message;
   } finally {
     busy = false;

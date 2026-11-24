@@ -214,9 +214,10 @@ def search_recipes(pantry, servings, preferences, as_of_date, *, recipes=None):
                 candidate={'recipe_id':recipe['id'],'title':recipe['title'],
                     'servings':servings,'ingredients':check['scaled_ingredients'],
                     'steps':deepcopy(recipe['steps'])}
+                if recipe.get('source_url'):
+                    candidate['source_url'] = recipe['source_url']
                 if recipe.get('parser_version'):
                     candidate.update(original_servings=recipe['servings'],
-                        source_url=recipe.get('source_url'),
                         verification='Automatically source-parsed; not human-reviewed.',
                         steps_note='Original directions are preserved. The ingredient amounts above are scaled; original yield and piece counts in the directions must not be presented as the requested yield.')
                 found.append(candidate)

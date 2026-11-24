@@ -10,3 +10,9 @@ aside{background:#f8f9ee}.dot{width:12px;height:12px;background:#dc783f;border-r
 .fridge-actions .add { margin-top: 0; }
 #fridge-status { display: block; color: var(--muted); margin-top: 6px; }
 .expired { color: #9e4025; font-weight: bold; }
+.run-details { margin-top: 10px; }
+.run-details summary { cursor: pointer; color: var(--green); font-weight: 650; }
+.run-details h3 { font: inherit; font-weight: 700; margin-top: 10px; letter-spacing: normal; }
+.run-details ul, .run-details ol { margin: 3px 0 8px; padding-inline-start: 1.4em; }
+.run-details a { color: var(--green); overflow-wrap: anywhere; }
+.run-details .run-metrics { padding-top: 6px; border-top: 1px solid var(--line); }

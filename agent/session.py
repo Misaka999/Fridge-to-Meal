@@ -129,7 +129,7 @@ class MealSessions:
             self._meal_focus.pop(session_id, None)
             self._pending_meal_choice.pop(session_id, None)
 
-    def run_turn(self, session_id, update=None, *, message=None, recipe_id=None):
+    def run_turn(self, session_id, update=None, *, message=None, recipe_id=None, on_event=None):
         """Apply an explicit JSON update or a natural-language follow-up."""
         from react_agent import deepseek_model, run_agent
 
@@ -145,6 +145,8 @@ class MealSessions:
             if recipe_id is not None:
                 return self._recipe_details(session_id,state,recipe_id,extraction,started)
             if message is not None:
+                if on_event:
+                    on_event("progress", "Interpreting your follow-up…")
                 model = self.model if self.model is not None else deepseek_model()
                 extraction = model.invoke([
                     SystemMessage(content=FOLLOW_UP_PROMPT),
@@ -253,6 +255,8 @@ class MealSessions:
                     self._meal_focus[session_id]=chosen
                     self._pending_meal_choice.pop(session_id,None)
             options={'adapt_recipes':True} if self.adapt_recipes else {}
+            if on_event:
+                options['on_event'] = on_event
             search=self.search
             focus=self._meal_focus.get(session_id,[]) if self.adapt_recipes else []
             if focus:
@@ -296,7 +300,8 @@ class MealSessions:
                 metrics[key] = metrics[key] + usage[key] if usage and metrics[key] is not None else None
         run["metrics"]["elapsed_seconds"] = round(perf_counter() - started, 6)
         self._last_results[session_id] = deepcopy(run["result"])
-        return {**run, "request": deepcopy(state),'meal_ingredients':deepcopy(self._meal_focus.get(session_id,[])),
+        return {**run, "follow_up_processed": extraction is not None,
+                "request": deepcopy(state),'meal_ingredients':deepcopy(self._meal_focus.get(session_id,[])),
                 "available_recipes":deepcopy(list(self._available_recipes.get(session_id,{}).values()))}
 
     def _recipe_details(self,session_id,state,recipe_id,extraction,started):
