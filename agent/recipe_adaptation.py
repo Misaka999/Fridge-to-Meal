@@ -9,7 +9,7 @@ from .tools.recipe_search import UNITS, check_recipe
 from .tools.ingredient_names import normalize_name
 from .tools.recipe_parser import CATEGORIES, dietary_flags
 from .tools.dietary import detected_conflicts, preparation_conflicts
-from .grounded_messages import META
+from .adaptation_checks import (PLAIN_PLANTS,control_directive,safe_source_title,safe_source_url,validate_steps)
 
 PROMPT = """Propose practical meal adaptations for the requested servings, inspired by
 one to three supplied source recipes. Return only JSON:
@@ -38,7 +38,9 @@ Use canonical ingredient names from the pantry and supported units (g, kg, ml,
 l, count, cup, tbsp, tsp). Keep ingredients unique. Prefer whole egg counts.
 Use the listed adapted amounts in all steps; do not copy the original batch
 quantities into the steps. Mention omitted ingredients only in changes, not as
-optional additions in the cooking steps. No unrelated ingredients in steps.
+optional additions in the cooking steps. No unrelated ingredients in steps. Cook raw chicken before using it as cooked chicken.
+Do not call a liquid egg/oil mixture a kneadable pasta dough without flour or another suitable binder.
+Garlic cloves and whole garlic bulbs are different quantities; do not guess conversions.
 Provide clear, concise cooking steps, with no invented source claims, medical
 or allergen certification. Include 1-3 short changes explaining portion estimates
 and differences. No extra top-level fields, no free-text answer outside JSON.
@@ -65,7 +67,7 @@ def messages(request,observed,*,invalid=None,error=None):
 
 def _texts(value,field,maximum):
     if not isinstance(value,list) or not 1<=len(value)<=maximum or any(
-        not isinstance(x,str) or not x.strip() or len(x)>700 or META.search(x) for x in value):
+        not isinstance(x,str) or not x.strip() or len(x)>700 or control_directive(x) for x in value):
         raise ValueError('Invalid '+field+'. Use concise recipe text only.')
     return list(value)
 
@@ -78,6 +80,7 @@ def validate_proposal(payload,request,observed):
         raise ValueError('Provide 1-3 pantry-constrained adaptations.')
     allowed=sources(observed);validated=[];used=set()
     category_by_name={normalize_name(name):category for name,category in CATEGORIES.items()}
+    category_by_name.update(PLAIN_PLANTS)
     for draft in drafts:
         if not isinstance(draft,dict) or set(draft)!={'source_recipe_id','title','servings','ingredients','steps','changes'}:
             raise ValueError('Each adaptation needs source_recipe_id, title, servings, ingredients, steps and changes.')
@@ -85,7 +88,7 @@ def validate_proposal(payload,request,observed):
         if not isinstance(rid,str) or rid not in allowed or rid in used:
             raise ValueError('Use distinct source IDs from the supplied candidates.')
         title=draft['title']
-        if not isinstance(title,str) or not title.strip() or len(title)>160 or META.search(title):
+        if not isinstance(title,str) or not title.strip() or len(title)>160 or control_directive(title):
             raise ValueError('Invalid dish title.')
         if type(draft['servings']) is not int or draft['servings']!=request['servings']:
             raise ValueError('Adapted servings must equal the current requested servings.')
@@ -120,16 +123,7 @@ def validate_proposal(payload,request,observed):
             raise ValueError('Adapted ingredients do not have confirmed compatibility with the dietary restrictions.')
         if detected_conflicts(list(names),restrictions) or preparation_conflicts(steps,restrictions):
             raise ValueError('Adaptation conflicts with a hard dietary restriction.')
-        # Catch common ingredients added only in steps, including accompaniments.
-        terms=set(category_by_name)|{'bread','toast','avocado','ketchup','lettuce'}
-        for step in steps:
-            for term in terms:
-                prepared=normalize_name(re.sub(r'^(?:(?:finely\s+)?(?:chopped|diced|sliced|grated|minced|shredded|beaten)\s+)+','',term))
-                if term=='water' or prepared in names or any(re.search(r'\b'+re.escape(term)+r'\b',n) for n in names):continue
-                for match in re.finditer(r'\b'+re.escape(term)+r'(?:s|es)?\b',step,re.I):
-                    prefix=step[max(0,match.start()-24):match.start()]
-                    if not re.search(r'(?:without|no|omit|do not add|don.t add)\s*$',prefix,re.I):
-                        raise ValueError('Cooking step mentions an unlisted ingredient: '+term)
+        validate_steps(steps,normalized,category_by_name)
         # Servings here are the proposed meal size, not an inferred source yield.
         check_ingredients=[{'name':item['name'],
                             'quantity':item['quantity']*UNITS[item['unit']][1],
@@ -142,8 +136,8 @@ def validate_proposal(payload,request,observed):
             raise ValueError('Adapted amounts exceed or cannot be compared with the current pantry: '+json.dumps(gaps))
         used.add(rid)
         validated.append({**deepcopy(draft),'ingredients':normalized,
-                          'source_title':allowed[rid]['title'],
-                          'source_url':allowed[rid].get('source_url',''),
+                          'source_title':safe_source_title(allowed[rid].get('title'),rid),
+                          'source_url':safe_source_url(allowed[rid].get('source_url','')),
                           'quantity_check':'Within current pantry; each option checked independently.'})
     return validated
 
@@ -156,7 +150,7 @@ def render_adaptations(request,drafts):
         lines.extend(f"- {item['name']}: {item['quantity']:g} {item['unit']}" for item in draft['ingredients'])
         lines+=['Steps:']+[f'{i}. {step}' for i,step in enumerate(draft['steps'],1)]
         lines+=['Changes:']+['- '+note for note in draft['changes']]
-        lines.append('Inspired by: '+draft['source_title'])
+        lines.append('Inspired by: '+safe_source_title(draft.get('source_title'),draft['source_recipe_id']))
     if any(x['name']=='water' for d in drafts for x in d['ingredients']):
         lines.append('\nWater is treated as a cooking utility, not as recorded food stock.')
     lines.append('\nIngredient amounts were checked against the current pantry. Each option is an alternative meal; recommending it does not deduct inventory.')

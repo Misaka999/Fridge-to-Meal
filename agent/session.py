@@ -276,6 +276,7 @@ class MealSessions:
         return self._finish(session_id, state, run, extraction, started)
 
     def _finish(self, session_id, state, run, extraction, started):
+        from .adaptation_checks import safe_source_title
         searches=[record['result'] for record in run.get('tool_trace',[])
                   if record.get('tool')=='search_recipes' and isinstance(record.get('result'),dict)]
         if searches:
@@ -285,7 +286,7 @@ class MealSessions:
                 for recipe in observed.get(collection,[])[:32]:
                     rid=recipe.get('recipe_id')
                     if isinstance(rid,str) and isinstance(recipe.get('title'),str):
-                        available[rid]={'recipe_id':rid,'title':recipe['title'][:160]}
+                        available[rid]={'recipe_id':rid,'title':safe_source_title(recipe['title'],rid)}
             self._available_recipes[session_id]=available
             self._adapted_recipes[session_id]={r['source_recipe_id']:deepcopy(r) for r in run.get('adapted_recipes',[])}
             for rid,recipe in self._adapted_recipes[session_id].items():
@@ -314,8 +315,10 @@ class MealSessions:
             fields=('source_recipe_id','title','servings','ingredients','steps','changes')
             try:
                 current={**state,'meal_ingredients':self._meal_focus.get(session_id,[])}
-                validate_proposal({'adapted_recipes':[{k:adapted[k] for k in fields}]},current,
-                                  {'candidates':[{'recipe_id':recipe_id,'title':adapted['source_title']}]})
+                adapted=validate_proposal({'adapted_recipes':[{k:adapted[k] for k in fields}]},current,
+                                  {'candidates':[{'recipe_id':recipe_id,'title':adapted['source_title'],
+                                                  'source_url':adapted.get('source_url','')}]})[0]
+                self._adapted_recipes[session_id][recipe_id]=deepcopy(adapted)
             except ValueError:
                 return self._clarify(session_id,state,'Your pantry, servings or preferences have changed. Generate updated recipes before using this earlier adaptation.',extraction,started)
             run={'result':{'status':'recommended','recipe_ids':[recipe_id],

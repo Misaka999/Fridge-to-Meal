@@ -1,6 +1,7 @@
 """Plain-text source details, distinct from a verified meal recommendation."""
 import re
 from .grounded_messages import META
+from .adaptation_checks import safe_source_url
 
 
 def format_source_details(recipe):
@@ -17,7 +18,6 @@ def format_source_details(recipe):
     lines.extend(f'{i}. {value}' for i,value in enumerate(steps,1))
     if len(recipe.get('steps',[]))>40 or len(amounts)>40:lines.append('Long source record shortened; consult the original source for the complete text.')
     lines+=['','The source yield and quantities have not been confirmed for your requested serving size. No quantities were invented or scaled. Pantry unchanged.']
-    url=recipe.get('source_url')
-    if isinstance(url,str) and '\n' not in url and '\r' not in url:
-        lines+=['Source: '+url[:300]]
+    url=safe_source_url(recipe.get('source_url'))
+    if url:lines+=['Source: '+url[:300]]
     return '\n'.join(lines)

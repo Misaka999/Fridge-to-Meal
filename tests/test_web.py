@@ -58,16 +58,15 @@ class WebTests(unittest.TestCase):
                 server.shutdown()
                 worker.join()
 
-    def test_stream_sends_recipe_text_before_model_finishes(self):
+    def test_stream_sends_only_grounded_text_after_model_finishes(self):
         finish = Event()
 
         class StreamingModel(SessionModel):
             def stream(self, messages):
                 yield AIMessageChunk(content='{"status":"recommended","recipe_ids":["recipenlg_68810"],'
-                                             '"message":"Try Glazed Carrots')
-                if not finish.wait(5):
-                    raise TimeoutError("Client did not receive the first chunk.")
-                yield AIMessageChunk(content=' for four."}')
+                                             '"message":"Add 100 eggs')
+                finish.set()
+                yield AIMessageChunk(content=' and butter."}')
 
         with make_server(0, MealSessions(model=StreamingModel())) as server:
             worker = Thread(target=server.serve_forever, daemon=True)
@@ -86,13 +85,14 @@ class WebTests(unittest.TestCase):
                         event = json.loads(response.readline())
                         if event["type"] != "progress":
                             break
-                    self.assertEqual(event, {"type": "text", "data": "Try Glazed Carrots"})
-                    finish.set()
+                    self.assertEqual(event['type'], 'text')
+                    self.assertTrue(finish.is_set())
+                    self.assertNotIn('100 eggs', event['data'])
+                    self.assertIn('Glazed Carrots', event['data'])
                     remaining = [json.loads(line) for line in response]
-                self.assertEqual(remaining[0], {"type": "text", "data": " for four."})
-                self.assertEqual(remaining[1]["type"], "done")
-                run = remaining[1]["data"]
-                self.assertEqual(run["result"]["message"], "Try Glazed Carrots for four.")
+                self.assertEqual(remaining[0]["type"], "done")
+                run = remaining[0]["data"]
+                self.assertEqual(run["result"]["message"], event['data'])
                 self.assertEqual(run["metrics"]["model_calls"], 2)
                 self.assertEqual(run["tool_trace"][0]["tool"], "search_recipes")
             finally:

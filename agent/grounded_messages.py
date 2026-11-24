@@ -35,12 +35,12 @@ def render_answer(request,observation,answer):
         by_id={c['recipe_id']:c for c in observation['candidates']}
         blocks=[f"Options for {request['servings']} serving(s), preserving shared tool priority. Pantry unchanged."]
         for index,rid in enumerate(answer['recipe_ids'],1):
-            recipe=by_id[rid];title=recipe['title']
+            recipe=by_id[rid];title=recipe.get('title','Recipe '+rid)
             if META.search(title) or any(c in title for c in '<>{}'):
                 title='Recipe '+rid
             block=[f'{index}. {title} ({rid})','Required amounts:']
             fractional_egg=False
-            for item in recipe['ingredients']:
+            for item in recipe.get('ingredients',[]):
                 block.append(f"- {item['name']}: {_number(item['quantity'])} {item['unit']}")
                 if item['name']=='egg' and item['unit']=='count' and not float(item['quantity']).is_integer():fractional_egg=True
             if fractional_egg:block.append('Fractional egg counts refer to whole eggs; no yolk or white substitution is assumed.')
@@ -55,3 +55,32 @@ def render_answer(request,observation,answer):
         blocks.append('Recipes may be sides or preparation components. Source instructions are not a complete-meal, cooking-safety or allergen certification.')
         message='\n\n'.join(blocks)
     return {'status':status,'recipe_ids':list(answer['recipe_ids']),'message':message}
+
+
+def render_react_answer(request, observation, answer):
+    """Render checked tool facts rather than unchecked model-written claims."""
+    from .adaptation_checks import safe_source_title, control_directive
+    from copy import deepcopy
+    evidence = deepcopy(observation)
+    if answer['status'] == 'recommended':
+        for candidate in evidence['candidates']:
+            candidate['title'] = safe_source_title(candidate.get('title'), candidate['recipe_id'])
+        return render_answer(request, evidence, answer)
+    if answer['status'] == 'tool_error':
+        message = 'Recipe lookup failed. Recipe feasibility is unknown. Your pantry is unchanged; please try again.'
+    elif answer['status'] == 'no_feasible_recipe':
+        message = 'No feasible recipe was confirmed in the searched catalogue. This does not rule out recipes outside the retrieved results. Your pantry is unchanged.'
+    else:
+        # Some tool messages instruct the model how to compose its response;
+        # those instructions must not become the user-facing answer verbatim.
+        options = evidence.get('alternatives') or evidence.get('retrieved_candidates') or []
+        if options:
+            lines = ['Related source recipes were found, but their suitability for your pantry and serving size is not confirmed:']
+            for recipe in options[:3]:
+                lines.append('- '+safe_source_title(recipe.get('title'),recipe['recipe_id']))
+            lines.append('You can select a source recipe to inspect its ingredients and directions. Your pantry is unchanged.')
+            message = '\n'.join(lines)
+        else:
+            value = evidence.get('message')
+            message = value if isinstance(value,str) and value.strip() and not control_directive(value) else 'Recipe suitability could not be confirmed. Check the recipe details or adjust your request. Your pantry is unchanged.'
+    return {'status':answer['status'], 'recipe_ids':list(answer['recipe_ids']), 'message':message}

@@ -15,7 +15,6 @@ from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, Tool
 from langchain_openai import ChatOpenAI
 from langgraph.graph import END, START, MessagesState, StateGraph
 from pydantic import BaseModel, Field, ValidationError
-from pydantic_core import from_json
 
 from agent.tools.mock_recipes import failing_search, search_recipes as mock_search_recipes
 from agent.model_client import load_project_env
@@ -140,23 +139,14 @@ def deepseek_model():
 
 
 def stream_answer(client, messages, observed, on_event):
-    """Preview only the user-facing field after checking its recipe IDs and status."""
+    """Buffer model text until the complete response can be grounded in evidence.
+
+    Valid status/IDs alone do not make a partial narrative safe to display.
+    Progress events remain live; checked text is emitted by run_agent.
+    """
     reply = None
-    sent = ""
     for chunk in client.stream(messages):
         reply = chunk if reply is None else reply + chunk
-        text = reply.text.lstrip()
-        if text.startswith(("```json\n", "```\n")):
-            text = text.split("\n", 1)[1]
-        try:
-            partial_answer = from_json(text, allow_partial="trailing-strings")
-            preview = MealResponse.model_validate(partial_answer)
-            validate_response(preview, observed)
-        except ValueError:
-            continue
-        if preview.message.startswith(sent) and preview.message != sent:
-            on_event("text", preview.message[len(sent):])
-            sent = preview.message
     if reply is None:
         raise ValueError("DeepSeek returned an empty stream.")
     return reply
@@ -362,11 +352,16 @@ def run_agent(request: dict, *, model=None, search: Callable[..., dict] | None =
         "model": getattr(model, "model_name", None),
     }
     try:
-        if not adapting:result = parse_response(state)
+        if not adapting:
+            from agent.grounded_messages import render_react_answer
+            answer = parse_response(state)
+            result = MealResponse.model_validate(render_react_answer(request,observed,answer.model_dump()))
     except ValueError as exc:
         exc.metrics = metrics
         exc.trace = state["tool_trace"]
         raise
+    if on_event:
+        on_event('text', result.message)
     output={"result": result.model_dump(), "metrics": metrics, "tool_trace": state["tool_trace"]}
     if adapted:
         output.update(adapted_recipes=adapted,display_title='Adjusted recipe suggestions')
