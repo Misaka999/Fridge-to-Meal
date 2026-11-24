@@ -322,7 +322,7 @@ def run_agent(request: dict, *, model=None, search: Callable[..., dict] | None =
         "tool_trace": [],
     })
     adapted=[]
-    from agent.recipe_adaptation import can_adapt, messages as adaptation_messages, validate_proposal, render_adaptations
+    from agent.recipe_adaptation import can_adapt, messages as adaptation_messages, validate_proposal, render_adaptations, adaptation_failure_message
     observed=state['search_result'].model_dump() if state['search_result'] is not None else None
     adapting=adapt_recipes and can_adapt(observed)
     if adapting:
@@ -350,7 +350,7 @@ def run_agent(request: dict, *, model=None, search: Callable[..., dict] | None =
                                 message=render_adaptations(request,adapted))
         else:
             result=MealResponse(status='needs_clarification',recipe_ids=[],
-                                message='I could not validate an adjusted recipe against the current pantry and dietary constraints. '+(error or '')+' Please confirm the available amounts or choose a simpler dish. Pantry unchanged.')
+                                message=adaptation_failure_message(request))
     usage = [message.usage_metadata for message in state["messages"] if isinstance(message, AIMessage)]
     metrics = {
         "model_calls": state["model_calls"],

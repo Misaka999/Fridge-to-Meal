@@ -94,6 +94,47 @@ class AdaptationTests(TestCase):
         self.assertNotIn('adapted_recipes',out)
         self.assertEqual(out['metrics']['model_calls'],3)
 
+    def test_empty_proposal_error_stays_in_trace_not_the_user_reply(self):
+        r=request();r['servings']=2
+        before=deepcopy(r)
+        empty={'adapted_recipes':[]}
+        events=[]
+        out=run_agent(r,model=AdaptiveModel([empty,empty]),search=lambda **kw:observed(),
+                      adapt_recipes=True,on_event=lambda kind,value:events.append((kind,value)))
+        message=out['result']['message']
+        self.assertEqual(out['result']['status'],'needs_clarification')
+        self.assertIn('2 people',message)
+        self.assertIn('original recipes',message)
+        self.assertNotIn('Provide 1-3 pantry-constrained adaptations',message)
+        self.assertNotIn('confirm the available amounts',message)
+        self.assertNotIn('simpler dish',message)
+        self.assertNotIn('not enough',message)
+        errors=[item['result']['error'] for item in out['tool_trace'] if item['tool']=='validate_adaptation']
+        self.assertEqual(errors,['Provide 1-3 pantry-constrained adaptations.']*2)
+        self.assertFalse(any('Provide 1-3' in value for _,value in events))
+        self.assertEqual(r,before)
+        self.assertEqual(out['result']['recipe_ids'],[])
+        self.assertNotIn('adapted_recipes',out)
+        self.assertEqual(out['metrics']['model_calls'],3)
+
+    def test_budget_error_does_not_expose_internal_pantry_json(self):
+        bad=payload();bad['adapted_recipes'][0]['ingredients'][0]['quantity']=5
+        out=run_agent(request(),model=AdaptiveModel([bad,bad]),search=lambda **kw:observed(),adapt_recipes=True)
+        self.assertNotIn('exceed or cannot be compared',out['result']['message'])
+        self.assertNotIn('insufficient_quantities',out['result']['message'])
+        self.assertIn('1 person',out['result']['message'])
+        self.assertTrue(any('exceed or cannot be compared' in entry['result'].get('error','')
+                            for entry in out['tool_trace'] if entry['tool']=='validate_adaptation'))
+
+    def test_format_error_does_not_display_model_field_requirements(self):
+        bad={'unexpected_model_field':'invalid'}
+        out=run_agent(request(),model=AdaptiveModel([bad,bad]),search=lambda **kw:observed(),adapt_recipes=True)
+        self.assertNotIn('adapted_recipes',out['result']['message'])
+        self.assertNotIn('Return only',out['result']['message'])
+        self.assertEqual(out['result']['status'],'needs_clarification')
+        self.assertTrue(any('Return only an adapted_recipes array.' == entry['result'].get('error')
+                            for entry in out['tool_trace'] if entry['tool']=='validate_adaptation'))
+
     def test_session_details_show_adapted_amounts_and_reject_stale_stock(self):
         from agent.session import MealSessions
         out=run_agent(request(),model=AdaptiveModel([payload()]),search=lambda **kw:observed(),adapt_recipes=True)
