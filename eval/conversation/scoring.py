@@ -29,7 +29,7 @@ def matching_state(actual, expected):
     for field in ('likes','dietary_restrictions'):
         prefs=actual.get('preferences')
         value=prefs.get(field) if isinstance(prefs,dict) else None
-        if not isinstance(value,list) or sorted(value)!=sorted(expected['preferences'][field]):errors.append('Incorrect '+field)
+        if not isinstance(value,list) or any(not isinstance(x,str) for x in value) or sorted(value)!=sorted(expected['preferences'][field]):errors.append('Incorrect '+field)
     try:
         a,b=stock(actual),stock(expected)
         if a.keys()!=b.keys() or any(abs(a[k]-b[k])>1e-6 for k in a):errors.append('Pantry differs from the reference state.')
@@ -45,7 +45,7 @@ def grade_turn(output, reference, catalogue):
     if output.get('error'):errors.append('Runtime/parse failure.')
     errors+=matching_state(output.get('request') or {},reference['state'])
     focus=output.get('meal_ingredients',[])
-    if not isinstance(focus,list) or set(focus)!=set(reference.get('focus',[])):errors.append('Incorrect explicit meal focus.')
+    if not isinstance(focus,list) or any(not isinstance(x,str) for x in focus) or set(focus)!=set(reference.get('focus',[])):errors.append('Incorrect explicit meal focus.')
     pending=output.get('pending_inventory',[])
     try:
         if {normalize_name(x['name']) for x in pending}!=set(reference.get('pending_foods',[])):errors.append('Incorrect pending ingredient details.')
@@ -79,7 +79,7 @@ def grade_turn(output, reference, catalogue):
                 drafts.append({**recipe,'source_recipe_id':rid,'servings':state['servings'],
                     'ingredients':[{**i,'quantity':i['quantity']*state['servings']/recipe['servings']} for i in recipe['ingredients']]})
         for draft in drafts:
-            if draft.get('source_recipe_id') not in by_id:errors.append('Invented source ID.')
+            if not isinstance(draft.get('source_recipe_id'),str) or draft['source_recipe_id'] not in by_id:errors.append('Invented source ID.')
             if draft.get('servings')!=state['servings']:errors.append('Recipe servings disagree.')
             used=defaultdict(float);names=set()
             for item in draft.get('ingredients',[]):

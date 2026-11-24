@@ -63,6 +63,12 @@ class ConversationEvaluationTests(TestCase):
         for value in [[],{},None]:
             out={'result':value,'request':[],'adapted_recipes':['bad']}
             self.assertFalse(grade_turn(out,CASE['turns'][0]['reference'],RECIPES)['passed'])
+        for field in ('meal_ingredients','dietary_restrictions','source_recipe_id'):
+            out=good()
+            if field=='meal_ingredients':out[field]=[{'name':'egg'}]
+            elif field=='dietary_restrictions':out['request']['preferences'][field]=[{'name':'vegan'}]
+            else:out['adapted_recipes'][0][field]={'id':'bad'}
+            self.assertFalse(grade_turn(out,CASE['turns'][0]['reference'],RECIPES)['passed'])
 
     def test_blinding_excludes_architecture_costs_traces_and_previous_scores(self):
         output={**good(),'version':'react','metrics':{'total_tokens':123},'tool_trace':['private architecture'],'rules':{'passed':False}}
